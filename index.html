@@ -197,6 +197,46 @@
           </tr>
         </tbody></table>
 
+        <table width="100%" cellspacing="0" cellpadding="20" border="0" align="center">
+          <tbody><tr onmouseout="porlight_stop()" onmouseover="porlight_start()">
+            <td width="36%">
+              <div class="one">
+                <div class="two" id="porlight_image" style="opacity: 0;">
+                    <img src="website/images/aidm2017_1.png">
+                </div>
+                <img src="website/images/aidm2017_2.png">
+              </div>
+              <script type="text/javascript">
+                function porlight_start() {
+                  document.getElementById('porlight_image').style.opacity = "1";
+                }
+
+                function porlight_stop() {
+                  document.getElementById('porlight_image').style.opacity = "0";
+                }
+                porlight_stop()
+              </script>
+            </td>
+            <td valign="middle">
+              <a href="https://github.com/nicolay-r/tone-classifier/blob/master/doc/aidt_2017.pdf">
+                <papertitle>Methods of lexicon integration with machine learning for sentiment analysis system</papertitle>
+              </a>
+              <br>
+              <strong>Nicolay Rusnachenko</strong>,
+              Natalia Loukachevitch
+              <br>
+              <em>Artificial Intelligence and decision making (AIDM) journal, ISSN 2071-8594</em>, 2017
+              <br>
+			  <a href="website/data/rusnachenko2017methods.bib">bibtex</a> /
+              <a href="https://github.com/nicolay-r/tone-classifier/blob/master/doc/russir_2016_poster.pdf">poster</a> /
+			  <a href="https://github.com/nicolay-r/tone-classifier">code</a>
+              <br>
+              <p></p>
+              <p>Sentiment classification of user reviews using SVM. Master degree paper.</p>
+            </td>
+          </tr>
+        </tbody></table>
+
         <!-- Reference -->
         <table width="100%" cellspacing="0" cellpadding="20" border="0" align="center">
           <tbody><tr>
