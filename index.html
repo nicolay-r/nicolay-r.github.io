@@ -8,6 +8,16 @@
   <style type="text/css">
     /* Color scheme stolen from Sergey Karayev */
 
+    html {
+        scroll-behavior: smooth;
+    }
+
+    tr:target {
+            outline: 3px solid rgba(255, 99, 71, 0.8);  /* Softer red-orange frame */
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);  /* Soft shadow */
+            transition: outline 0.3s ease, box-shadow 0.3s ease; /* Smooth transition */
+    }
+
     a {
       color: #1772d0;
       text-decoration: none;
@@ -1137,7 +1147,7 @@
         <!-- papers and conferences -->
 
             <table width="100%" cellspacing="0" cellpadding="20" border="0" align="center">
-              <tbody data-type="paper"><tr><tr bgcolor="#ffffd0">
+              <tbody data-type="paper"><tr><tr id="phd-thesis" bgcolor="#ffffd0">
                   <td width="38%" valign="center" align="center">
                       <img src="website/images/thesis_title.png">
                   </td>
