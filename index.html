@@ -63,6 +63,26 @@
     span.highlight {
       background-color: #ffffd0;
     }
+
+    .filter-checkbox {
+        display: none;
+    }
+
+    /* Style the label as a button */
+    label {
+        padding: 10px 32px;
+        font-size: 14px;
+        color: white;
+        background-color: gray;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+     /* Change the button background color when checkbox is checked */
+    .filter-checkbox:checked + label {
+        background-color: #145da0;
+    }
+
   </style>
 
   <link rel="icon" type="image/png" href="">
@@ -130,18 +150,19 @@
             <td width="100%" valign="middle">
               <heading>Research:</heading>
               <p>
-              Interested in sentiment analysis, machine learning, relation extraction.
-              Representative papers are <span class="highlight">highlighted</span>.
               </p>
-                <p align="left">
-                    <label for="paperCheckbox">Paper</label>
+                <p align="middle" style="user-select: none">
                     <input type="checkbox" id="paperCheckbox" class="filter-checkbox" checked>
-                    <label for="presentationCheckbox">Presentation</label>
+                    <label for="paperCheckbox">Paper</label>
                     <input type="checkbox" id="presentationCheckbox" class="filter-checkbox" checked>
-                    <label for="projectCheckbox">Projects</label>
+                    <label for="presentationCheckbox">Presentation</label>
                     <input type="checkbox" id="projectCheckbox" class="filter-checkbox" checked>
-                    <label for="schoolCheckbox">Summer Schools</label>
+                    <label for="projectCheckbox">Projects</label>
                     <input type="checkbox" id="schoolCheckbox" class="filter-checkbox" checked>
+                    <label for="schoolCheckbox">Schools</label>
+                </p>
+                <p align="center">
+                    Representative entries are <span class="highlight">highlighted</span>.
                 </p>
             </td>
           </tr>
@@ -419,7 +440,7 @@
 
 
           <table width="100%" cellspacing="0" cellpadding="20" border="0" align="center">
-              <tbody data-type="projects"><tr><tr bgcolor="#ffffd0">
+              <tbody data-type="project"><tr><tr bgcolor="#ffffd0">
                   <td width="38%" align="center">
                       <img src="website/images/mergexr2024.png">
                   </td>
