@@ -5,6 +5,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <meta name="viewport" content="width=800">
   <meta name="generator" content="HTML Tidy for Linux/x86 (vers 11 February 2007), see www.w3.org">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <style type="text/css">
     /* Color scheme stolen from Sergey Karayev */
 
@@ -83,6 +84,11 @@
         background-color: #145da0;
     }
 
+    .share-button {
+        border: none;
+        cursor: pointer;
+    }
+
   </style>
 
   <link rel="icon" type="image/png" href="">
@@ -92,6 +98,7 @@
 </head>
 
 <body>
+
   <table width="900" cellspacing="0" cellpadding="0" border="0" align="center">
     <tbody><tr>
       <td>
@@ -168,9 +175,8 @@
           </tr>
         </tbody></table>
 
-
           <table width="100%" cellspacing="0" cellpadding="20" border="0" align="center">
-              <tbody data-type="presentation"><tr>
+              <tbody data-type="presentation"><tr id="nlpsummit2024">
                   <td width="38%" align="center">
                       <img src="website/images/nlpsummit2024.png">
                   </td>
@@ -195,6 +201,7 @@
                           <a href="https://www.linkedin.com/posts/nicolay-rusnachenko-b98635193_nlpsummit-nlp-sentimentanalysis-activity-7236387397888876545-431y/">linkedin</a> /
                           <a href="https://colab.research.google.com/github/nicolay-r/Reasoning-for-Sentiment-Analysis-Framework/blob/main/FlanT5_Finetuned_Model_Usage.ipynb">📙&nbsp;colab-model</a> /
                           <a href="https://colab.research.google.com/github/nicolay-r/Reasoning-for-Sentiment-Analysis-Framework/blob/main/Reasoning_for_Sentiment_Analysis_Framework.ipynb">📙&nbsp;colab-experiments</a>
+                          / <button class="share-button" onclick="shareRow(event)"><i class="fa fa-share-alt"></i>&nbsp;&nbsp;share&nbsp;card</button>
                       <br>
                       <p>
                           The talk is devoted to application of Large Language Models (LLMs) for retrieving <a href="https://arxiv.org/pdf/2305.11255">implicit information from non-structured texts</a> via reasoning the result sentiment label.
@@ -205,8 +212,9 @@
               </tbody></table>
 
           <table width="100%" cellspacing="0" cellpadding="20" border="0" align="center">
-              <tbody data-type="paper"><tr><tr bgcolor="#ffffd0">
+              <tbody data-type="paper"><tr bgcolor="#ffffd0" id="lod2024">
                   <td width="38%" align="center">
+                      <button class="share-button" onclick="shareRow(event)" style="float: left"><i class="fa fa-share-alt"></i></button>
                       <img src="website/images/lod2024.png">
                   </td>
                   <td valign="middle">
@@ -233,6 +241,7 @@
                       <a href="https://github.com/nicolay-r/book-persona-retriever">code</a> /
                       <a href="https://colab.research.google.com/github/nicolay-r/book-persona-retriever/blob/master/parlai_gutenberg_experiments.ipynb">📙&nbsp;colab-models</a> /
                       <a href="https://github.com/nicolay-r/parlai_bookchar_task">parlai-task-🦜</a>
+                      / <button class="share-button" onclick="shareRow(event)"><i class="fa fa-share-alt"></i>&nbsp;&nbsp;share&nbsp;card</button>
                       <br>
                       <p>
                           This paper proposes the workflow of automatic profiling fictional character from literature novel books.
@@ -244,7 +253,7 @@
               </tbody></table>
 
           <table width="100%" cellspacing="0" cellpadding="20" border="0" align="center">
-              <tbody data-type="paper"><tr><tr>
+              <tbody data-type="paper"><tr id="wassa2024-hyy33">
                   <td width="38%" align="center">
                       <img src="website/images/contest_wassa_2024_hyy33.png">
                   </td>
@@ -278,6 +287,7 @@
                       <a href="https://huggingface.co/hyy-33/hyy33-WASSA-2024-Track-2"> 🤗 models</a> /
                       <a href="https://codalab.lisn.upsaclay.fr/competitions/18810">codalab</a> /
                       <a href="https://x.com/nicolayr_/status/1824076665963843849">twitter</a>
+                      / <button class="share-button" onclick="shareRow(event)"><i class="fa fa-share-alt"></i>&nbsp;&nbsp;share&nbsp;card</button>
                       <br>
                       <p>
                           We propose a loss function which combines: (1) structured contrastive loss and (2) Pearson loss.
@@ -290,7 +300,7 @@
 
 
           <table width="100%" cellspacing="0" cellpadding="20" border="0" align="center">
-              <tbody data-type="paper"><tr><tr>
+              <tbody data-type="paper"><tr style="wassa2024-chinchunmei">
                   <td width="38%" align="center">
                       <img src="website/images/contest_wassa_2024_chinchunmei.png">
                   </td>
@@ -320,6 +330,7 @@
                       <a href="https://huggingface.co/collections/RicardoLee/chinchunmei-on-wassa2024-shared-task-1-66853bab4fd43e12c535efa8"> 🤗 models</a> /
                       <a href="https://codalab.lisn.upsaclay.fr/competitions/18810">codalab</a> /
                       <a href="https://x.com/nicolayr_/status/1814731377012559961">twitter</a>
+                      / <button class="share-button" onclick="shareRow(event)"><i class="fa fa-share-alt"></i>&nbsp;&nbsp;share&nbsp;card</button>
                       <br>
                       <p>
                           We adopt two-stage method SFT (🟥) + inference (🟩) as <b>contrastive reasoning calibration</b> (CRC).
@@ -331,7 +342,7 @@
               </tbody></table>
 
           <table width="100%" cellspacing="0" cellpadding="20" border="0" align="center">
-              <tbody data-type="paper"><tr><tr bgcolor="#ffffd0">
+              <tbody data-type="paper"><tr bgcolor="#ffffd0" id="semeval2024-nicolay">
                   <td width="38%" align="center">
                       <img src="website/images/contest_semeval_2024_thor.png">
                   </td>
@@ -363,6 +374,7 @@
                       <a href="https://codalab.lisn.upsaclay.fr/competitions/16141#results">leaderboard</a> /
                       <a href="https://colab.research.google.com/github/nicolay-r/THOR-ECAC/blob/master/SemEval_2024_Task_3_FlanT5_Finetuned_Model_Usage.ipynb">📙&nbsp;colab-model</a> /
                       <a href="https://colab.research.google.com/github/nicolay-r/THOR-ECAC/blob/master/THoR_Finetuning_SemEval2023_t3_1_public.ipynb">📙&nbsp;colab-experiments</a>
+                      / <button class="share-button" onclick="shareRow(event)"><i class="fa fa-share-alt"></i>&nbsp;&nbsp;share&nbsp;card</button>
                       <br>
                       <p>
                           We fine-tune <a href="https://huggingface.co/google/flan-t5-base"> Flan-T5-base</a> (250M) with the reforged <a href="https://github.com/scofield7419/THOR-ISA">THoR-ISA framework</a> for Emotion Cause Extraction.
@@ -375,7 +387,7 @@
 
 
           <table width="100%" cellspacing="0" cellpadding="20" border="0" align="center">
-              <tbody data-type="paper"><tr><tr>
+              <tbody data-type="paper"><tr id="semeval2024-junzhe">
                   <td width="38%" align="center">
                       <img src="website/images/contest_semeval2024_task7.png">
                   </td>
@@ -402,6 +414,7 @@
                       <a href="https://aclanthology.org/2024.semeval-1.40/"><b>paper</b></a> /
                       <a href="https://github.com/GavinZhao19/SemEval24-NumAnalysis-CN">code</a> /
                       <a href="https://x.com/nicolayr_/status/1803705227108847866">twitter</a>
+                      / <button class="share-button" onclick="shareRow(event)"><i class="fa fa-share-alt"></i>&nbsp;&nbsp;share&nbsp;card</button>
                       <br>
                       <p>
                            we propose a <b>two-phase SFT training strategy</b>: (i) data-processing and (ii) model training. In (i) we combine CoT + knowledge-distillation concept (using GPT-3.5) + CoT steps for CoT-NumHG; this resource is then adopted in (ii) for the full-param SFT
@@ -411,7 +424,7 @@
               </tbody></table>
 
           <table width="100%" cellspacing="0" cellpadding="20" border="0" align="center">
-              <tbody data-type="presentation"><tr>
+              <tbody data-type="presentation"><tr id="datafest-2024">
                   <td width="38%" align="center">
                       <img src="website/images/presentation-datafest2024.png">
                   </td>
@@ -433,6 +446,7 @@
                           <a href="https://colab.research.google.com/github/nicolay-r/Reasoning-for-Sentiment-Analysis-Framework/blob/main/FlanT5_Finetuned_Model_Usage.ipynb">📙&nbsp;colab-model</a> /
                           <a href="https://colab.research.google.com/github/nicolay-r/Reasoning-for-Sentiment-Analysis-Framework/blob/main/Reasoning_for_Sentiment_Analysis_Framework.ipynb">colab-experiments</a> /
                           <a href="https://huggingface.co/papers/2404.12342">🤗 models</a>
+                          / <button class="share-button" onclick="shareRow(event)"><i class="fa fa-share-alt"></i>&nbsp;&nbsp;share&nbsp;card</button>
                       <br>
                   </td>
               </tr>
@@ -440,7 +454,7 @@
 
 
           <table width="100%" cellspacing="0" cellpadding="20" border="0" align="center">
-              <tbody data-type="project"><tr><tr bgcolor="#ffffd0">
+              <tbody data-type="project"><tr><tr bgcolor="#ffffd0" id="mergexr2024">
                   <td width="38%" align="center">
                       <img src="website/images/mergexr2024.png">
                   </td>
@@ -463,6 +477,7 @@
 		      <a href="https://blogs.bournemouth.ac.uk/research/2024/05/20/techfusion-summit-i3-simulations-9th-10th-may-2024/">bournemouth-research-post</a> /
                       <a href="https://youtu.be/gy8D4YwrAMc"><b>youtube-presentation</b></a> /
                       <a href="website/data/presentation_i3summit_2024.pdf">slides</a>
+                      / <button class="share-button" onclick="shareRow(event)"><i class="fa fa-share-alt"></i>&nbsp;&nbsp;share&nbsp;card</button>
                       <br>
                       <p>
                           Presented a multi-disciplinary research to transform the UK/global healthcare sector and allied
@@ -475,7 +490,7 @@
               </tbody></table>
 
              <table width="100%" cellspacing="0" cellpadding="20" border="0" align="center">
-              <tbody data-type="paper"><tr><tr bgcolor="#ffffd0">
+              <tbody data-type="paper"><tr bgcolor="#ffffd0" id="ljom2024">
                   <td width="38%" align="center">
                       <img src="website/images/ljom2024.png">
                   </td>
@@ -502,6 +517,7 @@
                       <a href="https://huggingface.co/papers/2404.12342">🤗 models</a> /
                       <a href="https://colab.research.google.com/github/nicolay-r/Reasoning-for-Sentiment-Analysis-Framework/blob/main/FlanT5_Finetuned_Model_Usage.ipynb">📙&nbsp;colab-model</a> /
                       <a href="https://colab.research.google.com/github/nicolay-r/Reasoning-for-Sentiment-Analysis-Framework/blob/main/Reasoning_for_Sentiment_Analysis_Framework.ipynb">📙&nbsp;colab-experiments</a>
+                      / <button class="share-button" onclick="shareRow(event)"><i class="fa fa-share-alt"></i>&nbsp;&nbsp;share&nbsp;card</button>
                       <br>
                       <p>
                           We explore LLMs reasoning capabilities in Targeted Sentiment Analysis task.
@@ -518,7 +534,7 @@
 
 
           <table width="100%" cellspacing="0" cellpadding="20" border="0" align="center">
-              <tbody data-type="paper"><tr><tr bgcolor="#ffffd0">
+              <tbody data-type="paper"><tr bgcolor="#ffffd0" id="ecir2024">
                   <td width="38%" align="center">
                       <img src="website/images/logo_arelight.png">
                   </td>
@@ -549,6 +565,7 @@
                       <a href="https://github.com/nicolay-r/ARElight/raw/v0.22.0/docs/slides_rus.pdf">presentation</a> /
                       <a href="https://www.youtube.com/watch?v=TuN1uOOfwj0"><b>ml-trainings-youtube</b></a> /
                       <a href="https://youtu.be/39sxFJRD-mQ?t=13280"><b>video[rus]</b></a>
+                      / <button class="share-button" onclick="shareRow(event)"><i class="fa fa-share-alt"></i>&nbsp;&nbsp;share&nbsp;card</button>
                       <br>
                       <p>
                           <a href="https://github.com/nicolay-r/AREkit">AREkit</a>-based application for a granular view onto sentiments
@@ -581,6 +598,7 @@
                       <a href="https://samoa.dcs.gla.ac.uk/events/viewtalk.jsp?id=19265"><b>event</b></a> /
                       <a href="https://youtu.be/TfsmmNHNpdU">video</a> /
                       <a href="https://raw.githubusercontent.com/nicolay-r/nicolay-r.github.io/master/website/data/lecture_glasgow_university_22-01-2024.pdf">slides</a>
+                      / <button class="share-button" onclick="shareRow(event)"><i class="fa fa-share-alt"></i>&nbsp;&nbsp;share&nbsp;card</button>
                       <br>
                       <br>
                       Unlike to the similar talks in past,
@@ -592,7 +610,7 @@
               </tbody></table>
 
                <table width="100%" cellspacing="0" cellpadding="20" border="0" align="center">
-              <tbody data-type="paper"><tr><tr>
+              <tbody data-type="paper"><tr id="ibica2023">
                   <td width="38%" align="center">
                       <img src="website/images/ibica2023.png">
                   </td>
@@ -617,6 +635,7 @@
                       <a href="https://www.youtube.com/watch?v=Xe-O-gqujlU"><b>video</b></a> /
                       <a href="https://drive.google.com/file/d/1-DvlKAyqSXosQvdGbbXifUYZt3g2xXTI/view?usp=sharing">presentation</a> /
                       <a href="website/data/cert_ibica2023.pdf">certificate</a>
+                      / <button class="share-button" onclick="shareRow(event)"><i class="fa fa-share-alt"></i>&nbsp;&nbsp;share&nbsp;card</button>
                       <br>
                       <p>
                       </p>
@@ -625,7 +644,7 @@
               </tbody></table>
 
           <table width="100%" cellspacing="0" cellpadding="20" border="0" align="center">
-              <tbody data-type="presentation"><tr><tr>
+              <tbody data-type="presentation"><tr id="ncl2023-arelight">
                   <td width="38%" align="center">
                       <img src="website/images/lecture_newcastle_20-10-2023.png">
                   </td>
@@ -652,13 +671,14 @@
                       <a href="website/data/presentation_agency_arelight_03-11-2023.pdf">agency-slides-newcastle</a> /
                       <a href="website/data/lecture_newcastle_11-03-2023.pdf">technical-slides</a> /
                       <a href="https://github.com/nicolay-r/ARElight#readme">code</a>
+                      / <button class="share-button" onclick="shareRow(event)"><i class="fa fa-share-alt"></i>&nbsp;&nbsp;share&nbsp;card</button>
                       <br>
                   </td>
               </tr>
               </tbody></table>
 
           <table width="100%" cellspacing="0" cellpadding="20" border="0" align="center">
-              <tbody data-type="paper"><tr><tr bgcolor="#ffffd0">
+              <tbody data-type="paper"><tr bgcolor="#ffffd0" id="wiiat2023">
                   <td width="38%" align="center">
                       <img src="website/images/wiiat2023.png">
                   </td>
@@ -681,6 +701,7 @@
                       <a href="https://ieeexplore.ieee.org/document/10350131"><b>paper</b></a> /
                       <a href="https://eprints.ncl.ac.uk/293995">eprint</a> /
                       <a href="https://github.com/SuperEDG/Hongloumeng_Project">code</a>
+                      / <button class="share-button" onclick="shareRow(event)"><i class="fa fa-share-alt"></i>&nbsp;&nbsp;share&nbsp;card</button>
                       <br>
                       <p> To enhance the engagement of chatbots, we need to imbue them with unique personalities and speech patterns.
                           We propose an automated system that uses character dialogues from literary works.
@@ -692,7 +713,7 @@
               </tbody></table>
 
           <table width="100%" cellspacing="0" cellpadding="20" border="0" align="center">
-              <tbody data-type="presentation"><tr><tr>
+              <tbody data-type="presentation"><tr id="relations-chatgpt-2023">
                   <td width="38%" align="center">
                       <img src="website/images/report_llm2023.png">
                   </td>
@@ -710,6 +731,7 @@
                       <a href="https://github.com/nicolay-r/llm-prompt-checking">code-eval</a> /
                       <a href="https://github.com/nicolay-r/arekit-ss">code-data</a> /
                       <a href="https://github.com/nicolay-r/arekit-ss/issues/52">prompts</a>
+                      / <button class="share-button" onclick="shareRow(event)"><i class="fa fa-share-alt"></i>&nbsp;&nbsp;share&nbsp;card</button>
                       <br>
                       <p>
                           This report represent a study of how well the annotated relations in NEREL could be predicted
@@ -1201,6 +1223,7 @@
                       <a href="https://vak.minobrnauki.gov.ru/advert/100063985">HAC-ru</a> /
                       <a href="https://arxiv.org/pdf/1808.08932.pdf">task-paper</a> /
                       <a href="https://github.com/nicolay-r/PhD-LaTeX-Dissertation-BMSTU-Styles">code-paper-styles</a>
+                      / <button class="share-button" onclick="shareRow(event)"><i class="fa fa-share-alt"></i>&nbsp;&nbsp;share&nbsp;card</button>
                       <p>
                           We propose distant-supervision approach for mass-media annotation, based on
                           <a href="https://github.com/nicolay-r/RuSentiFrames">RuSentiFrames</a> knowledge-base.
@@ -1927,5 +1950,32 @@
       });
   }
   filterTable();
+
+  function shareRow(event) {
+      const button = event.target;
+
+      const row = button.closest('tr');
+
+      const rowId = row.id;
+
+      const currentUrl = window.location.href;
+      const fullUrl = `${currentUrl}#${rowId}`;
+      const shareText = `Check out this item: ${fullUrl}`;
+
+      // Adopt WebShare API.
+      if (navigator.share) {
+          navigator.share({
+              title: 'Share this item',
+              text: shareText,
+              url: fullUrl,
+          }).then(() => {
+              console.log('Successfully shared');
+          }).catch((error) => {
+              console.error('Error sharing:', error);
+          });
+      } else {
+          prompt("Copy this link to share:", fullUrl);
+      }
+  }
   </script>
 </body></html>
