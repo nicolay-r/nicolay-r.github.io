@@ -1946,7 +1946,7 @@
 
       const rowId = row.id;
 
-      const currentUrl = window.location.href;
+      let currentUrl = window.location.href.split('#')[0];
       const fullUrl = `${currentUrl}#${rowId}`;
       const shareText = `${fullUrl}`;
 
