@@ -1,0 +1,193 @@
+<html>
+<link type="text/css" id="dark-mode" rel="stylesheet" href="">
+<style type="text/css" id="dark-mode-custom-style"></style>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=800">
+    <meta name="generator" content="HTML Tidy for Linux/x86 (vers 11 February 2007), see www.w3.org">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style type="text/css">
+        /* Color scheme stolen from Sergey Karayev */
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        tr:target {
+                outline: 3px solid rgba(255, 99, 71, 0.8);  /* Softer red-orange frame */
+                box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);  /* Soft shadow */
+                transition: outline 0.3s ease, box-shadow 0.3s ease; /* Smooth transition */
+        }
+
+        a {
+          color: #1772d0;
+          text-decoration: none;
+        }
+
+        a:focus,
+        a:hover {
+          color: #f09228;
+          text-decoration: none;
+        }
+
+        body,
+        td,
+        th,
+        tr,
+        p,
+        a {
+          font-family: 'Lato', Verdana, Helvetica, sans-serif;
+          font-size: 14px
+        }
+
+        strong {
+          font-family: 'Lato', Verdana, Helvetica, sans-serif;
+          font-size: 14px;
+        }
+
+        heading {
+          font-family: 'Lato', Verdana, Helvetica, sans-serif;
+          font-size: 22px;
+        }
+
+        papertitle {
+          font-family: 'Lato', Verdana, Helvetica, sans-serif;
+          font-size: 14px;
+          font-weight: 700
+        }
+
+        name {
+          font-family: 'Lato', Verdana, Helvetica, sans-serif;
+          font-size: 32px;
+        }
+
+        span.highlight {
+          background-color: #ffffd0;
+        }
+
+        .filter-checkbox {
+            display: none;
+        }
+
+        /* Style the label as a button */
+        label {
+            padding: 8px 16px;
+            font-size: 11px;
+            color: white;
+            background-color: gray;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+         /* Change the button background color when checkbox is checked */
+        .filter-checkbox:checked + label {
+            background-color: #145da0;
+        }
+
+        .share-button {
+            border: none;
+            padding: 1px 1px;
+            background: #D3D3D3;
+            cursor: pointer;
+            white-space: nowrap;
+            user-select: none;
+        }
+
+    </style>
+
+    <link rel="icon" type="image/png" href="">
+    <title>Nicolay Rusnachenko</title>
+
+    <link href="index_files/css.asc" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+
+<table width="900" cellspacing="0" cellpadding="0" border="0" align="center">
+    <tbody><tr>
+        <td>
+            <table width="100%" cellspacing="0" cellpadding="20" border="0" align="center">
+
+                <!-- Title -->
+                <tbody><tr>
+                    <td width="65%" valign="middle">
+                        <p align="center">
+                            <name><b>Nicolay Rusnachenko</b></name>
+                        </p>
+                        <p>
+                            This is a main page that represent personal athletic activities.
+                        </p>
+                        <p align="center">
+                            <br/>
+                            <a href="website/data/prc.pdf">parkrun-code</a> /
+                            <a href="https://www.parkrun.org.uk/parkrunner/9401392/">parkrun-stat</a> /
+                            <a href="https://www.instagram.com/nickky_x_">Instagram</a>
+                        </p>
+                    </td>
+                    <td>
+                        <img src="../website/images/photo.png">
+                    </td>
+                </tr>
+                </tbody></table>
+
+            <!-- Reference -->
+            <table width="100%" cellspacing="0" cellpadding="20" border="0" align="center">
+                <tbody><tr>
+                    <td>
+                        <br>
+                        <p align="right">
+                            <font size="2">
+                                <a href="https://jonbarron.info/">This guy shares a great template!</a>
+                            </font>
+                        </p>
+                    </td>
+                </tr>
+                </tbody></table>
+
+        </td>
+    </tr>
+    </tbody></table>
+<script>
+    function filterTable() {
+        var checkboxes = document.querySelectorAll('.filter-checkbox');
+
+        checkboxes.forEach(function(checkbox) {
+            checkbox.addEventListener('change', function() {
+                var type = checkbox.id.replace('Checkbox', ''); // Extract type from checkbox id
+                var rows = document.querySelectorAll('[data-type="' + type + '"]');
+
+                rows.forEach(function(row) {
+                    row.style.display = checkbox.checked ? '' : 'none';
+                });
+            });
+        });
+    }
+    filterTable();
+
+    function shareRow(event) {
+        const button = event.target;
+
+        const row = button.closest('tr');
+
+        const rowId = row.id;
+
+        let currentUrl = window.location.href.split('#')[0];
+        const fullUrl = `${currentUrl}#${rowId}`;
+        const shareText = `${fullUrl}`;
+
+        // Adopt WebShare API.
+        if (navigator.share) {
+            navigator.share({
+                title: 'Share this item',
+                url: fullUrl,
+            }).then(() => {
+                console.log('Successfully shared');
+            }).catch((error) => {
+                console.error('Error sharing:', error);
+            });
+        } else {
+            prompt("Copy this link to share:", fullUrl);
+        }
+    }
+</script>
+</body></html>
