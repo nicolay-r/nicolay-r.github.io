@@ -56,6 +56,30 @@
       font-weight: 700
     }
 
+    .hover-label {
+      display: inline-block;
+      padding: 8px 15px;
+      cursor: pointer;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    /* When hovering */
+    .hover-label:hover {
+      background-color: #007BFF;
+      color: white;
+    }
+
+    /* When the associated checkbox is checked */
+    input[type="checkbox"]:checked + .hover-label {
+      background-color: #007BFF;
+      color: white;
+    }
+
+    /* Hover when already checked — stronger effect if needed */
+    input[type="checkbox"]:checked + .hover-label:hover {
+      background-color: #0056b3; /* Even darker on hover while checked */
+    }
+
     name {
       font-family: 'Lato', Verdana, Helvetica, sans-serif;
       font-size: 32px;
@@ -164,20 +188,21 @@
         <table width="100%" cellspacing="0" cellpadding="20" border="0" align="center">
           <tbody><tr>
             <td width="100%" valign="middle">
-              <heading>Research:</heading>
-              <p>
-              </p>
-                <p align="middle" style="user-select: none">
+                <div style="text-align: center;">
+                    <h3>PROFESSIONAL ACTIVITIES</h3>
+                    <p style="color: #6c757d; font-style: italic; font-size: 0.9rem; margin-top: -18; margin-bottom: 8;">
+                        Tap to quick filter
+                    </p>
                     <input type="checkbox" id="paperCheckbox" class="filter-checkbox" checked>
-                    <label for="paperCheckbox">PAPERS</label>
+                    <label for="paperCheckbox" class="hover-label">PAPERS</label>
                     <input type="checkbox" id="presentationCheckbox" class="filter-checkbox" checked>
-                    <label for="presentationCheckbox">PRESENTATIONS</label>
+                    <label for="presentationCheckbox" class="hover-label">PRESENTATIONS</label>
                     <input type="checkbox" id="projectCheckbox" class="filter-checkbox" checked>
-                    <label for="projectCheckbox">PROJECTS</label>
+                    <label for="projectCheckbox" class="hover-label">PROJECTS</label>
                     <input type="checkbox" id="schoolCheckbox" class="filter-checkbox" checked>
-                    <label for="schoolCheckbox">SCHOOLS</label>
-                </p>
-                <p align="center">
+                    <label for="schoolCheckbox" class="hover-label">SCHOOLS</label>
+                </div>
+                <p align="center" style="color: #6c757d; font-style: italic; margin-top: 8">
                     Representative entries are <span class="highlight">highlighted</span>.
                 </p>
             </td>
