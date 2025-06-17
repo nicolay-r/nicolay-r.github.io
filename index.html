@@ -2386,11 +2386,38 @@
 
       checkboxes.forEach(function(checkbox) {
           checkbox.addEventListener('change', function() {
-              var type = checkbox.id.replace('Checkbox', ''); // Extract type from checkbox id
-              var rows = document.querySelectorAll('[data-type="' + type + '"]');
 
-              rows.forEach(function(row) {
-                  row.style.display = checkbox.checked ? '' : 'none';
+              ///////////////////////////////////////////////////////////////////////
+              // Changing logic.
+              ///////////////////////////////////////////////////////////////////////
+              const checkboxStates = {};
+              checkboxes.forEach(cb => {
+                  const data_type = cb.id.replace('Checkbox', '');
+                  checkboxStates[data_type] = cb.checked;
+              });
+              const allUnchecked = Object.values(checkboxStates).every(value => !value);
+              if (allUnchecked) {
+                // Make all of them checked.
+                checkboxes.forEach(cb => { cb.checked = true; });
+              }
+              else {
+                // Keep only this checked.
+                checkboxes.forEach(cb => { cb.checked = cb === this; });
+              }
+
+              ///////////////////////////////////////////////////////////////////////
+              // Rows filtering logic.
+              ///////////////////////////////////////////////////////////////////////
+              // Step 1. Compose checkbox states.
+              const checkboxStatesModified = {};
+              checkboxes.forEach(cb => {
+                  const data_type = cb.id.replace('Checkbox', '');
+                  checkboxStatesModified[data_type] = cb.checked;
+              });
+              // Step 2. Filtering.
+              const rowsWithDataType = document.querySelectorAll('[data-type]');
+              rowsWithDataType.forEach(function(row) {
+                  row.style.display = checkboxStatesModified[row.dataset.type] ? '' : 'none';
               });
           });
       });
