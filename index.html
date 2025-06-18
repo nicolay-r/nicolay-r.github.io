@@ -102,6 +102,7 @@
         background-color: gray;
         cursor: pointer;
         transition: background-color 0.3s ease;
+        user-select: none;
     }
 
      /* Change the button background color when checkbox is checked */
@@ -111,11 +112,25 @@
 
     .share-button {
         border: none;
-        padding: 1px 1px;
-        background: #D3D3D3;
+        padding: 2px 2px;
+        background-color: #4DAAF5;
+        color: white;
+        font-size: 14px;
+        font-weight: 600;
+        border-radius: 3px;
         cursor: pointer;
         white-space: nowrap;
         user-select: none;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    .share-button:hover {
+        background-color: #156FFF;
+        transform: translateY(-1px);
+    }
+
+    .share-button:active {
+        transform: translateY(0);
     }
 
     .gray-table {
@@ -135,6 +150,13 @@
 
     .gray-table tr:nth-child(even) {
       background-color: #ffffff; /* White */
+    }
+
+    .no-select {
+        user-select: none;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
     }
 
   </style>
@@ -207,7 +229,7 @@
         <!-- Research -->
         <table width="100%" cellspacing="20" cellpadding="20" border="0" align="center" class="gray-table">
           <tbody><tr>
-            <td width="100%" valign="middle">
+            <td width="100%" valign="middle" class="no-select">
                 <div style="text-align: center;">
                     <h3>PROFESSIONAL ACTIVITIES</h3>
                     <p style="color: #6c757d; font-style: italic; font-size: 0.9rem; margin-top: -18; margin-bottom: 8;">
