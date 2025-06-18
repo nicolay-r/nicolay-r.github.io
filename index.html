@@ -2494,30 +2494,48 @@
   }
   filterTable();
 
-  function shareRow(event) {
-      const button = event.target;
+ function shareRow(event) {
+          const button = event.target;
 
-      const row = button.closest('tr');
+          const row = button.closest('tr');
 
-      const rowId = row.id;
+          const rowId = row.id;
 
-      let currentUrl = window.location.href.split('#')[0];
-      const fullUrl = `${currentUrl}#${rowId}`;
-      const shareText = `${fullUrl}`;
+          let currentUrl = window.location.href.split('#')[0];
+          const fullUrl = `${currentUrl}#${rowId}`;
+          const shareText = `${fullUrl}`;
 
-      // Adopt WebShare API.
-      if (navigator.share) {
-          navigator.share({
-              title: 'Share this item',
-              url: fullUrl,
-          }).then(() => {
-              console.log('Successfully shared');
-          }).catch((error) => {
-              console.error('Error sharing:', error);
-          });
-      } else {
-          prompt("Copy this link to share:", fullUrl);
+          // Adopt WebShare API.
+          if (navigator.share) {
+              navigator.share({
+                  title: 'Share this item',
+                  url: fullUrl,
+              }).then(() => {
+                  console.log('Successfully shared');
+              }).catch((error) => {
+                  console.error('Error sharing:', error);
+              });
+          } else if (navigator.clipboard) {
+              navigator.clipboard.writeText(fullUrl)
+              .then(() => {
+                  alert('Link copied to clipboard!');
+              }).catch(err => {
+                  console.error('Failed to copy: ', err);
+              });
+          } else {
+              // Fallback for older browsers
+              const tempInput = document.createElement('input');
+              tempInput.value = fullUrl;
+              document.body.appendChild(tempInput);
+              tempInput.select();
+              try {
+                document.execCommand('copy');
+                alert('Link copied to clipboard!');
+              } catch (err) {
+                alert('Copy this link: ' + fullUrl);
+              }
+              document.body.removeChild(tempInput);
+          }
       }
-  }
   </script>
 </body></html>
