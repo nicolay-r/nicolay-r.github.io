@@ -2,141 +2,16 @@
 <link type="text/css" id="dark-mode" rel="stylesheet" href="">
 <style type="text/css" id="dark-mode-custom-style"></style>
 <head>
+    <link rel="stylesheet" href="../styles.css">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=600, initial-scale=1.0">
     <meta name="generator" content="HTML Tidy for Linux/x86 (vers 11 February 2007), see www.w3.org">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <style type="text/css">
-        /* Color scheme stolen from Sergey Karayev */
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        tr:target {
-                outline: 3px solid rgba(255, 99, 71, 0.8);  /* Softer red-orange frame */
-                box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);  /* Soft shadow */
-                transition: outline 0.3s ease, box-shadow 0.3s ease; /* Smooth transition */
-        }
-
-        a {
-          color: #1772d0;
-          text-decoration: none;
-        }
-
-        a:focus,
-        a:hover {
-          color: #f09228;
-          text-decoration: none;
-        }
-
-        body,
-        td,
-        th,
-        tr,
-        p,
-        a {
-          font-family: 'Lato', Verdana, Helvetica, sans-serif;
-          font-size: 14px
-        }
-
-        strong {
-          font-family: 'Lato', Verdana, Helvetica, sans-serif;
-          font-size: 14px;
-        }
-
-        heading {
-          font-family: 'Lato', Verdana, Helvetica, sans-serif;
-          font-size: 22px;
-        }
-
-        runtitle {
-          font-family: 'Lato', Verdana, Helvetica, sans-serif;
-          font-size: 14px;
-          font-weight: 700
-        }
-
-        name {
-          font-family: 'Lato', Verdana, Helvetica, sans-serif;
-          font-size: 32px;
-        }
-
-        span.highlight {
-          background-color: #ffffd0;
-        }
-
-        .filter-checkbox {
-            display: none;
-        }
-
-        /* Style the label as a button */
-        label {
-            padding: 8px 16px;
-            font-size: 11px;
-            color: white;
-            background-color: gray;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-         /* Change the button background color when checkbox is checked */
-        .filter-checkbox:checked + label {
-            background-color: #145da0;
-        }
-
-        .share-button {
-            border: none;
-            padding: 1px 1px;
-            background: #D3D3D3;
-            cursor: pointer;
-            white-space: nowrap;
-            user-select: none;
-        }
-
-        .hover-label {
-          display: inline-block;
-          padding: 8px 15px;
-          cursor: pointer;
-          transition: background-color 0.3s, color 0.3s;
-        }
-
-        /* When hovering */
-        .hover-label:hover {
-          background-color: #007BFF;
-          color: white;
-        }
-
-        /* When the associated checkbox is checked */
-        input[type="checkbox"]:checked + .hover-label {
-          background-color: #007BFF;
-          color: white;
-        }
-
-        /* Hover when already checked — stronger effect if needed */
-        input[type="checkbox"]:checked + .hover-label:hover {
-          background-color: #0056b3; /* Even darker on hover while checked */
-        }
-
-        .gray-table {
-          width: 100%;
+    <style>
+        .results-table td, .results-table td {
+          border: 1px solid #fafafa;
           border-collapse: collapse;
-          margin: 0 auto;
-          flex: true;
         }
-
-        .gray-table td, .gray-table th {
-          border: 1px solid #ccc;
-          padding: 4px;
-        }
-
-        .gray-table tr:nth-child(odd) {
-          background-color: #f9f9f9; /* Light gray */
-        }
-
-        .gray-table tr:nth-child(even) {
-          background-color: #ffffff; /* White */
-        }
-
     </style>
 
     <link rel="icon" type="image/png" href="">
@@ -144,7 +19,6 @@
 
     <link href="index_files/css.asc" rel="stylesheet" type="text/css">
 </head>
-
 <body>
 
             <table width="600" cellspacing="0" cellpadding="0" border="0" align="center">
@@ -192,13 +66,15 @@
             </table>
 
             <!-- RESULTS -->
-            <table width="100%" cellspacing="0" cellpadding="0" align="center"
-                   style="border: 1px solid #eee">
+            <table width="100%" cellspacing="0" cellpadding="0" align="center" class="results-table">
                 <tbody data-type="5M"><tr id="may5-2025">
                     <tr>
                       <td valign="middle">
-                          30:41<sub style="color:red">(PB)</sub> ⋅ 5M
-                          </td>
+                          30:41<sub style="color:red">(PB)</sub>
+                      </td>
+                      <td valign="middle">
+                          5M
+                      </td>
                       <td valign="middle">
                       18-05-2025
                       </td>
@@ -212,14 +88,17 @@
                           <em>Poole Athletic Club, Poole, BH17 8RE</em>
                           🇬🇧
                       <td valign="middle">
-                      <span class="share-button" onclick="shareRow(event)"><i class="fa fa-share-alt"></i> share</span>
+                      <button class="share-button" onclick="shareRow(event)" style="width:100%"><i class="fa fa-share-alt"></i> share</button>
                       </td>
                     </tr>
                   </tbody>
                   <tbody data-type="5K">
                   <tr id="bournemouth-park-run-530">
                       <td valign="middle">
-                          18:35<sub style="color:red">(PB)</sub> ⋅ 5K
+                          18:35<sub style="color:red">(PB)</sub>
+                      </td>
+                      <td valign="middle">
+                          5K
                       </td>
                       <td valign="middle">
                           10-05-2025
@@ -235,7 +114,7 @@
                           🇬🇧
                           </td>
                       <td valign="middle">
-                          <span class="share-button" onclick="shareRow(event)"><i class="fa fa-share-alt"></i> share</span>
+                          <button class="share-button" onclick="shareRow(event)" style="width:100%"><i class="fa fa-share-alt"></i> share</button>
                       </td>
                   </tr>
                   </tbody>
@@ -243,8 +122,10 @@
                   <tbody data-type="5K">
                   <tr id="battersea-park-run-27">
                       <td valign="middle">
-                      18:28<sub style="color:red">(PB)</sub> ⋅
-                      &nbsp;5K
+                      18:28<sub style="color:red">(PB)</sub>
+                      </td>
+                      <td valign="middle">
+                      5K
                       </td>
                       <td valign="middle">
                       03-05-2025
@@ -260,13 +141,15 @@
                           🇬🇧
                       <br>
                       <td valign="middle">
-                      <span class="share-button" onclick="shareRow(event)"><i class="fa fa-share-alt"></i> share</span>
+                      <button class="share-button" onclick="shareRow(event)" style="width:100%"><i class="fa fa-share-alt"></i> share</button>
                       </td>
                   </tbody>
 
                   <tbody data-type="10K"><tr id="bolton-community-10k-2025">
                       <td valign="middle">
-                          39:27<sub style="color:red">(PB)</sub> ⋅
+                          39:27<sub style="color:red">(PB)</sub>
+                      </td>
+                      <td valign="middle">
                           10K
                       </td>
                       <td valign="middle">
@@ -284,14 +167,16 @@
                           <br>
                       </td>
                       <td valign="middle">
-                          <span class="share-button" onclick="shareRow(event)"><i class="fa fa-share-alt"></i> share</span>
+                          <button class="share-button" onclick="shareRow(event)" style="width:100%"><i class="fa fa-share-alt"></i> share</button>
                       </td>
                       </tr>
                   </tbody>
                   <tbody data-type="10K">
                   <tr id="run-bournemouth-2024">
                     <td valign="middle">
-                        39:36<sub style="color:red">(PB)</sub> ⋅
+                        39:36<sub style="color:red">(PB)</sub>
+                    </td>
+                    <td valign="middle">
                         10K
                     </td>
                     <td valign="middle">
@@ -309,7 +194,7 @@
                         <br>
                     </td>
                     <td valign="middle">
-                        <span class="share-button" onclick="shareRow(event)"><i class="fa fa-share-alt"></i> share</span>
+                        <button class="share-button" onclick="shareRow(event)" style="width:100%"><i class="fa fa-share-alt"></i> share</button>
                     </td>
                   </tr>
                   </tbody>
@@ -332,92 +217,5 @@
         </td>
     </tr>
     </tbody></table>
-<script>
-    function filterTable() {
-        var checkboxes = document.querySelectorAll('.filter-checkbox');
-
-        checkboxes.forEach(function(checkbox) {
-            checkbox.addEventListener('change', function() {
-
-                ///////////////////////////////////////////////////////////////////////
-                // Changing logic.
-                ///////////////////////////////////////////////////////////////////////
-                const checkboxStates = {};
-                checkboxes.forEach(cb => {
-                    const data_type = cb.id.replace('Checkbox', '');
-                    checkboxStates[data_type] = cb.checked;
-                });
-                const allUnchecked = Object.values(checkboxStates).every(value => !value);
-                if (allUnchecked) {
-                  // Make all of them checked.
-                  checkboxes.forEach(cb => { cb.checked = true; });
-                }
-                else {
-                  // Keep only this checked.
-                  checkboxes.forEach(cb => { cb.checked = cb === this; });
-                }
-
-                ///////////////////////////////////////////////////////////////////////
-                // Rows filtering logic.
-                ///////////////////////////////////////////////////////////////////////
-                // Step 1. Compose checkbox states.
-                const checkboxStatesModified = {};
-                checkboxes.forEach(cb => {
-                    const data_type = cb.id.replace('Checkbox', '');
-                    checkboxStatesModified[data_type] = cb.checked;
-                });
-                // Step 2. Filtering.
-                const rowsWithDataType = document.querySelectorAll('[data-type]');
-                rowsWithDataType.forEach(function(row) {
-                    row.style.display = checkboxStatesModified[row.dataset.type] ? '' : 'none';
-                });
-            });
-        });
-    }
-    filterTable();
-
-      function shareRow(event) {
-          const button = event.target;
-
-          const row = button.closest('tr');
-
-          const rowId = row.id;
-
-          let currentUrl = window.location.href.split('#')[0];
-          const fullUrl = `${currentUrl}#${rowId}`;
-          const shareText = `${fullUrl}`;
-
-          // Adopt WebShare API.
-          if (navigator.share) {
-              navigator.share({
-                  title: 'Share this item',
-                  url: fullUrl,
-              }).then(() => {
-                  console.log('Successfully shared');
-              }).catch((error) => {
-                  console.error('Error sharing:', error);
-              });
-          } else if (navigator.clipboard) {
-              navigator.clipboard.writeText(fullUrl)
-              .then(() => {
-                  alert('Link copied to clipboard!');
-              }).catch(err => {
-                  console.error('Failed to copy: ', err);
-              });
-          } else {
-              // Fallback for older browsers
-              const tempInput = document.createElement('input');
-              tempInput.value = fullUrl;
-              document.body.appendChild(tempInput);
-              tempInput.select();
-              try {
-                document.execCommand('copy');
-                alert('Link copied to clipboard!');
-              } catch (err) {
-                alert('Copy this link: ' + fullUrl);
-              }
-              document.body.removeChild(tempInput);
-          }
-      }
-</script>
+    <script type="text/javascript" src="../scripts.js"/>
 </body></html>
