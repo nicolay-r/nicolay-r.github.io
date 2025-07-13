@@ -129,6 +129,40 @@ label {
     transform: translateY(0);
 }
 
+.youtube-button {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+    border: none;
+    padding: 2px 4px 1px 16px; /* padding-left adjusted for icon space */
+    background-color: #FF0000;
+    color: white;
+    font-weight: 600;
+    border-radius: 3px;
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    position: relative;
+}
+
+.youtube-button:hover {
+    background-color: #cc0000;
+    transform: scale(1.03);
+}
+
+.youtube-button::before {
+    content: '';
+    position: absolute;
+    left: 0px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 16px;
+    height: 16px;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-image: url("data:image/svg+xml;utf8,<svg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'><path fill='white' d='M10 8.64L15.27 12 10 15.36V8.64M8 5v14l11-7L8 5z'/></svg>");
+}
+
 .gray-table {
    width: 100%;
    border-collapse: collapse;
