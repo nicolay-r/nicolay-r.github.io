@@ -52,7 +52,7 @@ function convertJsonlToHtml(jsonlLine) {
                         5K
                     </td>
                     <td valign="middle">
-                        ${runDate}
+                        <small>${runDate}</small>
                     </td>
                     <td valign="middle">
                         <a href="${resultsUrl}">
