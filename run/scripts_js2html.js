@@ -21,7 +21,7 @@ function convertJsonlToHtml(jsonlLine) {
         const rowId = `${event.toLowerCase()}-park-run-${runNumber}`;
         
         // Determine if it's a PB and format time accordingly
-        const timeDisplay = isPB ? `${time}<sub style="color:red">(PB)</sub>` : time;
+        const rowHighlight = isPB ? `bgcolor="#fff0e0"` : ``;
         
         // Generate parkrun URLs
         const eventUrl = `https://www.parkrun.org.uk/${event.toLowerCase()}/`;
@@ -44,9 +44,9 @@ function convertJsonlToHtml(jsonlLine) {
         // Generate the HTML table row
         const html = `
                 <tbody data-type="5K">
-                <tr id="${rowId}">
+                <tr id="${rowId}" ${rowHighlight}>
                     <td valign="middle">
-                        ${timeDisplay}
+                        ${time}
                     </td>
                     <td valign="middle">
                         5K
