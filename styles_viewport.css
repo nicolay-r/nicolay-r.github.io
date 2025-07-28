@@ -1,0 +1,104 @@
+/* Viewport-responsive styles for academic profile page */
+
+/* Responsive design for device viewport */
+@media screen and (max-width: 768px) {
+    /* Make main container responsive */
+    table[width="100%"] {
+        width: 100% !important;
+        max-width: 100%;
+    }
+    
+    /* Adjust card-logo width for tablets */
+    .card-logo, #card-logo {
+        width: 200px !important;
+    }
+    
+    .card-logo img, #card-logo img {
+        max-width: 200px;
+    }
+    
+    /* Make content div responsive */
+    div[style*="width: 400px"] {
+        width: 100% !important;
+        max-width: 100%;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    /* Stack layout for mobile - logo on top, content below */
+    table[width="100%"] {
+        display: block;
+    }
+    
+    tbody[data-type] {
+        display: block;
+        margin-bottom: 20px;
+    }
+    
+    tbody[data-type] tr {
+        display: block;
+    }
+    
+    tbody[data-type] td {
+        display: block;
+        width: 100% !important;
+        text-align: center;
+        padding: 10px 5px;
+    }
+    
+    /* Center the logo */
+    .card-logo, #card-logo {
+        width: 100% !important;
+        max-width: 250px;
+        margin: 0 auto;
+    }
+    
+    .card-logo img, #card-logo img {
+        max-width: 250px;
+        width: auto;
+        height: auto;
+    }
+    
+    /* Make content full width */
+    div[style*="width: 400px"] {
+        width: 100% !important;
+        max-width: 100%;
+        padding: 0 10px;
+        box-sizing: border-box;
+    }
+    
+    /* Adjust text sizes for mobile */
+    papertitle {
+        font-size: 16px;
+    }
+    
+    /* Make buttons more touch-friendly */
+    .share-button, .youtube-button {
+        font-size: 14px;
+        margin: 2px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    /* Extra small devices */
+    .card-logo, #card-logo {
+        max-width: 200px;
+    }
+    
+    .card-logo img, #card-logo img {
+        max-width: 200px;
+    }
+    
+    papertitle {
+        font-size: 14px;
+    }
+    
+    /* Reduce padding further */
+    tbody[data-type] td {
+        padding: 8px 3px;
+    }
+    
+    div[style*="width: 400px"] {
+        padding: 0 5px;
+    }
+} 
