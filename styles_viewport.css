@@ -24,7 +24,7 @@
     }
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 500px) {
     /* Stack layout for mobile - logo on top, content below */
     table[width="100%"] {
         display: block;
@@ -78,27 +78,3 @@
         margin: 2px;
     }
 }
-
-@media screen and (max-width: 480px) {
-    /* Extra small devices */
-    .card-logo, #card-logo {
-        max-width: 200px;
-    }
-    
-    .card-logo img, #card-logo img {
-        max-width: 200px;
-    }
-    
-    papertitle {
-        font-size: 14px;
-    }
-    
-    /* Reduce padding further */
-    tbody[data-type] td {
-        padding: 8px 3px;
-    }
-    
-    div[style*="width: 400px"] {
-        padding: 0 5px;
-    }
-} 
