@@ -4,10 +4,17 @@ html {
     scroll-behavior: smooth;
 }
 
+/* We use these variables in the mobile mode */
+:root {
+    --target-outline: 3px solid rgba(255, 99, 71, 0.8);
+    --target-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+    --target-transition: outline 0.3s ease, box-shadow 0.3s ease;
+}
+
 tr:target {
-        outline: 3px solid rgba(255, 99, 71, 0.8);  /* Softer red-orange frame */
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);  /* Soft shadow */
-        transition: outline 0.3s ease, box-shadow 0.3s ease; /* Smooth transition */
+        outline: var(--target-outline);  /* Softer red-orange frame */
+        box-shadow: var(--target-shadow);  /* Soft shadow */
+        transition: var(--target-transition); /* Smooth transition */
 }
 
 a {

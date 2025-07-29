@@ -90,4 +90,19 @@
         font-size: 14px;
         margin: 2px;
     }
+    
+    /* Fix target highlighting for mobile card layout - references styles.css */
+    tbody[data-type]:target,
+    tbody[data-type]:has(tr:target) {
+        /* Use the same target styles from styles.css */
+        outline: var(--target-outline);
+        box-shadow: var(--target-shadow), 0 4px 12px rgba(0, 0, 0, 0.15);
+        transform: translateY(-2px);
+        transition: var(--target-transition), transform 0.3s ease;
+    }
+    
+    /* Remove outline from tr to prevent conflicts */
+    tbody[data-type] tr:target {
+        outline: none;
+    }
 }
