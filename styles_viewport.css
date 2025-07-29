@@ -18,7 +18,7 @@
     }
     
     /* Make content div responsive */
-    div[style*="width: 400px"] {
+    div[id="card-content"] {
         width: 100% !important;
         max-width: 100%;
     }
@@ -50,7 +50,6 @@
         display: block;
         width: 100% !important;
         text-align: center;
-        padding: 15px 10px;
         border: none;
         background: transparent;
     }
@@ -74,7 +73,7 @@
     }
     
     /* Make content full width */
-    div[style*="width: 400px"] {
+    div[id="card-content"] {
         width: 100% !important;
         max-width: 100%;
         padding: 0 10px;
