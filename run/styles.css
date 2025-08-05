@@ -1,0 +1,70 @@
+/* Metal badge styling for postcodes */
+.postcode-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, #f8f8f8 0%, #e8e8e8 25%, #d8d8d8 50%, #e8e8e8 75%, #f8f8f8 100%);
+    border: 1px solid #ccc;
+    border-radius: 2px;
+    padding: 2px 2px;
+    font-family: 'Courier New', monospace;
+    font-size: 8px;
+    font-weight: bold;
+    color: #333;
+    text-shadow: 0 1px 1px rgba(255, 255, 255, 0.8);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin: 2px 0;
+    transition: all 0.2s ease;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
+/* Ensure badge styling works when inside a link */
+a .postcode-badge {
+    text-decoration: none;
+    color: #333;
+}
+
+a:hover .postcode-badge {
+    text-decoration: none;
+    color: #333;
+}
+
+/* Styling for position and age grade fields */
+.position-age-grade {
+    font-size: 8px;
+    color: #666;
+    font-weight: normal;
+}
+
+/* Styling for distance parameter */
+.distance-param {
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+}
+
+/* Table styling to remove white separators between cells */
+.results-table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+.results-table td {
+    border: none;
+    margin: 0;
+}
+
+.results-table tbody {
+    border: none;
+}
+
+.results-table tr {
+    border: none;
+}
+
+/* Styling for date column */
+.date-column {
+    font-size: 10px;
+    color: #666;
+} 

@@ -27,19 +27,29 @@ function convertJsonlToHtml(jsonlLine) {
         const eventUrl = `https://www.parkrun.org.uk/${event.toLowerCase()}/`;
         const resultsUrl = `${eventUrl}results/${runNumber}/`;
         
-        // Get location info based on event
+        // Get location and zipcode info based on event
         let location = "";
-        let countryFlag = "🇬🇧";
+        let zipcode = "";
         
         if (event === "Bournemouth") {
-            location = "Kings Park Athletic Stadium, BH7 6JD";
+            location = "Kings Park Athletic Stadium";
+            zipcode = "BH7 6JD";
         } else if (event === "Battersea") {
-            location = "London, SW11 4NJ";
+            location = "London";
+            zipcode = "SW11 4NJ";
         } else if (event === "Poole") {
-            location = "Poole Park, Poole, BH15 2SF";
+            location = "Poole Park, Poole";
+            zipcode = "BH15 2SF";
         } else {
-            location = `${event}, UK`;
+            location = event;
+            zipcode = "UK";
         }
+        
+        // Create the clickable badge
+        const zipcodeBadge = `<a href="https://maps.google.com/?q=${zipcode.replace(' ', '+')}" target="_blank"><span class="postcode-badge">${zipcode}</span></a>`;
+        
+        // Combine location and badge
+        const locationWithBadge = `${location} ${zipcodeBadge}`;
         
         // Generate the HTML table row
         const html = `
@@ -47,11 +57,13 @@ function convertJsonlToHtml(jsonlLine) {
                 <tr id="${rowId}" ${rowHighlight}>
                     <td valign="middle">
                         ${time}
+                        ${position ? `<br/><small class="position-age-grade">POS: #${position}</small>` : ''}
+                        ${ageGrade ? `<br/><small class="position-age-grade">AG: ${ageGrade}</small>` : ''}
                     </td>
                     <td valign="middle">
-                        5K
+                        <span class="distance-param">5K</span>
                     </td>
-                    <td valign="middle">
+                    <td valign="middle" class="date-column">
                         <small>${runDate}</small>
                     </td>
                     <td valign="middle">
@@ -61,8 +73,7 @@ function convertJsonlToHtml(jsonlLine) {
                         <a href="${eventUrl}">info</a> /
                         <a href="${resultsUrl}"><b>results</b></a>
                         <br/>
-                        <em>${location}</em>
-                        ${countryFlag}
+                        ${locationWithBadge}
                     </td>
                     <td valign="middle">
                         <button class="share-button" onclick="shareRow(event)" style="width:100%"><i class="fa fa-share-alt"></i></button>
