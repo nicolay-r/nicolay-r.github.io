@@ -74,7 +74,7 @@ function convertJsonlToHtml(jsonlLine) {
                         ${locationWithBadge}
                     </td>
                     <td valign="middle">
-                        <button class="share-button" onclick="shareRow(event)" style="width:100%"><i class="fa fa-share-alt"></i></button>
+                        <button class="share-button" onclick="shareRow(event)"><i class="fa fa-share-alt"></i></button>
                     </td>
                 </tr>
                 </tbody>`;
