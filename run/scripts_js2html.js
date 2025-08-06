@@ -49,7 +49,7 @@ function convertJsonlToHtml(jsonlLine) {
         const zipcodeBadge = `<a href="https://maps.google.com/?q=${zipcode.replace(' ', '+')}" target="_blank"><span class="postcode-badge">${zipcode}</span></a>`;
         
         // Combine location and badge
-        const locationWithBadge = `${location} ${zipcodeBadge}`;
+        const locationWithBadge = `<span class="location-caption">${location}</span> ${zipcodeBadge}`;
         
         // Generate the HTML table row
         const html = `
@@ -69,9 +69,7 @@ function convertJsonlToHtml(jsonlLine) {
                     <td valign="middle">
                         <a href="${resultsUrl}">
                             <runtitle>${event} Parkrun #${runNumber}</runtitle>
-                        </a> /
-                        <a href="${eventUrl}">info</a> /
-                        <a href="${resultsUrl}"><b>results</b></a>
+                        </a>
                         <br/>
                         ${locationWithBadge}
                     </td>
