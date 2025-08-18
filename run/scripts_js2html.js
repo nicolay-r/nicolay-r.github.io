@@ -1,4 +1,13 @@
 /**
+ * Creates a clickable zipcode badge with Google Maps link
+ * @param {string} zipcode - The postcode to display
+ * @returns {string} HTML string for the clickable badge
+ */
+function createZipcodeBadge(zipcode) {
+    return `<a href="https://maps.google.com/?q=${zipcode.replace(' ', '+')}" target="_blank"><span class="postcode-badge">${zipcode}</span></a>`;
+}
+
+/**
  * Converts a JSONL line (parkrun result) into HTML table row format
  * @param {string} jsonlLine - A single line from the JSONL file
  * @returns {string} HTML table row string
@@ -46,7 +55,7 @@ function convertJsonlToHtml(jsonlLine) {
         }
         
         // Create the clickable badge
-        const zipcodeBadge = `<a href="https://maps.google.com/?q=${zipcode.replace(' ', '+')}" target="_blank"><span class="postcode-badge">${zipcode}</span></a>`;
+        const zipcodeBadge = createZipcodeBadge(zipcode);
         
         // Combine location and badge
         const locationWithBadge = `<span class="location-caption">${location}</span> ${zipcodeBadge}`;
