@@ -249,7 +249,10 @@ div[id="card-content"] {
     border-color: #dee2e6;
     border-bottom-color: #ffffff;
     z-index: 2;
-    box-shadow: -0px -2px 4px rgba(0, 0, 0, 0.05);
+    box-shadow: 
+        -0px -2px 4px rgba(0, 0, 0, 0.05),
+        inset 2px 2px 0 0 rgba(0, 123, 255, 0.171),
+        inset 1px 1px 0 0 rgba(0, 123, 255, 0.062);
 }
 
 .tab-header.active::after {
