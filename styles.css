@@ -215,19 +215,21 @@ div[id="card-content"] {
     padding: 0;
     z-index: 1;
     gap: 2px;
+    border-radius: 8px 8px 0 0;
+    padding: 4px 4px 0 4px;
+    position: relative;
 }
 
 .tab-header {
-    background-color: #6c757d;
-    color: white;
-    padding: 3px 24px;
+    background-color: transparent;
+    color: #6c757d;
+    padding: 6px 24px;
     margin: 0;
     border-radius: 8px 8px 0 0;
     font-family: 'Lato', Verdana, Helvetica, sans-serif;
     font-size: 18px;
     font-weight: 600;
     text-align: center;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     position: relative;
     display: inline-block;
     cursor: pointer;
@@ -236,24 +238,29 @@ div[id="card-content"] {
 }
 
 .tab-header:hover {
-    background-color: #5a6268;
+    background-color: #e9ecef;
+    color: #495057;
     transform: translateY(-1px);
 }
 
 .tab-header.active {
-    background-color: #007BFF;
+    background-color: #ffffff;
+    color: #007BFF;
+    border-color: #dee2e6;
+    border-bottom-color: #ffffff;
     z-index: 2;
+    box-shadow: -0px -2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .tab-header.active::after {
     content: '';
     position: absolute;
     bottom: -1px;
-    left: 0;
-    right: 0;
+    left: -1px;
+    right: -1px;
     height: 1px;
-    background-color: #007BFF;
-    z-index: 2;
+    background-color: #ffffff;
+    z-index: 3;
 }
 
 .tab-content {
