@@ -1,5 +1,26 @@
-function filterTable() {
-    var checkboxes = document.querySelectorAll('.filter-checkbox');
+function getFilterCheckboxes() {
+    return document.querySelectorAll('.filter-checkbox');
+}
+
+function getModifiedCheckboxStates(checkboxes) {
+    const checkboxStatesModified = {};
+    checkboxes.forEach(cb => {
+        const data_type = cb.id.replace('Checkbox', '');
+        checkboxStatesModified[data_type] = cb.checked;
+    });
+
+    return checkboxStatesModified;
+}
+
+function applyFilterTable(checkboxStates) {
+    const rowsWithDataType = document.querySelectorAll('[data-type]');
+    rowsWithDataType.forEach(function(row) {
+        row.style.display = checkboxStates[row.dataset.type] ? '' : 'none';
+    });
+}
+
+function initializerTableFilters() {
+    var checkboxes = getFilterCheckboxes();
 
     checkboxes.forEach(function(checkbox) {
         checkbox.addEventListener('change', function() {
@@ -22,23 +43,14 @@ function filterTable() {
             }
 
             ///////////////////////////////////////////////////////////////////////
-            // Rows filtering logic.
+            // Filtering.
             ///////////////////////////////////////////////////////////////////////
-            // Step 1. Compose checkbox states.
-            const checkboxStatesModified = {};
-            checkboxes.forEach(cb => {
-                const data_type = cb.id.replace('Checkbox', '');
-                checkboxStatesModified[data_type] = cb.checked;
-            });
-            // Step 2. Filtering.
-            const rowsWithDataType = document.querySelectorAll('[data-type]');
-            rowsWithDataType.forEach(function(row) {
-                row.style.display = checkboxStatesModified[row.dataset.type] ? '' : 'none';
-            });
+            const modifiedCheckboxStates = getModifiedCheckboxStates(checkboxes);
+            applyFilterTable(modifiedCheckboxStates);
         });
     });
 }
-filterTable();
+initializerTableFilters();
 
 function initializeTabRibbon() {
     const tabHeaders = document.querySelectorAll('.tab-header');
@@ -67,11 +79,9 @@ function initializeTabRibbon() {
                 
                 // If switching to PROFESSIONAL tab, reinitialize the filter logic
                 if (selectedTab === 'professional') {
-                    // Show all rows initially
-                    const rowsWithDataType = document.querySelectorAll('[data-type]');
-                    rowsWithDataType.forEach(function(row) {
-                        row.style.display = '';
-                    });
+                    var checkboxes = getFilterCheckboxes();
+                    const modifiedCheckboxStates = getModifiedCheckboxStates(checkboxes);
+                    applyFilterTable(modifiedCheckboxStates);
                 }
             }
         });
