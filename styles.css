@@ -271,7 +271,6 @@ div[id="card-content"] {
 .news-content {
     max-width: 600px;
     margin: 0 auto;
-    padding: 10px;
     font-family: 'Lato', Verdana, Helvetica, sans-serif;
 }
 
@@ -313,6 +312,11 @@ div[id="card-content"] {
     border-bottom: none;
 }
 
+/* Slight gray background for first 5 news entries */
+.news-highlight-row {
+    background-color: #f8f9fa !important;
+}
+
 .gray-table-cell {
     border: 1px solid #f6f6f6;
     padding: 6px 12px;
@@ -324,9 +328,6 @@ div[id="card-content"] {
 
 /* Responsive design for news content */
 @media (max-width: 768px) {
-    .news-content {
-        padding: 8px;
-    }
 
     .news-cell {
         padding: 4px 8px;

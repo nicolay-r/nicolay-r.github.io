@@ -158,8 +158,13 @@ function formatNewsContent(text) {
             continue;
         }
 
-        const rowClass = 'news-row';
-        const cellClass = 'news-cell';
+        let rowClass = 'news-row';
+        let cellClass = 'news-cell';
+        
+        // Apply slight gray background to first 5 entries
+        if (rowCount < 5) {
+            rowClass += ' news-highlight-row';
+        }
 
         // Create a table row for each non-empty line
         html += `<tr class="${rowClass}">`;
