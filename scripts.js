@@ -3,9 +3,8 @@ function filterTable() {
 
     checkboxes.forEach(function(checkbox) {
         checkbox.addEventListener('change', function() {
-
             ///////////////////////////////////////////////////////////////////////
-            // Changing logic.
+            // Checkbox states changing logic.
             ///////////////////////////////////////////////////////////////////////
             const checkboxStates = {};
             checkboxes.forEach(cb => {
@@ -40,6 +39,51 @@ function filterTable() {
     });
 }
 filterTable();
+
+function initializeTabRibbon() {
+    const tabHeaders = document.querySelectorAll('.tab-header');
+    
+    tabHeaders.forEach(function(header) {
+        header.addEventListener('click', function() {
+            // Remove active class from all tab headers
+            tabHeaders.forEach(h => h.classList.remove('active'));
+            
+            // Add active class to clicked tab header
+            this.classList.add('active');
+            
+            // Get the tab type from data-tab attribute
+            const selectedTab = this.getAttribute('data-tab');
+            
+            // Hide all tab content
+            const tabContents = document.querySelectorAll('.tab-content');
+            tabContents.forEach(function(content) {
+                content.style.display = 'none';
+            });
+            
+            // Show the selected tab content
+            const selectedContent = document.getElementById(selectedTab + '-content');
+            if (selectedContent) {
+                selectedContent.style.display = 'block';
+                
+                // If switching to PROFESSIONAL tab, reinitialize the filter logic
+                if (selectedTab === 'professional') {
+                    // Show all rows initially
+                    const rowsWithDataType = document.querySelectorAll('[data-type]');
+                    rowsWithDataType.forEach(function(row) {
+                        row.style.display = '';
+                    });
+                }
+            }
+        });
+    });
+    
+    // Initialize with the first tab (PROFESSIONAL) active
+    if (tabHeaders.length > 0) {
+        tabHeaders[0].click();
+    }
+}
+initializeTabRibbon();
+
 
 function shareRow(event) {
     const button = event.target;
