@@ -83,6 +83,11 @@ function initializeTabRibbon() {
                     const modifiedCheckboxStates = getModifiedCheckboxStates(checkboxes);
                     applyFilterTable(modifiedCheckboxStates);
                 }
+                
+                // If switching to NEWS tab, load news content
+                if (selectedTab === 'news') {
+                    loadNewsContent();
+                }
             }
         });
     });
@@ -94,6 +99,100 @@ function initializeTabRibbon() {
 }
 initializeTabRibbon();
 
+function loadNewsContent() {
+    const newsContainer = document.getElementById('news-container');
+    
+    if (!newsContainer.innerHTML.includes('Loading news content...')) {
+        return; // Content already loaded
+    }
+    
+    fetch('https://raw.githubusercontent.com/nicolay-r/nicolay-r/refs/heads/master/README.md')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to load news content');
+            }
+            return response.text();
+        })
+        .then(text => {
+            // Parse the text content and format it as HTML
+            const formattedContent = formatNewsContent(text);
+            newsContainer.innerHTML = formattedContent;
+        })
+        .catch(error => {
+            console.error('Error loading news content:', error);
+            newsContainer.innerHTML = '<p align="center" style="color: #dc3545; font-style: italic;">Error loading news content. Please try again later.</p>';
+        });
+}
+
+function formatNewsContent(text) {
+    const lines = text.split('\n');
+    let html = '<div class="news-content">';
+    html += '<table class="news-table">';
+    
+    // Find the starting line with "### The most recent"
+    let startIndex = -1;
+    for (let i = 0; i < lines.length; i++) {
+        if (lines[i].trim().includes('### The most recent')) {
+            startIndex = i+1;
+            break;
+        }
+    }
+    
+    // If not found, start from beginning
+    if (startIndex === -1) {
+        startIndex = 0;
+    }
+    
+    let rowCount = 0;
+    
+    for (let i = startIndex; i < lines.length; i++) {
+        const line = lines[i].trim();
+        
+        // Skip empty lines
+        if (line === '') {
+            continue;
+        }
+        
+        // Skip lines that don't start with asterisk
+        if (!line.startsWith('*')) {
+            continue;
+        }
+
+        const rowClass = 'news-row';
+        const cellClass = 'news-cell';
+
+        // Create a table row for each non-empty line
+        html += `<tr class="${rowClass}">`;
+        html += `<td class="${cellClass}">${formatMarkdown(line)}</td>`;
+        html += '</tr>';
+        
+        rowCount++;
+    }
+    
+    html += '</table>';
+    html += '</div>';
+    return html;
+}
+
+function formatMarkdown(text) {
+    // Remove initial asterisk from bullet list items
+    text = text.replace(/^\s*\*\s*/, '');
+    
+    // Convert markdown bold syntax to HTML
+    // Handle **text** and __text__ patterns
+    text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+    text = text.replace(/__(.*?)__/g, '<strong>$1</strong>');
+    
+    // Convert markdown italic syntax to HTML
+    // Handle *text* and _text_ patterns (but not if they're part of bold)
+    text = text.replace(/(?<!\*)\*([^*]+)\*(?!\*)/g, '<em>$1</em>');
+    text = text.replace(/(?<!_)_([^_]+)_(?!_)/g, '<em>$1</em>');
+    
+    // Convert markdown links [text](url) to HTML
+    text = text.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank">$1</a>');
+    
+    return text;
+}
 
 function shareRow(event) {
     const button = event.target;
