@@ -1,5 +1,5 @@
 function getFilterCheckboxes() {
-    return document.querySelectorAll('.filter-checkbox');
+    return Array.from(document.querySelectorAll('.filter-checkbox'));
 }
 
 function checkSingle(checkboxes, cbToCheck) {
@@ -83,8 +83,21 @@ function initializeTabRibbon() {
                 // If switching to PROFESSIONAL tab, reinitialize the filter logic
                 if (selectedTab === 'professional') {
                     var checkboxes = getFilterCheckboxes();
-                    const checkedStates = getCheckboxCheckedStates(checkboxes);
-                    applyFilterTable(checkedStates);
+
+                    // if URI has `data-type` then check  only the related checkbox
+                    const url = new URL(window.location.href);
+                    let cbId = undefined;
+                    if (url.searchParams.has('data_type')) {
+                        const data_type = url.searchParams.get('data_type');
+                        cbId = data_type + "Checkbox";
+                    }
+                    // Select the default.
+                    else {
+                        cbId === "paperCheckbox"
+                    }
+
+                    checkSingle(checkboxes, cbToCheck = checkboxes.find(cb => cb.id === cbId));
+                    applyFilterTable(states = getCheckboxCheckedStates(checkboxes));
                 }
                 
                 // If switching to NEWS tab, load news content
@@ -100,7 +113,6 @@ function initializeTabRibbon() {
         tabHeaders[0].click();
     }
 }
-initializeTabRibbon();
 
 function loadNewsContent() {
     const newsContainer = document.getElementById('news-container');
@@ -206,11 +218,15 @@ function shareRow(event) {
     const button = event.target;
 
     const row = button.closest('tr');
+    const tbody = row.closest('tbody');
 
-    const rowId = row.id;
+    const dataType = tbody ? tbody.getAttribute('data-type') : null;
 
-    let currentUrl = window.location.href.split('#')[0];
-    const fullUrl = `${currentUrl}#${rowId}`;
+    // Modify URL.
+    let currentUrl = new URL(window.location.href);
+    currentUrl.searchParams.set('data_type', dataType);
+    currentUrl.hash = row.id;
+    const fullUrl = currentUrl.href;
     const shareText = `${fullUrl}`;
 
     // Adopt WebShare API.
@@ -246,8 +262,4 @@ function shareRow(event) {
     }
 }
 
-
-// Initial setup.
-checkboxes = getFilterCheckboxes();
-checkSingle(checkboxes, cbToCheck = Array.from(checkboxes).filter(cb => cb.id === "paperCheckbox")[0]);
-applyFilterTable(states = getCheckboxCheckedStates(checkboxes));
+initializeTabRibbon();
