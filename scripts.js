@@ -2,14 +2,14 @@ function getFilterCheckboxes() {
     return document.querySelectorAll('.filter-checkbox');
 }
 
-function getModifiedCheckboxStates(checkboxes) {
-    const checkboxStatesModified = {};
+function getCheckboxCheckedStates(checkboxes) {
+    const states = {};
     checkboxes.forEach(cb => {
         const data_type = cb.id.replace('Checkbox', '');
-        checkboxStatesModified[data_type] = cb.checked;
+        states[data_type] = cb.checked;
     });
 
-    return checkboxStatesModified;
+    return states;
 }
 
 function applyFilterTable(checkboxStates) {
@@ -45,8 +45,8 @@ function initializerTableFilters() {
             ///////////////////////////////////////////////////////////////////////
             // Filtering.
             ///////////////////////////////////////////////////////////////////////
-            const modifiedCheckboxStates = getModifiedCheckboxStates(checkboxes);
-            applyFilterTable(modifiedCheckboxStates);
+            const checkedStates = getCheckboxCheckedStates(checkboxes);
+            applyFilterTable(checkedStates);
         });
     });
 }
@@ -80,8 +80,8 @@ function initializeTabRibbon() {
                 // If switching to PROFESSIONAL tab, reinitialize the filter logic
                 if (selectedTab === 'professional') {
                     var checkboxes = getFilterCheckboxes();
-                    const modifiedCheckboxStates = getModifiedCheckboxStates(checkboxes);
-                    applyFilterTable(modifiedCheckboxStates);
+                    const checkedStates = getCheckboxCheckedStates(checkboxes);
+                    applyFilterTable(checkedStates);
                 }
                 
                 // If switching to NEWS tab, load news content
@@ -203,13 +203,11 @@ function shareRow(event) {
     const button = event.target;
 
     const row = button.closest('tr');
-    const tbody = row.closest('tbody');
 
     const rowId = row.id;
-    const dataType = tbody ? tbody.getAttribute('data-type') : null;
 
     let currentUrl = window.location.href.split('#')[0];
-    const fullUrl = `${currentUrl}#${rowId}${dataType ? `&data-type=${dataType}` : ''}`;
+    const fullUrl = `${currentUrl}#${rowId}`;
     const shareText = `${fullUrl}`;
 
     // Adopt WebShare API.
