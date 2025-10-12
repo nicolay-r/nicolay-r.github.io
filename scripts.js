@@ -86,14 +86,13 @@ function initializeTabRibbon() {
 
                     // if URI has `data-type` then check  only the related checkbox
                     const url = new URL(window.location.href);
-                    let cbId = undefined;
+
+                    // Default checkbox to check.
+                    let cbId = "paperCheckbox";
+
                     if (url.searchParams.has('data_type')) {
                         const data_type = url.searchParams.get('data_type');
-                        cbId = data_type + "Checkbox";
-                    }
-                    // Select the default.
-                    else {
-                        cbId === "paperCheckbox"
+                        cbId = `${data_type}Checkbox`;
                     }
 
                     checkSingle(checkboxes, cbToCheck = checkboxes.find(cb => cb.id === cbId));
