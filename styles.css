@@ -179,7 +179,6 @@ label {
    border-collapse: collapse;
    margin: 0 auto;
    margin-top: -1px;
-   position: relative;
    z-index: 0;
 }
 
