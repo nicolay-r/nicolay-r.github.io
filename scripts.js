@@ -203,11 +203,13 @@ function shareRow(event) {
     const button = event.target;
 
     const row = button.closest('tr');
+    const tbody = row.closest('tbody');
 
     const rowId = row.id;
+    const dataType = tbody ? tbody.getAttribute('data-type') : null;
 
     let currentUrl = window.location.href.split('#')[0];
-    const fullUrl = `${currentUrl}#${rowId}`;
+    const fullUrl = `${currentUrl}#${rowId}${dataType ? `&data-type=${dataType}` : ''}`;
     const shareText = `${fullUrl}`;
 
     // Adopt WebShare API.
