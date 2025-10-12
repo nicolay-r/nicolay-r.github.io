@@ -2,6 +2,21 @@ function getFilterCheckboxes() {
     return document.querySelectorAll('.filter-checkbox');
 }
 
+function checkSingle(checkboxes, cbToCheck) {
+    checkboxes.forEach(cb => { cb.checked = cb === cbToCheck; });
+}
+
+function checkSingleOrAll(checkboxes, states, cbToCheck) {
+    const allUnchecked = Object.values(states).every(value => !value);
+    if (allUnchecked) {
+        // Make all of them checked.
+        checkboxes.forEach(cb => { cb.checked = true; });
+    }
+    else {
+        checkSingle(checkboxes, cbToCheck);
+    }
+}
+
 function getCheckboxCheckedStates(checkboxes) {
     const states = {};
     checkboxes.forEach(cb => {
@@ -27,20 +42,8 @@ function initializerTableFilters() {
             ///////////////////////////////////////////////////////////////////////
             // Checkbox states changing logic.
             ///////////////////////////////////////////////////////////////////////
-            const checkboxStates = {};
-            checkboxes.forEach(cb => {
-                const data_type = cb.id.replace('Checkbox', '');
-                checkboxStates[data_type] = cb.checked;
-            });
-            const allUnchecked = Object.values(checkboxStates).every(value => !value);
-            if (allUnchecked) {
-              // Make all of them checked.
-              checkboxes.forEach(cb => { cb.checked = true; });
-            }
-            else {
-              // Keep only this checked.
-              checkboxes.forEach(cb => { cb.checked = cb === this; });
-            }
+            const checkboxStates = getCheckboxCheckedStates(checkboxes);
+            checkSingleOrAll(checkboxes, checkboxStates, cbToCheck = this);
 
             ///////////////////////////////////////////////////////////////////////
             // Filtering.
@@ -242,3 +245,9 @@ function shareRow(event) {
         document.body.removeChild(tempInput);
     }
 }
+
+
+// Initial setup.
+checkboxes = getFilterCheckboxes();
+checkSingle(checkboxes, cbToCheck = Array.from(checkboxes).filter(cb => cb.id === "paperCheckbox")[0]);
+applyFilterTable(states = getCheckboxCheckedStates(checkboxes));
