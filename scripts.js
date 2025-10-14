@@ -142,6 +142,7 @@ function formatNewsContent(text) {
     const lines = text.split('\n');
     let html = '<div class="news-content">';
     html += '<table class="news-table">';
+    html += '<tbody>';
     
     // Find the starting line with "### The most recent"
     let startIndex = -1;
@@ -173,24 +174,52 @@ function formatNewsContent(text) {
         }
 
         let rowClass = 'news-row';
-        let cellClass = 'news-cell';
+        let dateCellClass = 'news-date-cell';
+        let contentCellClass = 'news-content-cell';
         
         // Apply slight gray background to first 5 entries
         if (rowCount < 5) {
             rowClass += ' news-highlight-row';
         }
 
-        // Create a table row for each non-empty line
+        // Parse date and content from the line
+        const { date, content } = parseNewsLine(line);
+
+        // Create a table row with two columns
         html += `<tr class="${rowClass}">`;
-        html += `<td class="${cellClass}">${formatMarkdown(line)}</td>`;
+        html += `<td class="${dateCellClass}">${date}</td>`;
+        html += `<td class="${contentCellClass}">${formatMarkdown(content)}</td>`;
         html += '</tr>';
         
         rowCount++;
     }
     
+    html += '</tbody>';
     html += '</table>';
     html += '</div>';
     return html;
+}
+
+function parseNewsLine(line) {
+    // Remove initial asterisk and whitespace
+    let content = line.replace(/^\s*\*\s*/, '');
+    
+    // Regular expression to match **DD/MM/YYYY:** format at the beginning
+    const dateRegex = /^(\*\*\d{2}\/\d{2}\/\d{4}:\*\*)\s+(.*)$/;
+    const match = content.match(dateRegex);
+    
+    if (match) {
+        return {
+            date: match[1].replace('**', '').replace(':**', ''), // DD/MM/YYYY
+            content: match[2] // rest of the content
+        };
+    } else {
+        // If no date found, return empty date and full content
+        return {
+            date: '',
+            content: content
+        };
+    }
 }
 
 function formatMarkdown(text) {
