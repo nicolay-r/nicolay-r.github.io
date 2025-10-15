@@ -271,7 +271,7 @@ div[id="card-content"] {
 
 /* News Content Styles */
 .news-content {
-    max-width: 680px;
+    max-width: 650px;
     margin: 0 auto;
     font-family: 'Lato', Verdana, Helvetica, sans-serif;
 }
