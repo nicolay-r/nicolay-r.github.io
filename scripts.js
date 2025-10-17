@@ -65,10 +65,17 @@ function initializeTabRibbon() {
             
             // Add active class to clicked tab header
             this.classList.add('active');
-            
+
             // Get the tab type from data-tab attribute
             const selectedTab = this.getAttribute('data-tab');
-            
+
+            // Update the URL with the selected tab
+            if (window.history && window.history.pushState) {
+                let currentUrl = new URL(window.location.href);
+                currentUrl.searchParams.set('tab', selectedTab);
+                window.history.pushState({ state: "test" }, "", currentUrl.href);
+            }
+
             // Hide all tab content
             const tabContents = document.querySelectorAll('.tab-content');
             tabContents.forEach(function(content) {
@@ -106,9 +113,15 @@ function initializeTabRibbon() {
             }
         });
     });
-    
-    // Initialize with the first tab (PROFESSIONAL) active
-    if (tabHeaders.length > 0) {
+
+    // Setup the initial tab.
+    const currentUrl = new URL(window.location.href);
+    const tabName =currentUrl.searchParams.get('tab');
+    if (tabName) {
+        const tabIndex = Array.from(tabHeaders).findIndex(header => header.getAttribute('data-tab') === tabName);
+        tabHeaders[tabIndex].click();
+    }
+    else {
         tabHeaders[0].click();
     }
 }
@@ -289,5 +302,6 @@ function shareRow(event) {
         document.body.removeChild(tempInput);
     }
 }
+
 
 initializeTabRibbon();
