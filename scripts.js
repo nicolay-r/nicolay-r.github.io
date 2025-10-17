@@ -223,8 +223,11 @@ function parseNewsLine(line) {
     
     if (match) {
         const dateString = match[1].replace('**', '').replace(':**', ''); // DD/MM/YYYY
+        const relativeTime = formatRelativeTime(dateString);
+        const formattedDate = formatDate(dateString);
+        
         return {
-            date: formatRelativeTime(dateString), // Convert to relative time
+            date: `${relativeTime}<br><small>${formattedDate}</small>`,
             content: match[2] // rest of the content
         };
     } else {
@@ -266,6 +269,18 @@ function formatRelativeTime(dateString) {
     } else {
         return `${diffYears} year${diffYears !== 1 ? 's' : ''} ago`;
     }
+}
+
+function formatDate(dateString) {
+    // Parse DD/MM/YYYY format
+    const [day, month, year] = dateString.split('/');
+    const date = new Date(year, month - 1, day);
+    
+    // Format as "DD MMM YYYY" (e.g., "15 Mar 2024")
+    const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+                       'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    
+    return `${day} ${monthNames[month - 1]} ${year}`;
 }
 
 function formatMarkdown(text) {
