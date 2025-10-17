@@ -314,6 +314,19 @@ div[id="card-content"] {
     border-bottom: none;
 }
 
+/* News table column widths */
+.news-date-cell {
+    width: 120px;
+    color: #6c757d;
+    border-bottom: 1px solid #f0f0f0;
+    text-align: right;
+}
+
+.news-content-cell {
+    color: #495057;
+    border-bottom: 1px solid #f0f0f0;
+}
+
 /* Slight gray background for first 5 news entries */
 .news-highlight-row {
     background-color: #f8f9fa !important;
