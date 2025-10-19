@@ -110,6 +110,11 @@ function initializeTabRibbon() {
                 if (selectedTab === 'news') {
                     loadNewsContent();
                 }
+                
+                // If switching to ATHLETICS tab, load athletics content
+                if (selectedTab === 'athletics') {
+                    loadAthleticsContent();
+                }
             }
         });
     });
@@ -149,6 +154,23 @@ function loadNewsContent() {
             console.error('Error loading news content:', error);
             newsContainer.innerHTML = '<p align="center" style="color: #dc3545; font-style: italic;">Error loading news content. Please try again later.</p>';
         });
+}
+
+function loadAthleticsContent() {
+    const athleticsContainer = document.getElementById('athletics-container');
+    
+    if (!athleticsContainer.innerHTML.includes('Athletics content coming soon...')) {
+        return; // Content already loaded
+    }
+    
+    // For now, just show a placeholder message
+    athleticsContainer.innerHTML = `
+        <div style="text-align: center;">
+            <div style="background-color: #f8f9fa; padding: 10px; max-width: 600px; margin: 0 auto;">
+                <a href="https://nicolay-r.github.io/run/"><b>🏃 athletics-profile</b></a>
+            </div>
+        </div>
+    `;
 }
 
 function formatNewsContent(text) {
