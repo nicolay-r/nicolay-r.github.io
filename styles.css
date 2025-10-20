@@ -349,3 +349,18 @@ div[id="card-content"] {
         font-size: 13px;
     }
 }
+
+img{
+    max-height:120px;
+    max-width:270px;
+    height:auto;
+    width:auto;
+}
+
+/* Profile photo has its own independent styling - overrides img styles */
+.profile-photo {
+    max-height: initial !important;
+    max-width: initial !important;
+    height: initial !important;
+    width: 90% !important;
+}
