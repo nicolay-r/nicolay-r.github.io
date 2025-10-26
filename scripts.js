@@ -114,6 +114,9 @@ function initializeTabRibbon() {
                 // If switching to ATHLETICS tab, load athletics content
                 if (selectedTab === 'athletics') {
                     loadAthleticsContent();
+                    var checkboxes = getFilterCheckboxes();
+                    checkSingle(checkboxes, cbToCheck = checkboxes.find(cb => cb.id === "5K"));
+                    applyFilterTable(states = getCheckboxCheckedStates(checkboxes));
                 }
             }
         });
