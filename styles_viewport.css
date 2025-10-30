@@ -29,31 +29,27 @@
     table[width="100%"] {
         display: block;
     }
-    
+
     tbody[data-type] {
         display: block;
-        margin-bottom: 20px;
+        margin-bottom: 5px;
         border-radius: 8px;
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         border: 1px solid #e0e0e0;
         background-color: #ffffff;
         overflow: hidden;
     }
-    
+
     tbody[data-type] tr {
         display: block;
         margin: 0;
         padding: 0;
     }
-    
+
     tbody[data-type] td {
-        display: block;
-        width: 100% !important;
         text-align: center;
-        border: none;
-        background: transparent;
     }
-    
+
     /* Center the logo in stack layout */
     .card-logo, #card-logo {
         width: 100% !important;
@@ -83,12 +79,6 @@
     /* Adjust text sizes for mobile */
     papertitle {
         font-size: 16px;
-    }
-    
-    /* Make buttons more touch-friendly */
-    .share-button, .youtube-button {
-        font-size: 14px;
-        margin: 2px;
     }
     
     /* Fix target highlighting for mobile card layout - references styles.css */
