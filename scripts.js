@@ -89,35 +89,40 @@ function initializeTabRibbon() {
                 
                 // If switching to PROFESSIONAL tab, reinitialize the filter logic
                 if (selectedTab === 'professional') {
-                    var checkboxes = getFilterCheckboxes();
 
-                    // if URI has `data-type` then check  only the related checkbox
-                    const url = new URL(window.location.href);
-
-                    // Default checkbox to check.
-                    let cbId = "paperCheckbox";
-
-                    if (url.searchParams.has('data_type')) {
-                        const data_type = url.searchParams.get('data_type');
-                        cbId = `${data_type}Checkbox`;
-                    }
-
-                    checkSingle(checkboxes, cbToCheck = checkboxes.find(cb => cb.id === cbId));
-                    applyFilterTable(states = getCheckboxCheckedStates(checkboxes));
                 }
                 
                 // If switching to NEWS tab, load news content
                 if (selectedTab === 'news') {
                     loadNewsContent();
+                    return;
+                }
+                
+                default_tab = {
+                    "professional": "paperCheckbox",
+                    "athletics": "5KCheckbox",
                 }
                 
                 // If switching to ATHLETICS tab, load athletics content
                 if (selectedTab === 'athletics') {
                     loadAthleticsContent();
-                    var checkboxes = getFilterCheckboxes();
-                    checkSingle(checkboxes, cbToCheck = checkboxes.find(cb => cb.id === "5K"));
-                    applyFilterTable(states = getCheckboxCheckedStates(checkboxes));
                 }
+
+                var checkboxes = getFilterCheckboxes();
+
+                // if URI has `data-type` then check  only the related checkbox
+                const url = new URL(window.location.href);
+
+                // Default checkbox to check.
+                let cbId = default_tab[selectedTab];
+
+                if (url.searchParams.has('data_type')) {
+                    const data_type = url.searchParams.get('data_type');
+                    cbId = `${data_type}Checkbox`;
+                }
+
+                checkSingle(checkboxes, cbToCheck = checkboxes.find(cb => cb.id === cbId));
+                applyFilterTable(states = getCheckboxCheckedStates(checkboxes));
             }
         });
     });
