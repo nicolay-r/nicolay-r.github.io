@@ -25,12 +25,9 @@
 }
 
 @media screen and (max-width: 600px) {
-    /* Stack layout for mobile - logo on top, content below */
-    table[width="100%"] {
-        display: block;
-    }
 
-    tbody[data-type] {
+    /* Frame around card */
+    tbody[data-type]:has(#card-logo) {
         display: block;
         margin-bottom: 5px;
         border-radius: 8px;
@@ -40,13 +37,13 @@
         overflow: hidden;
     }
 
-    tbody[data-type] tr {
+    tbody[data-type]:has(#card-logo) tr {
         display: block;
         margin: 0;
         padding: 0;
     }
 
-    tbody[data-type] td {
+    tbody[data-type]:has(#card-logo) td {
         text-align: center;
     }
 
@@ -80,7 +77,7 @@
     papertitle {
         font-size: 16px;
     }
-    
+
     /* Fix target highlighting for mobile card layout - references styles.css */
     tbody[data-type]:target,
     tbody[data-type]:has(tr:target) {
@@ -90,7 +87,7 @@
         transform: translateY(-2px);
         transition: var(--target-transition), transform 0.3s ease;
     }
-    
+
     /* Remove outline from tr to prevent conflicts */
     tbody[data-type] tr:target {
         outline: none;
