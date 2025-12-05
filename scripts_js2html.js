@@ -1,4 +1,45 @@
 /**
+ * Formats a date string (DD/MM/YYYY) as relative time (e.g., "5 days ago", "in 3 days")
+ * @param {string} dateString - Date in DD/MM/YYYY format
+ * @returns {string} Relative time string
+ */
+function formatRelativeTime(dateString) {
+    // Parse DD/MM/YYYY format
+    const [day, month, year] = dateString.split('/');
+    const date = new Date(year, month - 1, day); // month is 0-indexed
+    const now = new Date();
+    
+    const diffMs = date - now; // Positive for future dates, negative for past
+    const diffSeconds = Math.floor(Math.abs(diffMs) / 1000);
+    const diffMinutes = Math.floor(diffSeconds / 60);
+    const diffHours = Math.floor(diffMinutes / 60);
+    const diffDays = Math.floor(diffHours / 24);
+    const diffWeeks = Math.floor(diffDays / 7);
+    const diffMonths = Math.floor(diffDays / 30);
+    const diffYears = Math.floor(diffDays / 365);
+    
+    const isFuture = diffMs > 0;
+    const prefix = isFuture ? 'in ' : '';
+    const suffix = isFuture ? '' : ' ago';
+    
+    if (diffSeconds < 60) {
+        return `${prefix}${diffSeconds} second${diffSeconds !== 1 ? 's' : ''}${suffix}`;
+    } else if (diffMinutes < 60) {
+        return `${prefix}${diffMinutes} minute${diffMinutes !== 1 ? 's' : ''}${suffix}`;
+    } else if (diffHours < 24) {
+        return `${prefix}${diffHours} hour${diffHours !== 1 ? 's' : ''}${suffix}`;
+    } else if (diffDays < 7) {
+        return `${prefix}${diffDays} day${diffDays !== 1 ? 's' : ''}${suffix}`;
+    } else if (diffWeeks < 4) {
+        return `${prefix}${diffWeeks} week${diffWeeks !== 1 ? 's' : ''}${suffix}`;
+    } else if (diffMonths < 12) {
+        return `${prefix}${diffMonths} month${diffMonths !== 1 ? 's' : ''}${suffix}`;
+    } else {
+        return `${prefix}${diffYears} year${diffYears !== 1 ? 's' : ''}${suffix}`;
+    }
+}
+
+/**
  * Creates a clickable zipcode badge with Google Maps link
  * @param {string} zipcode - The postcode to display
  * @returns {string} HTML string for the clickable badge
@@ -74,6 +115,7 @@ function convertJsonlToHtml(jsonlLine) {
                     </td>
                     <td valign="middle" class="date-column">
                         <small>${runDate}</small>
+                        <br/><small style="font-size: 0.85em; color: #6c757d;">${formatRelativeTime(runDate)}</small>
                     </td>
                     <td valign="middle">
                         <a href="${resultsUrl}">
