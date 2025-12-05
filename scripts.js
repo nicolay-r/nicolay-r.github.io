@@ -253,9 +253,9 @@ function getDateColor(dateString) {
     const diffMs = now - date;
     const diffDays = Math.floor(Math.abs(diffMs) / (1000 * 60 * 60 * 24));
     
-    // If future date, use green
+    // If future date, use blue
     if (diffMs < 0) {
-        return '#28a745'; // Bright green for future events
+        return '#007bff'; // Blue for upcoming events
     }
     
     // If older than 1 year (365 days), use gray
