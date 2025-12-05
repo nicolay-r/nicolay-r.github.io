@@ -275,8 +275,8 @@ function formatRelativeTime(dateString) {
     const date = new Date(year, month - 1, day); // month is 0-indexed
     const now = new Date();
     
-    const diffMs = now - date;
-    const diffSeconds = Math.floor(diffMs / 1000);
+    const diffMs = date - now; // Changed: date - now to handle future dates
+    const diffSeconds = Math.floor(Math.abs(diffMs) / 1000);
     const diffMinutes = Math.floor(diffSeconds / 60);
     const diffHours = Math.floor(diffMinutes / 60);
     const diffDays = Math.floor(diffHours / 24);
@@ -284,20 +284,24 @@ function formatRelativeTime(dateString) {
     const diffMonths = Math.floor(diffDays / 30);
     const diffYears = Math.floor(diffDays / 365);
     
+    const isFuture = diffMs > 0;
+    const prefix = isFuture ? 'in ' : '';
+    const suffix = isFuture ? '' : ' ago';
+    
     if (diffSeconds < 60) {
-        return `${diffSeconds} second${diffSeconds !== 1 ? 's' : ''} ago`;
+        return `${prefix}${diffSeconds} second${diffSeconds !== 1 ? 's' : ''}${suffix}`;
     } else if (diffMinutes < 60) {
-        return `${diffMinutes} minute${diffMinutes !== 1 ? 's' : ''} ago`;
+        return `${prefix}${diffMinutes} minute${diffMinutes !== 1 ? 's' : ''}${suffix}`;
     } else if (diffHours < 24) {
-        return `${diffHours} hour${diffHours !== 1 ? 's' : ''} ago`;
+        return `${prefix}${diffHours} hour${diffHours !== 1 ? 's' : ''}${suffix}`;
     } else if (diffDays < 7) {
-        return `${diffDays} day${diffDays !== 1 ? 's' : ''} ago`;
+        return `${prefix}${diffDays} day${diffDays !== 1 ? 's' : ''}${suffix}`;
     } else if (diffWeeks < 4) {
-        return `${diffWeeks} week${diffWeeks !== 1 ? 's' : ''} ago`;
+        return `${prefix}${diffWeeks} week${diffWeeks !== 1 ? 's' : ''}${suffix}`;
     } else if (diffMonths < 12) {
-        return `${diffMonths} month${diffMonths !== 1 ? 's' : ''} ago`;
+        return `${prefix}${diffMonths} month${diffMonths !== 1 ? 's' : ''}${suffix}`;
     } else {
-        return `${diffYears} year${diffYears !== 1 ? 's' : ''} ago`;
+        return `${prefix}${diffYears} year${diffYears !== 1 ? 's' : ''}${suffix}`;
     }
 }
 
