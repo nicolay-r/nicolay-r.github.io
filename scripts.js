@@ -243,6 +243,44 @@ function formatNewsContent(text) {
     return html;
 }
 
+function getDateColor(dateString) {
+    // Parse DD/MM/YYYY format
+    const [day, month, year] = dateString.split('/');
+    const date = new Date(year, month - 1, day);
+    const now = new Date();
+    
+    // Calculate days difference (positive for past dates, negative for future)
+    const diffMs = now - date;
+    const diffDays = Math.floor(Math.abs(diffMs) / (1000 * 60 * 60 * 24));
+    
+    // If future date, use green
+    if (diffMs < 0) {
+        return '#28a745'; // Bright green for future events
+    }
+    
+    // If older than 1 year (365 days), use gray
+    if (diffDays >= 365) {
+        return '#6c757d'; // Gray for old news
+    }
+    
+    // Calculate color gradient from green to gray
+    // Interpolate between bright green (#28a745) and gray (#6c757d)
+    // Based on how close to 365 days we are
+    const ratio = diffDays / 365; // 0 = recent, 1 = 1 year old
+    
+    // Bright green RGB: (40, 167, 69)
+    // Gray RGB: (108, 117, 125)
+    const r1 = 40, g1 = 167, b1 = 69;  // Green
+    const r2 = 108, g2 = 117, b2 = 125; // Gray
+    
+    // Interpolate
+    const r = Math.round(r1 + (r2 - r1) * ratio);
+    const g = Math.round(g1 + (g2 - g1) * ratio);
+    const b = Math.round(b1 + (b2 - b1) * ratio);
+    
+    return `rgb(${r}, ${g}, ${b})`;
+}
+
 function parseNewsLine(line) {
     // Remove initial asterisk and whitespace
     let content = line.replace(/^\s*\*\s*/, '');
@@ -255,9 +293,10 @@ function parseNewsLine(line) {
         const dateString = match[1].replace('**', '').replace(':**', ''); // DD/MM/YYYY
         const relativeTime = formatRelativeTime(dateString);
         const formattedDate = formatDate(dateString);
+        const dateColor = getDateColor(dateString);
         
         return {
-            date: `${relativeTime}<br><small>${formattedDate}</small>`,
+            date: `<span style="color: ${dateColor};">${relativeTime}<br><small>${formattedDate}</small></span>`,
             content: match[2] // rest of the content
         };
     } else {
