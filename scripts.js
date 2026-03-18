@@ -99,7 +99,7 @@ function initializeTabRibbon() {
                 }
                 
                 default_tab = {
-                    "professional": "paperCheckbox",
+                    "professional": "careerCheckbox",
                     "athletics": "5KCheckbox",
                 }
                 

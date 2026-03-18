@@ -23,41 +23,18 @@
       <td>
         <table width="100%" cellspacing="0" cellpadding="0" border="0" align="center">
 
-        <!-- Title -->
-        <tbody><tr>
-            <td width="70%" valign="middle">
-              <p align="center">
-                <name>Dr. Nicolay Rusnachenko</name>
-              </p>
-              <p>
-                <ul style="margin-left: 0; padding-left: 0;">
-                    <li>
-                       🌟&nbsp;<b>15+ years</b> of experience in Software Development (Python, .NET)
-                    </li>
-                    <li>
-                       🌟&nbsp;<b>10+ years</b> of experience in Information Retrieval (IR) / NLP
-                    </li>
-                    <li>🎓&nbsp;<a href="https://nicolay-r.github.io/#phd-thesis"><b>PhD in Information Retrieval&nbsp;📜</b></a>,
-                       approved by <a href="website/data/cert_education_ecctis.pdf">UK ENIC</a>
-                    </li>
-                    <li>💼&nbsp;Research Fellow at
-                        <a href="https://staffprofiles.bournemouth.ac.uk/display/nrusnachenko">Bournemouth University</a>:
-                        <ul style="margin-left: 0;">
-                            <li>
-                                transform the UK healthcare by
-                                <a href="https://nicolay-r.github.io/#casa2025">marking medical images with NLP</a>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-              </p>
+        </table>
 
-            </td>
-            <td>
-              <img src="website/images/photo.png" class="profile-photo">
-            </td>
-          </tr>
-        </tbody></table>
+         <p align="center">
+            <img src="website/images/photo.png" class="profile-photo">
+            <br>
+            <name>Nicolay Rusnachenko</name>
+            <br>
+            <br>
+
+            <span style="color: #6c757d;">🎓&nbsp;<a href="https://nicolay-r.github.io/#phd-thesis" style="color: inherit;"><b>PhD in NLP</b></a> / Software Developer</span>
+            
+         </p>
 
          <p align="center">
                 <a href="mailto:rusnicolay@gmail.com">Email</a> &nbsp;/&nbsp;
@@ -75,12 +52,11 @@
                 <br/>
                 <a href="https://twitter.com/nicolayr_"><b>Twitter</b></a> /&nbsp;
                 <a href="https://huggingface.co/nicolay-r">Hugging Face</a> /&nbsp;
-                <a href="https://www.youtube.com/@nicolay-r/videos"><button class="youtube-button"> Youtube</button></a> /&nbsp;
+                <a href="https://www.youtube.com/@nicolay-r/videos">Youtube</a> /&nbsp;
 		<a href="https://bsky.app/profile/nicolayr.com">bluesky</a> /&nbsp;
                 <a href="https://nicolay-r.github.io/blog/">Blog</a> /
                 <!--<a href="https://www.facebook.com/profile.php?id=100012477589017">Facebook</a> -->
                 <a href="https://www.instagram.com/nickky_x_">Instagram</a>
-                <br/>
              <br/>
         </p>
 
@@ -324,6 +300,9 @@
                     <p style="color: #6c757d; font-style: italic; font-size: 0.9rem; margin-top: 0; margin-bottom: 1">
                         Tap to quick filter
                     </p>
+
+                    <input type="checkbox" id="careerCheckbox" class="filter-checkbox">
+                    <label for="careerCheckbox" class="hover-label">CAREER</label>
                     <input type="checkbox" id="paperCheckbox" class="filter-checkbox">
                     <label for="paperCheckbox" class="hover-label">PAPERS</label>
                     <input type="checkbox" id="presentationCheckbox" class="filter-checkbox">
@@ -342,6 +321,156 @@
         </table>
 
           <table width="100%" cellspacing="0" cellpadding="5" border="0" align="center">
+
+              <tbody data-type="career"><tr id="career-bournemouth-2023">
+                  <td width="38%" id="card-logo" align="center" class="no-select">
+                      <img src="website/images/logo_bu.png">
+                  </td>
+                  <td valign="middle">
+                      <div id="card-content">
+                          <papertitle>Research Fellow at Bournemouth University</papertitle>
+                          <br>
+                          <em>Dec. 2023 - Present | UK, England, Bournemouth</em>
+                          <br>
+                          <table style="width: 100%; border-collapse: collapse;">
+                              <tr>
+                                  <td style="width: 90px; vertical-align: top; padding: 2px 8px 2px 0;">
+                                      <strong>Developing:</strong>
+                                  </td>
+                                  <td style="vertical-align: top; padding: 2px 0;">
+                                      MARK-MI platform, integrating NLP into radiology report evaluation using multi-step reasoning and fine-tuning techniques.
+                                  </td>
+                              </tr>
+                              <tr>
+                                  <td style="width: 90px; vertical-align: top; padding: 2px 8px 2px 0;">
+                                      <strong>Tools:</strong>
+                                  </td>
+                                  <td style="vertical-align: top; padding: 2px 0;">
+                                      LLangChain, LlamaIndex, PyTorch, Transformers.
+                                  </td>
+                              </tr>
+                              <tr>
+                                  <td style="width: 110px; vertical-align: top; padding: 2px 8px 2px 0;">
+                                      <strong>Stack:</strong>
+                                  </td>
+                                  <td style="vertical-align: top; padding: 2px 0;">
+                                      OHIF (ReactJS), NodeJS (utilities), ORTHANC (PACS), KeyCloak, FastAPI, SSL+certbot, NGINX.
+                                  </td>
+                              </tr>
+                              <tr>
+                                  <td style="width: 110px; vertical-align: top; padding: 2px 8px 2px 0;">
+                                      <strong>Deploying:</strong>
+                                  </td>
+                                  <td style="vertical-align: top; padding: 2px 0;">
+                                      Proof-of-Concept via Docker containers on cloud (DigitalOcean) with authorization (KeyCloak) and MLOps practices.
+                                  </td>
+                              </tr>
+                              <tr>
+                                  <td style="width: 110px; vertical-align: top; padding: 2px 8px 2px 0;">
+                                      <strong>Leadership:</strong>
+                                  </td>
+                                  <td style="vertical-align: top; padding: 2px 0;">
+                                      Supervised MSc and PhD-students in publications for: CLEF'25, BIBM'24, SemEval'26.
+                                  </td>
+                              </tr>
+                          </table>
+                      </div>
+                    <hr class="career-separator">
+                  </td>
+              </tr>
+              </tbody>
+
+              <tbody data-type="career"><tr id="career-newcastle-2022">
+                  <td width="38%" id="card-logo" align="center" class="no-select">
+                      <img src="website/images/logo_ncl.png">
+                  </td>
+                  <td valign="middle">
+                      <div id="card-content">
+                          <papertitle>Post-Doc Research Assistant at Newcastle University</papertitle>
+                          <br>
+                          <em>Dec. 2022 - Dec. 2023 | UK, England, Newcastle upon Tyne</em>
+                          <br>
+                          <table style="width: 100%; border-collapse: collapse;">
+                              <tr>
+                                  <td style="width: 90px; vertical-align: top; padding: 2px 8px 2px 0;">
+                                      <strong>Contribute:</strong>
+                                  </td>
+                                  <td style="vertical-align: top; padding: 2px 0;">
+                                      Built an NLP pipeline for embedding character personalities from 13K novel books (Project Gutenberg).
+                                  </td>
+                              </tr>
+                              <tr>
+                                  <td style="width: 90px; vertical-align: top; padding: 2px 8px 2px 0;">
+                                      <strong>Tools:</strong>
+                                  </td>
+                                  <td style="vertical-align: top; padding: 2px 0;">
+                                      Meta ParlAI, scikit-learn, PyTorch, Transformers, pandas, NLTK, seaborn, Google Colab.
+                                  </td>
+                              </tr>
+                              <tr>
+                                  <td style="width: 90px; vertical-align: top; padding: 2px 8px 2px 0;">
+                                      <strong>Leadership:</strong>
+                                  </td>
+                                  <td style="vertical-align: top; padding: 2px 0;">
+                                      Supervised MSc and PhD-students in SemEval23/24.
+                                  </td>
+                              </tr>
+                              <tr>
+                                  <td style="width: 110px; vertical-align: top; padding: 2px 8px 2px 0;">
+                                      <strong>Publications:</strong>
+                                  </td>
+                                  <td style="vertical-align: top; padding: 2px 0;">
+                                      ECIR'24, LOD'25, ACL/SemEval'23.
+                                  </td>
+                              </tr>
+                          </table>
+                      </div>
+                    <hr class="career-separator">
+                  </td>
+              </tr>
+              </tbody>
+
+              <tbody data-type="career"><tr id="career-norsi-trans-2016">
+                  <td width="38%" id="card-logo" align="center" class="no-select">
+                      <img src="website/images/logo_nt.png">
+                  </td>
+                  <td valign="middle">
+                      <div id="card-content">
+                          <papertitle>.NET Software Developer at CJSC NORSI-TRANS</papertitle>
+                          <br>
+                          <em>May 2016 - Dec. 2021 | Russia, Moscow</em>
+                          <br>
+                          <table style="width: 100%; border-collapse: collapse;">
+                              <tr>
+                                  <td style="width: 90px; vertical-align: top; padding: 2px 8px 2px 0;">
+                                      <strong>Contribute:</strong>
+                                  </td>
+                                  <td style="vertical-align: top; padding: 2px 0;">
+                                      Developed surveillance analytics software in .NET/C#, including backend logic, UI components, and data-visualization modules for large operational datasets.
+                                  </td>
+                              </tr>
+                              <tr>
+                                  <td style="width: 90px; vertical-align: top; padding: 2px 8px 2px 0;">
+                                      <strong>Stack:</strong>
+                                  </td>
+                                  <td style="vertical-align: top; padding: 2px 0;">
+                                      .NET/C# (backend and UI), DevExpress Controls, MongoDB, Python (backend automation), XPO-Objects.
+                                  </td>
+                              </tr>
+                              <tr>
+                                  <td style="width: 90px; vertical-align: top; padding: 2px 8px 2px 0;">
+                                      <strong>Analytics:</strong>
+                                  </td>
+                                  <td style="vertical-align: top; padding: 2px 0;">
+                                      Built data visualization components for rendering large volumes of surveillance data via DevExpress Charts: interactive tables, timelines, and graphs.
+                                  </td>
+                              </tr>
+                          </table>
+                      </div>
+                    <hr class="career-separator">
+                  </td>
+              </tr>
+              </tbody>
 
               <tbody data-type="presentation"><tr id="chemnitz-2025">
                   <td width="38%" id="card-logo" align="center" class="no-select">

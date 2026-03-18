@@ -55,7 +55,7 @@ papertitle {
 }
 
 .hover-label {
-  font-size: 18px;
+  font-size: 14px;
   display: inline-block;
   padding: 4px 15px;
   cursor: pointer;
@@ -100,7 +100,6 @@ span.highlight {
 /* Style the label as a button */
 label {
     padding: 8px 16px;
-    font-size: 11px;
     color: white;
     background-color: #dddddd;
     cursor: pointer;
@@ -203,7 +202,13 @@ label {
 }
 
 div[id="card-content"] {
-    max-width: 400px;
+    width: 400px;
+}
+
+.career-separator {
+    border: none;
+    border-top: 1px solid #e9ecef;
+    margin: 10px 0;
 }
 
 /* Tab Ribbon Styles */
@@ -341,28 +346,20 @@ div[id="card-content"] {
     vertical-align: top;
 }
 
-/* Responsive design for news content */
-@media (max-width: 768px) {
-
-    .news-cell {
-        padding: 4px 8px;
-        font-size: 13px;
-    }
-}
 
 img{
     max-height:120px;
     max-width:270px;
+    min-width:270px;
     height:auto;
     width:auto;
 }
 
 /* Profile photo has its own independent styling - overrides img styles */
 .profile-photo {
-    max-height: initial !important;
-    max-width: initial !important;
-    height: initial !important;
-    width: 90% !important;
+    max-height: 150px !important;
+    max-width: 150px !important;
+    min-width: 150px !important;
 }
 
 /* Metal badge styling for postcodes */
