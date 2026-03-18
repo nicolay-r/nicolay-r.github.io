@@ -211,6 +211,27 @@ div[id="card-content"] {
     margin: 10px 0;
 }
 
+/* Career cards (nested key/value tables) */
+.career-kv-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left !important;
+  margin: 0;
+}
+
+.career-kv-key {
+  width: 90px;
+  vertical-align: top;
+  padding: 2px 8px 2px 0;
+  text-align: left !important;
+}
+
+.career-kv-value {
+  vertical-align: top;
+  padding: 2px 0;
+  text-align: left !important;
+}
+
 /* Tab Ribbon Styles */
 .tab-ribbon {
     display: flex;
