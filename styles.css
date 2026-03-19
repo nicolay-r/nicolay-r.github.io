@@ -70,6 +70,10 @@ papertitle {
   gap: 4px;
 }
 
+.filter-icon {
+  display: none;
+}
+
 /* When hovering */
 .hover-label:hover {
   background-color: #007BFF;
