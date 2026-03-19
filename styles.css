@@ -55,7 +55,7 @@ papertitle {
 }
 
 .hover-label {
-  font-size: 14px;
+  font-size: 12px;
   display: inline-block;
   padding: 4px 15px;
   cursor: pointer;
@@ -211,6 +211,11 @@ label {
 
 div[id="card-content"] {
     width: 400px;
+}
+
+.jobtitle {
+  font-size: 18px;
+  font-weight: 700;
 }
 
 .career-separator {
