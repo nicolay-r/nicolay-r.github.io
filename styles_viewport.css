@@ -33,11 +33,12 @@
     /* Frame around card */
     tbody[data-type]:has(#card-logo) {
         display: block;
-        margin-bottom: 5px;
+        padding: 15px;
+        margin-bottom: 10px;
         border-radius: 8px;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-        border: 1px solid #e0e0e0;
-        background-color: #ffffff;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+        border: 1px solid #cfd6de;
+        background-color: #f8fafc;
         overflow: hidden;
     }
 
