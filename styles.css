@@ -74,6 +74,10 @@ papertitle {
   display: none;
 }
 
+.card-action-icon {
+  display: none;
+}
+
 /* When hovering */
 .hover-label:hover {
   background-color: #007BFF;

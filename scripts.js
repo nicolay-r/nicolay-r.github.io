@@ -376,6 +376,81 @@ function formatMarkdown(text) {
     return text;
 }
 
+function initializeCardActions() {
+    const actionBlocks = document.querySelectorAll('.auto-card-actions');
+
+    const iconRules = [
+        { keyword: 'code', icon: 'fa-code' },
+        { keyword: 'paper', icon: 'fa-file-text-o' },
+        { keyword: 'twitter', icon: 'fa-twitter' },
+        { keyword: 'certificate', icon: 'fa-certificate' },
+        { keyword: 'poster', icon: 'fa-file-image-o' },
+        { keyword: 'model', icon: 'fa-cube' },
+        { keyword: 'watch', icon: 'fa-play-circle' },
+        { keyword: 'share', icon: 'fa-share-alt' },
+    ];
+
+    actionBlocks.forEach(block => {
+        if (block.dataset.cardActionsReady === 'true') {
+            return;
+        }
+
+        block.classList.add('card-actions');
+
+        // Remove slash separators from the original inline markup.
+        Array.from(block.childNodes).forEach(node => {
+            if (node.nodeType === Node.TEXT_NODE && node.textContent.trim() === '/') {
+                node.remove();
+            }
+        });
+
+        const actionElements = Array.from(block.querySelectorAll('a, button'));
+
+        actionElements.forEach((el, idx) => {
+            const isButton = el.tagName.toLowerCase() === 'button';
+            el.classList.add(isButton ? 'card-action-button' : 'card-action-link');
+
+            if (!el.querySelector('.card-action-icon')) {
+
+                const normalizedText = el.textContent
+                    .trim()
+                    .toLowerCase()
+                    .replace(/\p{Extended_Pictographic}/gu, '')
+                    .replace(/^[^\p{L}\p{N}]+/gu, '')
+                    .replace(/\s*\([^)]*\)\s*/g, ' ')
+                    .replace(/\s+/g, ' ')
+                    .trim();
+                const text = normalizedText.includes('watch') ? 'watch' : normalizedText;
+
+                const matched = iconRules.find(rule => text.includes(rule.keyword));
+
+                el.textContent = text;
+
+                const iconSpan = document.createElement('span');
+                iconSpan.className = 'card-action-icon';
+
+                if (matched) {
+                    iconSpan.innerHTML = `<i class="fa ${matched.icon}" aria-hidden="true"></i>`;
+                } else {
+                    iconSpan.innerHTML = '<i class="fa fa-link" aria-hidden="true"></i>';
+                }
+
+                el.appendChild(document.createTextNode(' '));
+                el.appendChild(iconSpan);
+            }
+
+            if (idx < actionElements.length - 1) {
+                const sep = document.createElement('span');
+                sep.className = 'card-action-sep';
+                sep.textContent = ' / ';
+                el.insertAdjacentElement('afterend', sep);
+            }
+        });
+
+        block.dataset.cardActionsReady = 'true';
+    });
+}
+
 function shareRow(event) {
     const button = event.target;
 
@@ -426,3 +501,4 @@ function shareRow(event) {
 
 
 initializeTabRibbon();
+initializeCardActions();

@@ -49,8 +49,8 @@
     .card-actions {
         margin-top: 8px;
         display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 8px;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 6px;
     }
 
     .card-actions .card-action-sep {
@@ -64,10 +64,12 @@
         border: 1px solid rgba(31, 79, 130, 0.07);
         background: radial-gradient(circle at center, #edf3f9 0%, #f4f8fc 58%, #fafcff 100%);
         display: inline-flex;
+        flex-direction: column;
         align-items: center;
         justify-content: center;
         text-align: center;
-        padding: 0px;
+        gap: 3px;
+        padding: 2px;
         font-weight: 700;
         line-height: 1.2;
     }
@@ -80,6 +82,12 @@
     .card-actions .card-action-button {
         width: 100%;
         color: #1f4f82;
+    }
+
+    .card-actions .card-action-icon {
+        display: inline-block;
+        font-size: 16px;
+        line-height: 1;
     }
 
 
