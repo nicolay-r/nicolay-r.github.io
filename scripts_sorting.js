@@ -20,9 +20,14 @@ function sortTableByDate(table) {
 function extractDateFromRow(tbody) {
     const dateCell = tbody.querySelector('td:nth-child(3)'); // Date is in 3rd column
     if (dateCell) {
-        const dateText = dateCell.textContent.trim();
-        const [day, month, year] = dateText.split('/');
-        return new Date(year, month - 1, day);
+        // Match DD/MM/YYYY — cell may also contain relative time (e.g. parkrun rows)
+        const m = dateCell.textContent.match(/(\d{2})\/(\d{2})\/(\d{4})/);
+        if (m) {
+            const day = parseInt(m[1], 10);
+            const month = parseInt(m[2], 10) - 1;
+            const year = parseInt(m[3], 10);
+            return new Date(year, month, day);
+        }
     }
     return new Date(0); // Return epoch date if parsing fails
 }
