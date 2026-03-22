@@ -123,11 +123,6 @@ label {
     user-select: none;
 }
 
- /* Change the button background color when checkbox is checked */
-.filter-checkbox:checked + label {
-    background-color: #145da0;
-}
-
 .share-button {
     border: none;
     padding: 2px 0px;
