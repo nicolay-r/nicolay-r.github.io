@@ -2698,7 +2698,7 @@
   <script src="scripts_sorting.js"></script>
   <script>
       // Load the JSONL file and convert to HTML using iterator with batch processing.
-      loadJsonlAndConvert('parkrun-results.jsonl', function(html, batchIndex, totalBatches, isLast) {
+      loadJsonlAndConvert('running-results.jsonl', function(html, batchIndex, totalBatches, isLast) {
           const table = document.querySelector('.results-table');
           table.insertAdjacentHTML('beforeend', html);
 

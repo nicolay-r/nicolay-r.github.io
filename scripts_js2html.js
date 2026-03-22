@@ -47,16 +47,6 @@ function formatRelativeTime(dateString) {
     }
 }
 
-/**
- * Creates a clickable zipcode badge with Google Maps link
- * @param {string} zipcode - The postcode to display
- * @returns {string} HTML string for the clickable badge
- */
-function createZipcodeBadge(zipcode) {
-    const q = encodeURIComponent(zipcode);
-    return `<a href="https://maps.google.com/?q=${q}" target="_blank"><span class="postcode-badge">${escapeHtml(zipcode)}</span></a>`;
-}
-
 function buildRaceLinksHtml(links) {
     if (!links || !Array.isArray(links) || links.length === 0) {
         return '';
@@ -69,131 +59,117 @@ function buildRaceLinksHtml(links) {
     }).join(' / ');
 }
 
+/** Parkrun event name → default location caption */
+function getParkrunLocationCaption(eventName) {
+    if (eventName === 'Bournemouth') {
+        return 'Kings Park Athletic Stadium';
+    }
+    if (eventName === 'Battersea') {
+        return 'London';
+    }
+    if (eventName === 'Poole') {
+        return 'Poole Park, Poole';
+    }
+    return eventName;
+}
+
 /**
- * @param {object} data - Parsed JSON object for a non-parkrun race
+ * Converts one parsed JSON object (parkrun row or Type:"race") into a results-table tbody.
+ * @param {object} data - Parsed JSON line from running results JSONL
  * @returns {string} HTML tbody string
  */
-function convertRaceJsonToHtml(data) {
-    const rowId = data.Id || data.id || 'race-row';
-    const distance = (data.Distance || data.distance || '5K').trim();
-    const dataType = distance.replace(/\s+/g, '');
-    const time = escapeHtml(data.Time || data.time || '');
-    const runDate = data['Run Date'] || data['run_date'] || data.Date || '';
-    const title = escapeHtml(data.Title || data.title || '');
-    const titleUrl = escapeHtml(data['Title Url'] || data['TitleUrl'] || data.title_url || '#');
-    const location = escapeHtml(data.Location || data.location || '');
-    const postcode = (data.Postcode || data.postcode || '').trim();
-    const highlight = data.Highlight === true || data.highlight === true;
-    const rowHighlight = highlight ? `bgcolor="#fff0e0"` : '';
-    const linksHtml = buildRaceLinksHtml(data.Links || data.links);
+function convertRunningJsonToHtml(data) {
+    const isRace = data.Type === 'race' || data.type === 'race';
 
-    const postcodePart = postcode ? ` ${createZipcodeBadge(postcode)}` : '';
-    const locationBlock = location || postcodePart
-        ? `<br/>
-                        <em><span class="location-caption">${location}</span></em>${postcodePart}`
-        : '';
+    let rowId;
+    let filterDataType;
+    let rowHighlight;
+    let timeInnerHtml;
+    let distanceLabelEscaped;
+    let runDate;
+    let titleHrefEscaped;
+    let titleInnerEscaped;
+    let afterTitleHtml;
 
-    const linksBlock = linksHtml
-        ? `<br>
-                        ${linksHtml}`
-        : '';
+    if (isRace) {
+        rowId = data.Id || data.id || 'race-row';
+        const distance = (data.Distance || data.distance || '5K').trim();
+        filterDataType = distance.replace(/\s+/g, '');
+        runDate = data['Run Date'] || data['run_date'] || data.Date || '';
+        timeInnerHtml = escapeHtml(data.Time || data.time || '');
+        distanceLabelEscaped = escapeHtml(distance);
+
+        titleInnerEscaped = escapeHtml(data.Title || data.title || '');
+        titleHrefEscaped = escapeHtml(
+            data['Title Url'] || data['TitleUrl'] || data.title_url || '#'
+        );
+
+        const highlight = data.Highlight === true || data.highlight === true;
+        rowHighlight = highlight ? 'bgcolor="#fff0e0"' : '';
+
+        const locationEscaped = escapeHtml(data.Location || data.location || '');
+        const locationBlock = locationEscaped
+            ? `<br/>
+                        <em><span class="location-caption">${locationEscaped}</span></em>`
+            : '';
+
+        const linksHtml = buildRaceLinksHtml(data.Links || data.links);
+        const linksBlock = linksHtml ? `<br>\n                        ${linksHtml}` : '';
+
+        afterTitleHtml = `${locationBlock}${linksBlock}`;
+    } else {
+        const event = data.Event;
+        runDate = data['Run Date'];
+        const runNumber = data['Run Number'];
+        const position = data.Pos;
+        const time = data.Time;
+        const ageGrade = data.AgeGrade;
+        const pbRaw = (data['PB?'] != null ? String(data['PB?']) : '').trim();
+        const isPB = pbRaw === 'PB';
+
+        rowId = `${String(event).toLowerCase()}-park-run-${runNumber}`;
+        filterDataType = '5K';
+        rowHighlight = isPB ? 'bgcolor="#fff0e0"' : '';
+
+        const posBlock = position
+            ? `<br/><small class="position-age-grade">POS: #${escapeHtml(position)}</small>`
+            : '';
+        const agBlock = ageGrade
+            ? `<br/><small class="position-age-grade">AG: ${escapeHtml(ageGrade)}</small>`
+            : '';
+        timeInnerHtml = `${escapeHtml(time)}${posBlock}${agBlock}`;
+        distanceLabelEscaped = '5K';
+
+        const eventUrl = `https://www.parkrun.org.uk/${String(event).toLowerCase()}/`;
+        const resultsUrl = `${eventUrl}results/${runNumber}/`;
+        titleHrefEscaped = escapeHtml(resultsUrl);
+        titleInnerEscaped = escapeHtml(`${event} Parkrun #${runNumber}`);
+
+        const locationCaption = getParkrunLocationCaption(event);
+        afterTitleHtml = `<br/>
+                        <span class="location-caption">${escapeHtml(locationCaption)}</span>`;
+    }
 
     const relativeHtml = runDate
         ? `<br/><small style="font-size: 0.85em; color: #6c757d;">${escapeHtml(formatRelativeTime(runDate))}</small>`
         : '';
 
     return `
-                <tbody data-type="${escapeHtml(dataType)}">
+                <tbody data-type="${escapeHtml(filterDataType)}">
                 <tr id="${escapeHtml(rowId)}" ${rowHighlight}>
                     <td valign="middle">
-                        ${time}
+                        ${timeInnerHtml}
                     </td>
                     <td valign="middle">
-                        <span class="distance-param">${escapeHtml(distance)}</span>
+                        <span class="distance-param">${distanceLabelEscaped}</span>
                     </td>
                     <td valign="middle" class="date-column">
                         <small>${escapeHtml(runDate)}</small>${relativeHtml}
                     </td>
                     <td valign="middle">
-                        <a href="${titleUrl}">
-                            <runtitle>${title}</runtitle>
-                        </a>${locationBlock}${linksBlock}
-                    </td>
-                    <td valign="middle">
-                        <button class="share-button" onclick="shareRow(event)"><i class="fa fa-share-alt"></i></button>
-                    </td>
-                </tr>
-                </tbody>`;
-}
-
-/**
- * @param {object} data - Parsed JSON object for parkrun
- * @returns {string} HTML tbody string
- */
-function convertParkrunJsonToHtml(data) {
-    const event = data.Event;
-    const runDate = data['Run Date'];
-    const runNumber = data['Run Number'];
-    const position = data.Pos;
-    const time = data.Time;
-    const ageGrade = data.AgeGrade;
-    const pbRaw = (data['PB?'] != null ? String(data['PB?']) : '').trim();
-    const isPB = pbRaw === 'PB';
-
-    const rowId = `${event.toLowerCase()}-park-run-${runNumber}`;
-
-    const rowHighlight = isPB ? `bgcolor="#fff0e0"` : ``;
-
-    const eventUrl = `https://www.parkrun.org.uk/${event.toLowerCase()}/`;
-    const resultsUrl = `${eventUrl}results/${runNumber}/`;
-
-    let location = '';
-    let zipcode = '';
-
-    if (event === 'Bournemouth') {
-        location = 'Kings Park Athletic Stadium';
-        zipcode = 'BH7 6JD';
-    } else if (event === 'Battersea') {
-        location = 'London';
-        zipcode = 'SW11 4NJ';
-    } else if (event === 'Poole') {
-        location = 'Poole Park, Poole';
-        zipcode = 'BH15 2SF';
-    } else {
-        location = event;
-        zipcode = 'UK';
-    }
-
-    const zipcodeBadge = createZipcodeBadge(zipcode);
-    const locationWithBadge = `<span class="location-caption">${escapeHtml(location)}</span> ${zipcodeBadge}`;
-
-    const posBlock = position ? `<br/><small class="position-age-grade">POS: #${escapeHtml(position)}</small>` : '';
-    const agBlock = ageGrade ? `<br/><small class="position-age-grade">AG: ${escapeHtml(ageGrade)}</small>` : '';
-
-    return `
-                <tbody data-type="5K">
-                <tr id="${escapeHtml(rowId)}" ${rowHighlight}>
-                    <td valign="middle">
-                        ${escapeHtml(time)}
-                        ${posBlock}
-                        ${agBlock}
-                    </td>
-                    <td valign="middle">
-                        <span class="distance-param">5K</span>
-                    </td>
-                    <td valign="middle" class="date-column">
-                        <small>${escapeHtml(runDate)}</small>
-                        <br/><small style="font-size: 0.85em; color: #6c757d;">${escapeHtml(formatRelativeTime(runDate))}</small>
-                    </td>
-                    <td valign="middle">
-                        <a href="${escapeHtml(resultsUrl)}">
-                            <runtitle>${escapeHtml(event)} Parkrun #${escapeHtml(runNumber)}</runtitle>
-                        </a>
-                        <br/>
-                        ${locationWithBadge}
-                    </td>
-                    <td valign="middle">
-                        <button class="share-button" onclick="shareRow(event)"><i class="fa fa-share-alt"></i></button>
+                        <a href="${titleHrefEscaped}">
+                            <runtitle>${titleInnerEscaped}</runtitle>
+                        </a>${afterTitleHtml}
                     </td>
                 </tr>
                 </tbody>`;
@@ -207,10 +183,7 @@ function convertParkrunJsonToHtml(data) {
 function convertJsonlToHtml(jsonlLine) {
     try {
         const data = JSON.parse(jsonlLine.trim());
-        if (data.Type === 'race' || data.type === 'race') {
-            return convertRaceJsonToHtml(data);
-        }
-        return convertParkrunJsonToHtml(data);
+        return convertRunningJsonToHtml(data);
     } catch (error) {
         console.error('Error parsing JSONL line:', error);
         return '';
