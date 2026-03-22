@@ -380,15 +380,19 @@ function initializeCardActions() {
     const actionBlocks = document.querySelectorAll('.auto-card-actions');
 
     const iconRules = [
-        { keyword: 'code', icon: 'fa-code' },
-        { keyword: 'paper', icon: 'fa-file-text-o' },
-        { keyword: 'twitter', icon: 'fa-twitter' },
-        { keyword: 'certificate', icon: 'fa-certificate' },
-        { keyword: 'poster', icon: 'fa-file-image-o' },
-        { keyword: 'model', icon: 'fa-cube' },
-        { keyword: 'watch', icon: 'fa-play-circle' },
-        { keyword: 'share', icon: 'fa-share-alt' },
+        { keyword: 'code', icon: 'fa-code', color: '#24292f' },           /* GitHub ink */
+        { keyword: 'paper', icon: 'fa-file-text-o', color: '#1565c0' },   /* scholarly blue */
+        { keyword: 'twitter', icon: 'fa-twitter', color: '#1d9bf0' },    /* X / Twitter */
+        { keyword: 'certificate', icon: 'fa-certificate', color: '#b8860b' },
+        { keyword: 'poster', icon: 'fa-file-image-o', color: '#6b4fbb' },
+        { keyword: 'proceedings', icon: 'fa-book', color: '#5d4037' },    /* book / volume; matches FA style */
+        { keyword: 'model', icon: 'fa-cube', color: '#ff9d00' },         /* Hugging Face–style orange */
+        { keyword: 'colab', icon: 'fa-book', color: '#F9AB00' },         /* Google Colab–style amber */
+        { keyword: 'notebook', icon: 'fa-book', color: '#F9AB00' },
+        { keyword: 'watch', icon: 'fa-play-circle', color: '#ff0000' },  /* YouTube red */
+        { keyword: 'share', icon: 'fa-share-alt', color: '#4DAAF5' },    /* matches .share-button */
     ];
+    const defaultLinkIconColor = '#6c757d';
 
     actionBlocks.forEach(block => {
         if (block.dataset.cardActionsReady === 'true') {
@@ -431,8 +435,10 @@ function initializeCardActions() {
 
                 if (matched) {
                     iconSpan.innerHTML = `<i class="fa ${matched.icon}" aria-hidden="true"></i>`;
+                    iconSpan.style.color = matched.color;
                 } else {
-                    iconSpan.innerHTML = '<i class="fa fa-link" aria-hidden="true"></i>';
+                    iconSpan.innerHTML = '<i class="fa fa-external-link" aria-hidden="true"></i>';
+                    iconSpan.style.color = defaultLinkIconColor;
                 }
 
                 el.appendChild(document.createTextNode(' '));
