@@ -62,6 +62,7 @@
         min-height: 45px;
         border-radius: 5px;
         border: 1px solid rgba(31, 79, 130, 0.07);
+        /* background / border tint set in scripts.js from icon rule color */
         background: radial-gradient(circle at center, #edf3f9 0%, #f4f8fc 58%, #fafcff 100%);
         display: inline-flex;
         flex-direction: column;
@@ -84,12 +85,9 @@
         color: #1f4f82;
     }
 
-    /* Emphasize share vs other card actions */
+    /* Share: solid gradient from accent (JS); keep text/icon light */
     .card-actions .share-button {
-        background: linear-gradient(180deg, #6bb8ff 0%, #4DAAF5 40%, #3b93e6 100%) !important;
-        border: 1px solid rgba(21, 111, 255, 0.35) !important;
         color: #fff !important;
-        box-shadow: 0 2px 10px rgba(77, 170, 245, 0.4);
     }
 
     .card-actions .share-button .card-action-icon,

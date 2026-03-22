@@ -376,6 +376,61 @@ function formatMarkdown(text) {
     return text;
 }
 
+function hexToRgb(hex) {
+    if (!hex || typeof hex !== 'string') {
+        return { r: 108, g: 117, b: 125 };
+    }
+    let h = hex.trim().replace('#', '');
+    if (h.length === 3) {
+        h = h.split('').map((c) => c + c).join('');
+    }
+    if (h.length !== 6 || !/^[0-9a-fA-F]+$/.test(h)) {
+        return { r: 108, g: 117, b: 125 };
+    }
+    return {
+        r: parseInt(h.slice(0, 2), 16),
+        g: parseInt(h.slice(2, 4), 16),
+        b: parseInt(h.slice(4, 6), 16),
+    };
+}
+
+function hexToRgba(hex, alpha) {
+    const { r, g, b } = hexToRgb(hex);
+    return `rgba(${r},${g},${b},${alpha})`;
+}
+
+/** Tinted background/border from icon rule color (mobile card tiles only). */
+function applyCardActionAccent(el, accentHex, isShareButton) {
+    if (!window.matchMedia('(max-width: 600px)').matches) {
+        return;
+    }
+    const { r, g, b } = hexToRgb(accentHex);
+    const clamp = (n) => Math.max(0, Math.min(255, Math.round(n)));
+    if (isShareButton) {
+        const rT = clamp(r * 1.12);
+        const gT = clamp(g * 1.12);
+        const bT = clamp(b * 1.12);
+        const rD = clamp(r * 0.82);
+        const gD = clamp(g * 0.82);
+        const bD = clamp(b * 0.82);
+        el.style.setProperty(
+            'background',
+            `linear-gradient(180deg, rgb(${rT},${gT},${bT}) 0%, rgb(${r},${g},${b}) 42%, rgb(${rD},${gD},${bD}) 100%)`,
+            'important'
+        );
+        el.style.setProperty('border-color', hexToRgba(accentHex, 0.45), 'important');
+        el.style.setProperty('box-shadow', `0 2px 10px ${hexToRgba(accentHex, 0.35)}`, 'important');
+    } else {
+        el.style.background = `radial-gradient(circle at center, ${hexToRgba(accentHex, 0.22)} 0%, ${hexToRgba(accentHex, 0.11)} 52%, ${hexToRgba(accentHex, 0.05)} 100%)`;
+        el.style.borderColor = hexToRgba(accentHex, 0.28);
+        el.style.color = accentHex;
+        const iconWrap = el.querySelector('.card-action-icon');
+        if (iconWrap) {
+            iconWrap.style.color = 'inherit';
+        }
+    }
+}
+
 function initializeCardActions() {
     const actionBlocks = document.querySelectorAll('.auto-card-actions');
 
@@ -433,6 +488,8 @@ function initializeCardActions() {
                 const iconSpan = document.createElement('span');
                 iconSpan.className = 'card-action-icon';
 
+                const accentColor = matched ? matched.color : defaultLinkIconColor;
+
                 if (matched) {
                     iconSpan.innerHTML = `<i class="fa ${matched.icon}" aria-hidden="true"></i>`;
                     iconSpan.style.color = matched.color;
@@ -443,6 +500,8 @@ function initializeCardActions() {
 
                 el.appendChild(document.createTextNode(' '));
                 el.appendChild(iconSpan);
+
+                applyCardActionAccent(el, accentColor, el.classList.contains('share-button'));
             }
 
             if (idx < actionElements.length - 1) {
