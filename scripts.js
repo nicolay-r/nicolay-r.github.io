@@ -87,17 +87,6 @@ function initializeTabRibbon() {
             if (selectedContent) {
                 selectedContent.style.display = 'block';
                 
-                // If switching to PROFESSIONAL tab, reinitialize the filter logic
-                if (selectedTab === 'professional') {
-
-                }
-                
-                // If switching to NEWS tab, load news content
-                if (selectedTab === 'news') {
-                    loadNewsContent();
-                    return;
-                }
-                
                 default_tab = {
                     "professional": "careerCheckbox",
                     "athletics": "5KCheckbox",
@@ -596,3 +585,4 @@ function shareRow(event) {
 
 initializeTabRibbon();
 initializeCardActions();
+loadNewsContent();
