@@ -399,11 +399,25 @@ function hexToRgba(hex, alpha) {
     return `rgba(${r},${g},${b},${alpha})`;
 }
 
+function clearCardActionAccent(el) {
+    el.style.removeProperty('background');
+    el.style.removeProperty('border-color');
+    el.style.removeProperty('box-shadow');
+    el.style.removeProperty('color');
+    const iconWrap = el.querySelector('.card-action-icon');
+    if (iconWrap) {
+        iconWrap.style.removeProperty('color');
+    }
+}
+
 /** Tinted background/border from icon rule color (mobile card tiles only). */
 function applyCardActionAccent(el, accentHex, isShareButton) {
+
     if (!window.matchMedia('(max-width: 600px)').matches) {
+        clearCardActionAccent(el);
         return;
     }
+
     const { r, g, b } = hexToRgb(accentHex);
     const clamp = (n) => Math.max(0, Math.min(255, Math.round(n)));
     if (isShareButton) {
@@ -430,6 +444,19 @@ function applyCardActionAccent(el, accentHex, isShareButton) {
         }
     }
 }
+
+function refreshAllCardActionAccents() {
+    document.querySelectorAll('.auto-card-actions[data-card-actions-ready="true"]').forEach(block => {
+        Array.from(block.querySelectorAll('a, button')).forEach(el => {
+            const accentHex = el.dataset.accent;
+            if (accentHex) {
+                applyCardActionAccent(el, accentHex, el.classList.contains('share-button'));
+            }
+        });
+    });
+}
+
+window.matchMedia('(max-width: 600px)').addEventListener('change', refreshAllCardActionAccents);
 
 function initializeCardActions() {
     const actionBlocks = document.querySelectorAll('.auto-card-actions');
@@ -501,7 +528,7 @@ function initializeCardActions() {
                 el.appendChild(document.createTextNode(' '));
                 el.appendChild(iconSpan);
 
-                applyCardActionAccent(el, accentColor, el.classList.contains('share-button'));
+                el.dataset.accent = accentColor;
             }
 
             if (idx < actionElements.length - 1) {
@@ -514,6 +541,8 @@ function initializeCardActions() {
 
         block.dataset.cardActionsReady = 'true';
     });
+
+    refreshAllCardActionAccents();
 }
 
 function shareRow(event) {
