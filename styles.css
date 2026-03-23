@@ -393,10 +393,38 @@ img{
 }
 
 /* Profile photo has its own independent styling - overrides img styles */
+.profile-photo-wrap {
+    position: relative;
+    display: inline-block;
+    width: 154px;
+    height: 154px;
+    border-radius: 50%;
+    padding: 3px;
+    background: conic-gradient(#22c55e 0deg, #16a34a 120deg, #22c55e 240deg, #16a34a 360deg);
+}
+
 .profile-photo {
     max-height: 150px !important;
     max-width: 150px !important;
     min-width: 150px !important;
+    border-radius: 50%;
+    display: block;
+}
+
+.otw-banner {
+    position: absolute;
+    bottom: 4px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #16a34a;
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    padding: 2px 10px;
+    border-radius: 10px;
+    white-space: nowrap;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.25);
 }
 
 /* Styling for position and age grade fields */
