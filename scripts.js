@@ -451,8 +451,11 @@ function initializeCardActions() {
     const actionBlocks = document.querySelectorAll('.auto-card-actions');
 
     const iconRules = [
+        { keyword: 'bibtex', icon: 'fa-quote-left', color: '#8b0000' },
         { keyword: 'code', icon: 'fa-code', color: '#24292f' },           /* GitHub ink */
         { keyword: 'paper', icon: 'fa-file-text-o', color: '#1565c0' },   /* scholarly blue */
+        { keyword: 'arxiv', icon: 'fa-file-text-o', color: '#1565c0' },   /* scholarly blue */
+        { keyword: 'preprint', icon: 'fa-file-text-o', color: '#1565c0' },   /* scholarly blue */
         { keyword: 'twitter', icon: 'fa-twitter', color: '#1d9bf0' },    /* X / Twitter */
         { keyword: 'certificate', icon: 'fa-certificate', color: '#b8860b' },
         { keyword: 'poster', icon: 'fa-file-image-o', color: '#6b4fbb' },
