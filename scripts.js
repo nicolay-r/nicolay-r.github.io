@@ -34,6 +34,23 @@ function applyFilterTable(checkboxStates) {
     });
 }
 
+const tabDefaultCheckbox = {
+    "professional": "careerCheckbox",
+    "athletics": "5KCheckbox",
+};
+
+function updateDataTypeParam(checkboxes) {
+    if (!window.history || !window.history.replaceState) return;
+    const checked = checkboxes.filter(cb => cb.checked);
+    const url = new URL(window.location.href);
+    if (checked.length === 1) {
+        url.searchParams.set('data_type', checked[0].id.replace('Checkbox', ''));
+    } else {
+        url.searchParams.delete('data_type');
+    }
+    window.history.replaceState(null, '', url.href);
+}
+
 function initializerTableFilters() {
     var checkboxes = getFilterCheckboxes();
 
@@ -50,6 +67,11 @@ function initializerTableFilters() {
             ///////////////////////////////////////////////////////////////////////
             const checkedStates = getCheckboxCheckedStates(checkboxes);
             applyFilterTable(checkedStates);
+
+            ///////////////////////////////////////////////////////////////////////
+            // Updae data_type parameter in the URL.
+            ///////////////////////////////////////////////////////////////////////
+            updateDataTypeParam(checkboxes);
         });
     });
 }
@@ -70,10 +92,11 @@ function initializeTabRibbon() {
             const selectedTab = this.getAttribute('data-tab');
 
             // Update the URL with the selected tab
+            const prevUrl = new URL(window.location.href);
+            const tabChanged = prevUrl.searchParams.get('tab') !== selectedTab;
             if (window.history && window.history.pushState) {
-                let currentUrl = new URL(window.location.href);
-                currentUrl.searchParams.set('tab', selectedTab);
-                window.history.pushState({ state: "test" }, "", currentUrl.href);
+                prevUrl.searchParams.set('tab', selectedTab);
+                window.history.pushState({ state: "test" }, "", prevUrl.href);
             }
 
             // Hide all tab content
@@ -84,35 +107,33 @@ function initializeTabRibbon() {
             
             // Show the selected tab content
             const selectedContent = document.getElementById(selectedTab + '-content');
-            if (selectedContent) {
-                selectedContent.style.display = 'block';
-                
-                default_tab = {
-                    "professional": "careerCheckbox",
-                    "athletics": "5KCheckbox",
-                }
-                
-                // If switching to ATHLETICS tab, load athletics content
-                if (selectedTab === 'athletics') {
-                    loadAthleticsContent();
-                }
+            if (!selectedContent)
+                return;
 
-                var checkboxes = getFilterCheckboxes();
-
-                // if URI has `data-type` then check  only the related checkbox
-                const url = new URL(window.location.href);
-
-                // Default checkbox to check.
-                let cbId = default_tab[selectedTab];
-
-                if (url.searchParams.has('data_type')) {
-                    const data_type = url.searchParams.get('data_type');
-                    cbId = `${data_type}Checkbox`;
-                }
-
-                checkSingle(checkboxes, cbToCheck = checkboxes.find(cb => cb.id === cbId));
-                applyFilterTable(states = getCheckboxCheckedStates(checkboxes));
+            selectedContent.style.display = 'block';
+            
+            // If switching to ATHLETICS tab, load athletics content
+            if (selectedTab === 'athletics') {
+                loadAthleticsContent();
             }
+
+            var checkboxes = getFilterCheckboxes();
+
+            let cbId = tabDefaultCheckbox[selectedTab];
+
+            // Restore data_type parameter from the URL in the case of no tab change.
+            if (prevUrl.searchParams.has('data_type') && !tabChanged) {
+                const data_type = prevUrl.searchParams.get('data_type');
+                cbId = `${data_type}Checkbox`;
+            }
+
+            checkSingle(checkboxes, cbToCheck = checkboxes.find(cb => cb.id === cbId));
+            applyFilterTable(states = getCheckboxCheckedStates(checkboxes));
+
+            ///////////////////////////////////////////////////////////////////////
+            // Updae data_type parameter in the URL.
+            ///////////////////////////////////////////////////////////////////////
+            updateDataTypeParam(checkboxes);
         });
     });
 
