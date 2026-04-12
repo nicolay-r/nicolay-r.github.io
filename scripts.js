@@ -382,7 +382,9 @@ function formatMarkdown(text) {
     
     // Convert markdown links [text](url) to HTML
     text = text.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank">$1</a>');
-    
+
+    text = text.replace(/\p{Extended_Pictographic}/gu, '<span class="mono-emoji">$&</span>');
+
     return text;
 }
 

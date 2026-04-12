@@ -4,6 +4,15 @@ html {
     scroll-behavior: smooth;
 }
 
+.mono-emoji {
+    font-family: initial;
+    color: gray;
+    background-image: none;
+    -webkit-text-fill-color: initial;
+    filter: grayscale(1);
+    opacity: 1.0;
+}
+
 /* We use these variables in the mobile mode */
 :root {
     --target-outline: 3px solid rgba(255, 99, 71, 0.8);
