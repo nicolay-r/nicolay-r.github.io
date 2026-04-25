@@ -470,6 +470,23 @@ function refreshAllCardActionAccents() {
 
 window.matchMedia('(max-width: 600px)').addEventListener('change', refreshAllCardActionAccents);
 
+function stripTextEmojis(s) {
+    if (s == null || s === '') {
+        return s;
+    }
+    return (
+        s
+            // Most emoji and pictographs (UAX #14).
+            .replace(/\p{Extended_Pictographic}/gu, '')
+            // Skin-tone modifiers, etc. (U+1F3FB–1F3FF), when not removed by the above.
+            .replace(/\p{Emoji_Modifier}/gu, '')
+            // Regional indicators (e.g. flag pairs).
+            .replace(/[\u{1F1E6}-\u{1F1FF}]{2}/g, '')
+            // Variation selector, ZWJ, ZW space (common in emoji sequences).
+            .replace(/[\uFE0F\u200D\uFE0E\u200B]/g, '')
+    );
+}
+
 function initializeCardActions() {
     const actionBlocks = document.querySelectorAll('.auto-card-actions');
 
@@ -513,10 +530,9 @@ function initializeCardActions() {
 
             if (!el.querySelector('.card-action-icon')) {
 
-                const normalizedText = el.textContent
+                const normalizedText = stripTextEmojis(el.textContent)
                     .trim()
                     .toLowerCase()
-                    .replace(/\p{Extended_Pictographic}/gu, '')
                     .replace(/^[^\p{L}\p{N}]+/gu, '')
                     .replace(/\s*\([^)]*\)\s*/g, ' ')
                     .replace(/\s+/g, ' ')
