@@ -4,6 +4,10 @@
     background-color: #fff1b8;
 }
 
+.tab-header-ai[hidden] {
+    display: none;
+}
+
 .tab-header.tab-header-ai:hover {
     color: #5f3d00;
     background-color: #f4c542;
