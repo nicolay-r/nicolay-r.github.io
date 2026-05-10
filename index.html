@@ -3,6 +3,7 @@
     <style type="text/css" id="dark-mode-custom-style"></style>
 <head>
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles-assistant.css">
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="generator" content="HTML Tidy for Linux/x86 (vers 11 February 2007), see www.w3.org">
@@ -62,11 +63,35 @@
 
         <!-- Research -->
         <div class="tab-ribbon">
+            <h3 class="tab-header tab-header-ai" data-tab="ai" hidden>AI</h3>
             <h3 class="tab-header active" data-tab="professional">ABOUT</h3>
             <h3 class="tab-header" data-tab="news">NEWS</h3>
             <h3 class="tab-header tab-header-image" data-tab="athletics" title="ATHLETICS" aria-label="ATHLETICS">
                 <img src="website/images/runner.png" alt="ATHLETICS" class="tab-header-icon">
             </h3>
+        </div>
+        <div id="ai-content" class="tab-content" style="display: none;">
+            <section class="ai-chat-panel" aria-label="AI assistant">
+                <div class="ai-chat-intro">
+                    <span class="ai-chat-kicker">AI Assistant</span>
+                    <h2>Ask about Nicolay's work</h2>
+                    <p>
+                        Use this space to draft a quick question about research, projects, papers, or collaboration ideas.
+                    </p>
+                </div>
+                <div class="ai-chat-messages" id="ai-chat-messages" aria-live="polite">
+                    <div class="ai-chat-message ai-chat-message-assistant">
+                        Hi, I can help navigate this profile. What would you like to know?
+                    </div>
+                </div>
+                <form class="ai-chat-form" id="ai-chat-form">
+                    <label class="ai-chat-label" for="ai-chat-input">Message</label>
+                    <textarea id="ai-chat-input" rows="4" placeholder="Ask about papers, projects, talks..." required></textarea>
+                    <button type="submit" class="ai-chat-send" aria-label="Send message">
+                        <i class="fa fa-paper-plane" aria-hidden="true"></i>
+                    </button>
+                </form>
+            </section>
         </div>
         <div id="news-content" class="tab-content" style="display: none;">
             <div id="news-container">

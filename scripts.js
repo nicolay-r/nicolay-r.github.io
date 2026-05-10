@@ -82,6 +82,10 @@ function initializeTabRibbon() {
     
     tabHeaders.forEach(function(header) {
         header.addEventListener('click', function() {
+            if (this.hidden) {
+                return;
+            }
+
             // Remove active class from all tab headers
             tabHeaders.forEach(h => h.classList.remove('active'));
             
@@ -139,14 +143,74 @@ function initializeTabRibbon() {
 
     // Setup the initial tab.
     const currentUrl = new URL(window.location.href);
-    const tabName =currentUrl.searchParams.get('tab');
+    const tabName = currentUrl.searchParams.get('tab');
+    const availableTabHeaders = Array.from(tabHeaders).filter(header => !header.hidden);
+    const defaultHeader = availableTabHeaders.find(header => header.getAttribute('data-tab') === 'professional');
     if (tabName) {
-        const tabIndex = Array.from(tabHeaders).findIndex(header => header.getAttribute('data-tab') === tabName);
-        tabHeaders[tabIndex].click();
+        const selectedHeader = availableTabHeaders.find(header => header.getAttribute('data-tab') === tabName);
+        (selectedHeader || defaultHeader || availableTabHeaders[0]).click();
     }
     else {
-        tabHeaders[0].click();
+        (defaultHeader || availableTabHeaders[0]).click();
     }
+}
+
+function initializeAiTabAvailability() {
+    const aiHeader = document.querySelector('.tab-header-ai[data-tab="ai"]');
+    if (!aiHeader || !window.fetch) {
+        return Promise.resolve();
+    }
+
+    aiHeader.hidden = true;
+
+    const controller = window.AbortController ? new AbortController() : null;
+    const timeoutId = controller ? window.setTimeout(function() {
+        controller.abort();
+    }, 2500) : null;
+
+    return fetch('https://ai.nicolayr.com/', {
+        cache: 'no-store',
+        signal: controller ? controller.signal : undefined,
+    })
+        .then(function(response) {
+            aiHeader.hidden = response.status === 502;
+        })
+        .catch(function() {
+            aiHeader.hidden = true;
+        })
+        .finally(function() {
+            if (timeoutId) {
+                window.clearTimeout(timeoutId);
+            }
+        });
+}
+
+function initializeAiChatForm() {
+    const form = document.getElementById('ai-chat-form');
+    const input = document.getElementById('ai-chat-input');
+    const messages = document.getElementById('ai-chat-messages');
+
+    if (!form || !input || !messages) {
+        return;
+    }
+
+    form.addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const text = input.value.trim();
+        if (!text) {
+            return;
+        }
+
+        const userMessage = document.createElement('div');
+        userMessage.className = 'ai-chat-message ai-chat-message-user';
+        userMessage.textContent = text;
+        messages.appendChild(userMessage);
+
+        input.value = '';
+        input.focus();
+        messages.scrollTop = messages.scrollHeight;
+    });
 }
 
 function loadNewsContent() {
@@ -607,7 +671,9 @@ function shareRow(event) {
     }
 }
 
-
-initializeTabRibbon();
+initializeAiTabAvailability().finally(function() {
+    initializeTabRibbon();
+});
+initializeAiChatForm();
 initializeCardActions();
 loadNewsContent();
