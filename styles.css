@@ -297,6 +297,8 @@ div[id="card-content"] {
     display: inline-block;
     cursor: pointer;
     user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    tap-highlight-color: transparent;
 }
 
 .tab-header-image {
@@ -312,6 +314,11 @@ div[id="card-content"] {
     object-fit: contain;
     opacity: 0.58;
     transform: translateY(2px);
+}
+
+.tab-header:focus,
+.tab-header:active {
+    outline: none;
 }
 
 .tab-header:hover {
