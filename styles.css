@@ -87,6 +87,19 @@ papertitle {
   display: none;
 }
 
+@media screen and (max-width: 600px) {
+  .hover-label,
+  label,
+  .news-row {
+    transition: none;
+  }
+
+  .share-button,
+  .youtube-button {
+    transition: transform 0.2s ease;
+  }
+}
+
 /* When hovering */
 .hover-label:hover {
   background-color: #007BFF;
@@ -283,7 +296,6 @@ div[id="card-content"] {
     position: relative;
     display: inline-block;
     cursor: pointer;
-    transition: all 0.3s ease;
     user-select: none;
 }
 
