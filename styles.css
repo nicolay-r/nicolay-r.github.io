@@ -324,7 +324,6 @@ div[id="card-content"] {
 .tab-header:hover {
     background-color: #e9ecef;
     color: #495057;
-    transform: translateY(-1px);
 }
 
 .tab-header.active {
