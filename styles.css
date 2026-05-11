@@ -353,69 +353,6 @@ div[id="card-content"] {
     z-index: 0;
 }
 
-/* News Content Styles */
-.news-content {
-    max-width: 650px;
-    margin: 0 auto;
-    font-family: 'Lato', Verdana, Helvetica, sans-serif;
-}
-
-.news-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 0 auto;
-    margin-top: -1px;
-    position: relative;
-    z-index: 0;
-}
-
-.news-row {
-    transition: background-color 0.3s ease;
-}
-
-.news-row:hover {
-    background-color: #f8f9fa;
-}
-
-.news-row:nth-child(even) {
-    background-color: #fefefe;
-}
-
-.news-row:nth-child(even):hover {
-    background-color: #f0f0f0;
-}
-
-.news-cell {
-    padding: 6px 12px;
-    font-size: 14px;
-    line-height: 1.4;
-    color: #495057;
-    border-bottom: 1px solid #f0f0f0;
-    vertical-align: top;
-}
-
-.news-cell:last-child {
-    border-bottom: none;
-}
-
-/* News table column widths */
-.news-date-cell {
-    width: 100px;
-    color: #6c757d;
-    border-bottom: 1px solid #f0f0f0;
-    text-align: right;
-}
-
-.news-content-cell {
-    color: #495057;
-    border-bottom: 1px solid #f0f0f0;
-}
-
-/* Slight gray background for first 5 news entries */
-.news-highlight-row {
-    background-color: #f8f9fa !important;
-}
-
 .gray-table-cell {
     border: 1px solid #f6f6f6;
     padding: 6px 12px;

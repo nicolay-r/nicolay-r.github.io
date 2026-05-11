@@ -120,6 +120,9 @@ function initializeTabRibbon() {
             if (selectedTab === 'athletics') {
                 loadAthleticsContent();
             }
+            if (selectedTab === 'news') {
+                loadNewsContent();
+            }
 
             var checkboxes = getFilterCheckboxes();
 
@@ -215,8 +218,12 @@ function initializeAiChatForm() {
 
 function loadNewsContent() {
     const newsContainer = document.getElementById('news-container');
+    if (!newsContainer) {
+        return;
+    }
     
     if (!newsContainer.innerHTML.includes('Loading news content...')) {
+        initializeNewsYearFilter();
         return; // Content already loaded
     }
     
@@ -231,6 +238,7 @@ function loadNewsContent() {
             // Parse the text content and format it as HTML
             const formattedContent = formatNewsContent(text);
             newsContainer.innerHTML = formattedContent;
+            initializeNewsYearFilter();
         })
         .catch(error => {
             console.error('Error loading news content:', error);
@@ -300,10 +308,12 @@ function formatNewsContent(text) {
         }
 
         // Parse date and content from the line
-        const { date, content } = parseNewsLine(line);
+        const { date, content, dateString, year } = parseNewsLine(line);
+        const newsDateAttribute = dateString ? ` data-news-date="${dateString}"` : '';
+        const newsYearAttribute = Number.isInteger(year) ? ` data-news-year="${year}"` : '';
 
         // Create a table row with two columns
-        html += `<tr class="${rowClass}">`;
+        html += `<tr class="${rowClass}"${newsDateAttribute}${newsYearAttribute}>`;
         html += `<td class="${dateCellClass}">${date}</td>`;
         html += `<td class="${contentCellClass}">${formatMarkdown(content)}</td>`;
         html += '</tr>';
@@ -315,6 +325,148 @@ function formatNewsContent(text) {
     html += '</table>';
     html += '</div>';
     return html;
+}
+
+function initializeNewsYearFilter() {
+    const filter = document.getElementById('news-year-filter');
+    const minInput = document.getElementById('news-year-min');
+    const maxInput = document.getElementById('news-year-max');
+    const range = document.getElementById('news-year-range');
+    const minLabel = document.getElementById('news-year-min-label');
+    const maxLabel = document.getElementById('news-year-max-label');
+    const summary = document.getElementById('news-year-filter-summary');
+
+    if (!filter || !minInput || !maxInput || !range || !minLabel || !maxLabel || !summary) {
+        return;
+    }
+
+    const rows = Array.from(document.querySelectorAll('#news-container .news-row[data-news-year]'));
+    const years = rows
+        .map(row => parseInt(row.dataset.newsYear, 10))
+        .filter(year => Number.isInteger(year));
+
+    if (years.length === 0) {
+        filter.hidden = true;
+        return;
+    }
+
+    const earliestYear = Math.min(...years);
+    const latestYear = Math.max(...years);
+    const wasInitialized = filter.dataset.initialized === 'true';
+    const previousMinYear = parseInt(minInput.value, 10);
+    const previousMaxYear = parseInt(maxInput.value, 10);
+
+    [minInput, maxInput].forEach(input => {
+        input.min = earliestYear;
+        input.max = latestYear;
+        input.step = 1;
+        input.disabled = earliestYear === latestYear;
+    });
+
+    minInput.value = wasInitialized && Number.isInteger(previousMinYear)
+        ? clampYear(previousMinYear, earliestYear, latestYear)
+        : earliestYear;
+    maxInput.value = wasInitialized && Number.isInteger(previousMaxYear)
+        ? clampYear(previousMaxYear, earliestYear, latestYear)
+        : latestYear;
+
+    filter.dataset.earliestYear = earliestYear;
+    filter.dataset.latestYear = latestYear;
+    filter.dataset.initialized = 'true';
+    filter.hidden = false;
+
+    if (filter.dataset.listenersBound !== 'true') {
+        [minInput, maxInput].forEach(input => {
+            input.addEventListener('input', function() {
+                setActiveNewsYearSlider(input);
+                applyNewsYearFilter();
+            });
+            input.addEventListener('focus', function() {
+                setActiveNewsYearSlider(input);
+            });
+            input.addEventListener('pointerdown', function() {
+                setActiveNewsYearSlider(input);
+            });
+        });
+        filter.dataset.listenersBound = 'true';
+    }
+
+    applyNewsYearFilter();
+}
+
+function clampYear(year, earliestYear, latestYear) {
+    return Math.min(Math.max(year, earliestYear), latestYear);
+}
+
+function setActiveNewsYearSlider(activeInput) {
+    const minInput = document.getElementById('news-year-min');
+    const maxInput = document.getElementById('news-year-max');
+    if (!minInput || !maxInput) {
+        return;
+    }
+
+    minInput.classList.toggle('is-active', activeInput === minInput);
+    maxInput.classList.toggle('is-active', activeInput === maxInput);
+}
+
+function applyNewsYearFilter() {
+    const filter = document.getElementById('news-year-filter');
+    const minInput = document.getElementById('news-year-min');
+    const maxInput = document.getElementById('news-year-max');
+    const range = document.getElementById('news-year-range');
+    const minLabel = document.getElementById('news-year-min-label');
+    const maxLabel = document.getElementById('news-year-max-label');
+    const summary = document.getElementById('news-year-filter-summary');
+
+    if (!filter || !minInput || !maxInput || !range || !minLabel || !maxLabel || !summary) {
+        return;
+    }
+
+    const earliestYear = parseInt(filter.dataset.earliestYear, 10);
+    const latestYear = parseInt(filter.dataset.latestYear, 10);
+    if (!Number.isInteger(earliestYear) || !Number.isInteger(latestYear)) {
+        return;
+    }
+
+    let selectedEarliestYear = parseInt(minInput.value, 10);
+    let selectedLatestYear = parseInt(maxInput.value, 10);
+
+    if (selectedEarliestYear > selectedLatestYear) {
+        if (document.activeElement === minInput) {
+            selectedLatestYear = selectedEarliestYear;
+            maxInput.value = selectedLatestYear;
+        } else {
+            selectedEarliestYear = selectedLatestYear;
+            minInput.value = selectedEarliestYear;
+        }
+    }
+
+    minLabel.textContent = selectedEarliestYear;
+    maxLabel.textContent = selectedLatestYear;
+
+    const rows = Array.from(document.querySelectorAll('#news-container .news-row'));
+    let visibleCount = 0;
+    rows.forEach(row => {
+        const rowYear = parseInt(row.dataset.newsYear, 10);
+        const shouldShow = !Number.isInteger(rowYear)
+            || (rowYear >= selectedEarliestYear && rowYear <= selectedLatestYear);
+
+        row.style.display = shouldShow ? '' : 'none';
+        if (shouldShow) {
+            visibleCount++;
+        }
+    });
+
+    const yearSpan = latestYear - earliestYear || 1;
+    const startPercent = ((selectedEarliestYear - earliestYear) / yearSpan) * 100;
+    const endPercent = ((selectedLatestYear - earliestYear) / yearSpan) * 100;
+    range.style.setProperty('--range-start', `${startPercent}%`);
+    range.style.setProperty('--range-end', `${endPercent}%`);
+
+    const itemWord = visibleCount === 1 ? 'item' : 'items';
+    summary.textContent = selectedEarliestYear === earliestYear && selectedLatestYear === latestYear
+        ? `Showing all news (${visibleCount} ${itemWord})`
+        : `Showing ${visibleCount} news ${itemWord} from ${selectedEarliestYear}-${selectedLatestYear}`;
 }
 
 function getDateColor(dateString) {
@@ -371,13 +523,17 @@ function parseNewsLine(line) {
         
         return {
             date: `<span style="color: ${dateColor};">${relativeTime}<br><small>${formattedDate}</small></span>`,
-            content: match[2] // rest of the content
+            content: match[2], // rest of the content
+            dateString: dateString,
+            year: parseInt(dateString.split('/')[2], 10)
         };
     } else {
         // If no date found, return empty date and full content
         return {
             date: '',
-            content: content
+            content: content,
+            dateString: '',
+            year: null
         };
     }
 }

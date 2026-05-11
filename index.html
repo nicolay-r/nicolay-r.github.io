@@ -3,6 +3,7 @@
     <style type="text/css" id="dark-mode-custom-style"></style>
 <head>
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles-news.css">
   <link rel="stylesheet" href="styles-assistant.css">
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -94,6 +95,17 @@
             </section>
         </div>
         <div id="news-content" class="tab-content" style="display: none;">
+            <div id="news-year-filter" class="news-year-filter" hidden>
+                <div class="news-year-filter-labels">
+                    <span>Earliest <strong id="news-year-min-label"></strong></span>
+                    <span>Latest <strong id="news-year-max-label"></strong></span>
+                </div>
+                <div id="news-year-range" class="news-year-range">
+                    <input type="range" id="news-year-min" class="news-year-slider" aria-label="Earliest news year">
+                    <input type="range" id="news-year-max" class="news-year-slider" aria-label="Latest news year">
+                </div>
+                <div id="news-year-filter-summary" class="news-year-filter-summary"></div>
+            </div>
             <div id="news-container">
                 <p align="center" style="color: #6c757d; font-style: italic;">
                     Loading news content...
