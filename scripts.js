@@ -301,11 +301,6 @@ function formatNewsContent(text) {
         let rowClass = 'news-row';
         let dateCellClass = 'news-date-cell';
         let contentCellClass = 'news-content-cell';
-        
-        // Apply slight gray background to first 5 entries
-        if (rowCount < 5) {
-            rowClass += ' news-highlight-row';
-        }
 
         // Parse date and content from the line
         const { date, content, dateString, year } = parseNewsLine(line);
