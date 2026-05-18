@@ -20,7 +20,8 @@ html {
     --target-transition: outline 0.3s ease, box-shadow 0.3s ease;
 }
 
-tr:target {
+tr:target,
+tr.shared-row-highlight {
         outline: var(--target-outline);  /* Softer red-orange frame */
         box-shadow: var(--target-shadow);  /* Soft shadow */
         transition: var(--target-transition); /* Smooth transition */

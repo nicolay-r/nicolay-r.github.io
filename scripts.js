@@ -787,10 +787,20 @@ function shareRow(event) {
 
     const dataType = tbody ? tbody.getAttribute('data-type') : null;
 
-    // Modify URL.
+    // Build a shareable URL using a query parameter (?id=...) instead of a hash (#...).
+    // Hash fragments are never sent to the server, so social-media crawlers (OG/Twitter,
+    // LinkedIn, Telegram, etc.) cannot tell rows apart and end up rendering the same
+    // preview image for every shared link. Using a regular query parameter lets the
+    // backend / pre-render layer serve a per-row image based on the `id` value.
     let currentUrl = new URL(window.location.href);
-    currentUrl.searchParams.set('data_type', dataType);
-    currentUrl.hash = row.id;
+    if (dataType) {
+        currentUrl.searchParams.set('data_type', dataType);
+    }
+    if (row && row.id) {
+        currentUrl.searchParams.set('id', row.id);
+    }
+    // Drop any legacy fragment so crawlers see a clean, distinct URL per row.
+    currentUrl.hash = '';
     const fullUrl = currentUrl.href;
     const shareText = `${fullUrl}`;
 
@@ -827,8 +837,33 @@ function shareRow(event) {
     }
 }
 
+function scrollToSharedRow() {
+    const params = new URL(window.location.href).searchParams;
+    const targetId = params.get('id');
+    if (!targetId) {
+        return;
+    }
+
+    const row = document.getElementById(targetId);
+    if (!row) {
+        return;
+    }
+
+    // Make sure the row is visible (its tab/data_type filter should already be
+    // applied by initializeTabRibbon, but guard against the row being hidden).
+    if (row.offsetParent === null) {
+        return;
+    }
+
+    row.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+    // Brief highlight so the user can spot the linked row.
+    row.classList.add('shared-row-highlight');
+}
+
 initializeAiTabAvailability().finally(function() {
     initializeTabRibbon();
+    scrollToSharedRow();
 });
 initializeAiChatForm();
 initializeCardActions();
