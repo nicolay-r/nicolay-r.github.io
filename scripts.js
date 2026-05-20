@@ -782,21 +782,26 @@ function shareRow(event) {
 
     const dataType = tbody ? tbody.getAttribute('data-type') : null;
 
-    // Build a shareable URL using a query parameter (?id=...) instead of a hash (#...).
-    // Hash fragments are never sent to the server, so social-media crawlers (OG/Twitter,
-    // LinkedIn, Telegram, etc.) cannot tell rows apart and end up rendering the same
-    // preview image for every shared link. Using a regular query parameter lets the
-    // backend / pre-render layer serve a per-row image based on the `id` value.
-    let currentUrl = new URL(window.location.href);
-    if (dataType) {
-        currentUrl.searchParams.set('data_type', dataType);
-    }
+    // Prefer a pre-rendered share stub at /share/<id>.html: it carries per-row
+    // Open Graph / Twitter Card meta tags (title, description, image) so social
+    // crawlers can build a distinct preview per shared item. The stub redirects
+    // humans back to the canonical URL (with tab / data_type / id and any
+    // extra query parameters preserved) once JS executes.
+    let fullUrl;
     if (row && row.id) {
-        currentUrl.searchParams.set('id', row.id);
+        const stubUrl = new URL(`/share/${row.id}.html`, window.location.origin);
+        fullUrl = stubUrl.href;
+    } else {
+        // Fallback for rows without a stable id (e.g. dynamic athletics rows):
+        // share the canonical homepage URL with the current data_type so the
+        // homepage at least scrolls to the right section.
+        const currentUrl = new URL(window.location.href);
+        if (dataType) {
+            currentUrl.searchParams.set('data_type', dataType);
+        }
+        currentUrl.hash = '';
+        fullUrl = currentUrl.href;
     }
-    // Drop any legacy fragment so crawlers see a clean, distinct URL per row.
-    currentUrl.hash = '';
-    const fullUrl = currentUrl.href;
     const shareText = `${fullUrl}`;
 
     // Adopt WebShare API.
