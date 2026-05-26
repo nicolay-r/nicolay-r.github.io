@@ -159,18 +159,24 @@
         font-size: 16px;
     }
 
-    /* Fix target highlighting for mobile card layout - references styles.css */
+    /* Highlight the whole mobile card (tbody) rather than the inner row,
+       so the red frame hugs the card shape instead of wrapping the inner
+       content with 15px padding offsets. Covers both :target (URL hash)
+       and .shared-row-highlight (added by scripts.js after share). */
     tbody[data-type]:target,
-    tbody[data-type]:has(tr:target) {
-        /* Use the same target styles from styles.css */
+    tbody[data-type]:has(tr:target),
+    tbody[data-type]:has(tr.shared-row-highlight) {
         outline: var(--target-outline);
+        outline-offset: -1px;
         box-shadow: var(--target-shadow), 0 4px 12px rgba(0, 0, 0, 0.15);
         transform: translateY(-2px);
         transition: var(--target-transition), transform 0.3s ease;
     }
 
-    /* Remove outline from tr to prevent conflicts */
-    tbody[data-type] tr:target {
+    /* Suppress the inner-row outline so it does not double up inside the card. */
+    tbody[data-type] tr:target,
+    tbody[data-type] tr.shared-row-highlight {
         outline: none;
+        box-shadow: none;
     }
 }
