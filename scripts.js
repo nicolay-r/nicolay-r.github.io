@@ -77,7 +77,41 @@ function initializerTableFilters() {
 }
 initializerTableFilters();
 
+function normalizeUrlFromRowId() {
+    if (!window.history || !window.history.replaceState) return;
+
+    const url = new URL(window.location.href);
+    const rowId = url.searchParams.get('id');
+    if (!rowId) return;
+
+    const row = document.getElementById(rowId);
+    if (!row) return;
+
+    const tbody = row.closest('tbody[data-type]');
+    const tabContent = row.closest('.tab-content');
+    if (!tbody || !tabContent || !tabContent.id.endsWith('-content')) return;
+
+    const resolvedDataType = tbody.getAttribute('data-type');
+    const resolvedTab = tabContent.id.slice(0, -'-content'.length);
+    if (!resolvedDataType || !resolvedTab) return;
+
+    let changed = false;
+    if (url.searchParams.get('tab') !== resolvedTab) {
+        url.searchParams.set('tab', resolvedTab);
+        changed = true;
+    }
+    if (url.searchParams.get('data_type') !== resolvedDataType) {
+        url.searchParams.set('data_type', resolvedDataType);
+        changed = true;
+    }
+    if (changed) {
+        window.history.replaceState(null, '', url.href);
+    }
+}
+
 function initializeTabRibbon() {
+    normalizeUrlFromRowId();
+
     const tabHeaders = document.querySelectorAll('.tab-header');
     
     tabHeaders.forEach(function(header) {
