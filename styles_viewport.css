@@ -179,4 +179,46 @@
         outline: none;
         box-shadow: none;
     }
+
+    /* GitHub-style repo card inside mobile project cards: stack the logo on
+       top of the content column so the action-links grid has the full card
+       width to breathe. */
+    tbody.project-card-github .gh-repo-card {
+        flex-direction: column;
+        padding: 12px;
+        gap: 10px;
+    }
+
+    tbody.project-card-github .gh-repo-card .gh-repo-card-logo {
+        flex: 0 0 auto;
+        align-self: center;
+    }
+
+    tbody.project-card-github .gh-repo-card .gh-repo-card-logo img {
+        max-width: 160px;
+        max-height: 90px;
+    }
+
+    tbody.project-card-github .gh-repo-card .gh-repo-card-main {
+        gap: 8px;
+    }
+
+    tbody.project-card-github .gh-repo-card .gh-repo-card-link i {
+        font-size: 18px;
+    }
+
+    tbody.project-card-github .gh-repo-card .gh-repo-card-slug {
+        font-size: 13px;
+    }
+
+    tbody.project-card-github .gh-repo-card .gh-repo-card-meta {
+        font-size: 13px;
+        gap: 6px 14px;
+    }
+
+    /* The action-links block is also a .card-actions grid on mobile; tighten
+       its margin so it doesn't add extra space inside the new repo card. */
+    tbody.project-card-github .gh-repo-card .gh-repo-card-actions.card-actions {
+        margin-top: 0;
+    }
 }

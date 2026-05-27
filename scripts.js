@@ -895,10 +895,346 @@ function scrollToSharedRow() {
     row.classList.add('shared-row-highlight');
 }
 
+// ---------------------------------------------------------------------------
+// GitHub-style enrichment for project cards
+// ---------------------------------------------------------------------------
+// For every tbody[data-type="project"] that links to a github.com/<owner>/<repo>,
+// fetch live stars / forks / language from the GitHub REST API and render a
+// small repo footer at the bottom of #card-content. Results are cached in
+// localStorage to avoid hitting the unauthenticated rate limit (60 req/hr) on
+// repeated visits; a stale cache is shown immediately, then refreshed.
+
+const GH_CACHE_PREFIX = 'gh-repo-cache:';
+const GH_CACHE_TTL_MS = 6 * 60 * 60 * 1000;
+
+// Subset of github/linguist colors for the language dot. Falls back to gray.
+const GH_LANGUAGE_COLORS = {
+    'Python': '#3572A5',
+    'JavaScript': '#f1e05a',
+    'TypeScript': '#3178c6',
+    'Java': '#b07219',
+    'C++': '#f34b7d',
+    'C': '#555555',
+    'C#': '#178600',
+    'Go': '#00ADD8',
+    'Rust': '#dea584',
+    'Ruby': '#701516',
+    'Shell': '#89e051',
+    'HTML': '#e34c26',
+    'CSS': '#563d7c',
+    'Jupyter Notebook': '#DA5B0B',
+    'Dart': '#00B4AB',
+    'PHP': '#4F5D95',
+    'Kotlin': '#A97BFF',
+    'Swift': '#F05138',
+    'Scala': '#c22d40',
+    'R': '#198CE7',
+};
+
+// Routes / namespaces that look like /<owner>/<repo> but aren't real repos.
+const GH_NON_REPO_OWNERS = new Set([
+    'orgs', 'topics', 'marketplace', 'settings', 'about', 'pricing',
+    'features', 'security', 'enterprise', 'login', 'join', 'sponsors',
+    'collections', 'trending', 'explore', 'notifications',
+]);
+
+function getProjectGithubRepo(tbody) {
+    const anchors = tbody.querySelectorAll('a[href*="github.com"]');
+    for (let i = 0; i < anchors.length; i++) {
+        try {
+            const url = new URL(anchors[i].href);
+            if (url.hostname !== 'github.com') continue;
+            const parts = url.pathname.split('/').filter(Boolean);
+            if (parts.length < 2) continue;
+            const owner = parts[0];
+            const repo = parts[1];
+            if (GH_NON_REPO_OWNERS.has(owner.toLowerCase())) continue;
+            return { owner: owner, repo: repo };
+        } catch (err) {
+            // ignore malformed URLs
+        }
+    }
+    return null;
+}
+
+function formatCompactNumber(n) {
+    if (typeof n !== 'number' || !Number.isFinite(n)) return '0';
+    if (n >= 1000000) {
+        return (n / 1000000).toFixed(1).replace(/\.0$/, '') + 'M';
+    }
+    if (n >= 1000) {
+        const value = n / 1000;
+        const formatted = value >= 10 ? value.toFixed(0) : value.toFixed(1);
+        return formatted.replace(/\.0$/, '') + 'k';
+    }
+    return String(n);
+}
+
+function readGithubRepoCache(slug) {
+    try {
+        if (!window.localStorage) return null;
+        const raw = window.localStorage.getItem(GH_CACHE_PREFIX + slug);
+        if (!raw) return null;
+        const parsed = JSON.parse(raw);
+        if (!parsed || typeof parsed !== 'object') return null;
+        if (typeof parsed.fetchedAt !== 'number') return null;
+        if (Date.now() - parsed.fetchedAt > GH_CACHE_TTL_MS) return null;
+        return parsed;
+    } catch (err) {
+        return null;
+    }
+}
+
+function writeGithubRepoCache(slug, stats) {
+    try {
+        if (!window.localStorage) return;
+        const payload = Object.assign({}, stats, { fetchedAt: Date.now() });
+        window.localStorage.setItem(GH_CACHE_PREFIX + slug, JSON.stringify(payload));
+    } catch (err) {
+        // localStorage might be disabled (private mode); enrichment still works without cache.
+    }
+}
+
+// Strip the original papertitle anchor, author byline ("Nicolay Rusnachenko"),
+// and the violet/blue "(Framework)" / "(Github Repository)" tag from a project
+// card. Their information is now carried by the new GitHub header (slug) and
+// is otherwise redundant on every project. The papertitle's plain text is
+// returned so callers can fall back to it when a card has no separate
+// description paragraph (e.g. AREnets, whose description is the title).
+function stripLegacyProjectMetadata(cardContent) {
+    const removeWithLeadingBreak = (el) => {
+        if (!el || !el.parentNode) return;
+        let prev = el.previousSibling;
+        while (prev && prev.nodeType === Node.TEXT_NODE && !prev.textContent.trim()) {
+            const before = prev.previousSibling;
+            prev.remove();
+            prev = before;
+        }
+        if (prev && prev.nodeName === 'BR') prev.remove();
+        el.remove();
+    };
+
+    let papertitleText = '';
+    const papertitle = cardContent.querySelector('papertitle');
+    if (papertitle) {
+        papertitleText = papertitle.textContent.replace(/\s+/g, ' ').trim();
+        const titleAnchor = papertitle.closest('a');
+        removeWithLeadingBreak(titleAnchor || papertitle);
+    }
+
+    Array.from(cardContent.querySelectorAll('strong')).forEach(strong => {
+        if (/nicolay\s+rusnachenko/i.test(strong.textContent)) {
+            removeWithLeadingBreak(strong);
+        }
+    });
+
+    Array.from(cardContent.querySelectorAll('font')).forEach(font => {
+        removeWithLeadingBreak(font);
+    });
+
+    return papertitleText;
+}
+
+// The papertitle is only a useful fallback when it carries information beyond
+// the bare repo slug (e.g. "AREnets: Tensorflow-based framework of attentive
+// neural-network models..."). For plain "bulk-chain"-style titles we drop it
+// because the GitHub header already shows owner/repo.
+function papertitleAddsInfo(papertitleText, repoName) {
+    if (!papertitleText) return false;
+    const normalize = (s) => s.toLowerCase().replace(/[^a-z0-9]+/g, '');
+    return normalize(papertitleText) !== normalize(repoName || '');
+}
+
+// Collect every node sitting after the action-links block (or the start of
+// #card-content if there isn't one) — that's the description. Empty text and
+// leading <br>s are dropped so it can be wrapped in a clean container.
+function collectProjectDescription(cardContent, anchorNode) {
+    const fragment = document.createDocumentFragment();
+    let cursor = anchorNode ? anchorNode.nextSibling : cardContent.firstChild;
+
+    while (cursor) {
+        const next = cursor.nextSibling;
+        const isEmptyText = cursor.nodeType === Node.TEXT_NODE && !cursor.textContent.trim();
+        const isLeadingBreak = cursor.nodeName === 'BR' && fragment.childNodes.length === 0;
+        if (isEmptyText || isLeadingBreak) {
+            cursor.remove();
+        } else {
+            fragment.appendChild(cursor);
+        }
+        cursor = next;
+    }
+
+    return fragment;
+}
+
+// Build (idempotently) the GitHub-style repo card inside this project tbody.
+// Returns the .gh-repo-card-meta element where stars / forks / language are
+// rendered (or re-rendered when the API response arrives).
+function ensureProjectGithubCard(tbody, slug, repoName) {
+    let existing = tbody.querySelector('.gh-repo-card');
+    if (existing) {
+        return existing.querySelector('.gh-repo-card-meta');
+    }
+
+    const cardContent = tbody.querySelector('#card-content');
+    if (!cardContent) return null;
+
+    // Pull the action-link block out of the original layout so we can place
+    // it inside the new card body. The block was already enriched with icons
+    // by initializeCardActions() at this point, so we just move the node.
+    const actionsContainer = cardContent.querySelector('.auto-card-actions');
+
+    const papertitleText = stripLegacyProjectMetadata(cardContent);
+
+    const descriptionFragment = collectProjectDescription(cardContent, actionsContainer);
+    const hasInlineDescription = descriptionFragment.childNodes.length > 0;
+
+    // Move the project logo from its dedicated <td> into the new card, then
+    // hide that cell and let the content cell span the full row width. The
+    // original #card-logo node is kept (just display:none) so that existing
+    // selectors like `tbody[data-type]:has(#card-logo)` (mobile card frame)
+    // continue to match this row.
+    const logoTd = tbody.querySelector('#card-logo');
+    const logoImg = logoTd ? logoTd.querySelector('img') : null;
+    const contentTd = cardContent.closest('td');
+    if (logoTd && logoImg && contentTd && !logoTd.dataset.ghLogoMoved) {
+        logoTd.style.display = 'none';
+        logoTd.dataset.ghLogoMoved = 'true';
+        contentTd.setAttribute('colspan', '2');
+    }
+
+    // Everything we want to keep has been detached; safe to clear the host.
+    cardContent.innerHTML = '';
+
+    const card = document.createElement('div');
+    card.className = 'gh-repo-card';
+
+    if (logoImg) {
+        const logoWrap = document.createElement('div');
+        logoWrap.className = 'gh-repo-card-logo';
+        logoWrap.appendChild(logoImg);
+        card.appendChild(logoWrap);
+    }
+
+    const main = document.createElement('div');
+    main.className = 'gh-repo-card-main';
+
+    const header = document.createElement('div');
+    header.className = 'gh-repo-card-header';
+    header.innerHTML =
+        `<a class="gh-repo-card-link" href="https://github.com/${slug}" target="_blank" rel="noopener noreferrer">` +
+        `<i class="fa fa-github" aria-hidden="true"></i>` +
+        `<span class="gh-repo-card-slug">${slug}</span>` +
+        `</a>`;
+    main.appendChild(header);
+
+    const body = document.createElement('div');
+    body.className = 'gh-repo-card-body';
+
+    if (hasInlineDescription) {
+        const desc = document.createElement('div');
+        desc.className = 'gh-repo-card-desc';
+        desc.appendChild(descriptionFragment);
+        body.appendChild(desc);
+    } else if (papertitleAddsInfo(papertitleText, repoName)) {
+        const desc = document.createElement('div');
+        desc.className = 'gh-repo-card-desc';
+        desc.textContent = papertitleText;
+        body.appendChild(desc);
+    }
+
+    if (actionsContainer) {
+        actionsContainer.classList.add('gh-repo-card-actions');
+        body.appendChild(actionsContainer);
+    }
+
+    main.appendChild(body);
+
+    const meta = document.createElement('div');
+    meta.className = 'gh-repo-card-meta';
+    main.appendChild(meta);
+
+    card.appendChild(main);
+    cardContent.appendChild(card);
+
+    return meta;
+}
+
+function renderGithubMetaInto(meta, stats) {
+    meta.innerHTML = '';
+
+    if (stats.language) {
+        const lang = document.createElement('span');
+        lang.className = 'gh-stats-lang';
+        const dot = document.createElement('span');
+        dot.className = 'gh-stats-lang-dot';
+        dot.style.backgroundColor = GH_LANGUAGE_COLORS[stats.language] || '#959da5';
+        lang.appendChild(dot);
+        lang.appendChild(document.createTextNode(stats.language));
+        meta.appendChild(lang);
+    }
+
+    const starsValue = Number.isFinite(stats.stars) ? stats.stars : 0;
+    const stars = document.createElement('span');
+    stars.className = 'gh-stats-stat gh-stats-stars';
+    stars.title = `${starsValue} stars`;
+    stars.innerHTML =
+        `<i class="fa fa-star" aria-hidden="true"></i>` +
+        `<span>${formatCompactNumber(starsValue)}</span>`;
+    meta.appendChild(stars);
+
+    const forksValue = Number.isFinite(stats.forks) ? stats.forks : 0;
+    const forks = document.createElement('span');
+    forks.className = 'gh-stats-stat gh-stats-forks';
+    forks.title = `${forksValue} forks`;
+    forks.innerHTML =
+        `<i class="fa fa-code-fork" aria-hidden="true"></i>` +
+        `<span>${formatCompactNumber(forksValue)}</span>`;
+    meta.appendChild(forks);
+}
+
+function enrichProjectCardsWithGithubStats() {
+    if (!window.fetch) return;
+
+    document.querySelectorAll('tbody[data-type="project"]').forEach(tbody => {
+        const repo = getProjectGithubRepo(tbody);
+        if (!repo) return;
+
+        tbody.classList.add('project-card', 'project-card-github');
+
+        const slug = `${repo.owner}/${repo.repo}`;
+        const meta = ensureProjectGithubCard(tbody, slug, repo.repo);
+        if (!meta) return;
+
+        const cached = readGithubRepoCache(slug);
+        if (cached) {
+            renderGithubMetaInto(meta, cached);
+        }
+
+        fetch(`https://api.github.com/repos/${slug}`, {
+            cache: 'no-store',
+            headers: { 'Accept': 'application/vnd.github+json' },
+        })
+            .then(response => response.ok ? response.json() : null)
+            .then(data => {
+                if (!data) return;
+                const stats = {
+                    stars: data.stargazers_count,
+                    forks: data.forks_count,
+                    language: data.language,
+                };
+                writeGithubRepoCache(slug, stats);
+                renderGithubMetaInto(meta, stats);
+            })
+            .catch(() => { /* leave any cached render in place */ });
+    });
+}
+
 initializeAiTabAvailability().finally(function() {
     initializeTabRibbon();
     scrollToSharedRow();
 });
 initializeAiChatForm();
 initializeCardActions();
+enrichProjectCardsWithGithubStats();
 loadNewsContent();
