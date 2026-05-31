@@ -99,13 +99,15 @@ tbody.project-card-github #card-content {
     flex-direction: column;
     gap: 5px;
     color: #24292f;
-    line-height: 1.35;
+    /* Match default #card-content line spacing (e.g. presentation blurbs). */
+    line-height: normal;
 }
 
 .gh-repo-card .gh-repo-card-desc {
+    font-family: 'Lato', Verdana, Helvetica, sans-serif;
     font-size: 14px;
     color: #24292f;
-    line-height: 1.35;
+    line-height: normal;
 }
 
 .gh-repo-card .gh-repo-card-desc :where(br):first-child {
