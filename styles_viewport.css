@@ -203,17 +203,22 @@
         gap: 5px;
     }
 
+    tbody.project-card-github .gh-repo-card .gh-repo-card-header {
+        justify-content: center;
+    }
+
+    tbody.project-card-github .gh-repo-card .gh-repo-card-meta {
+        font-size: 13px;
+        gap: 6px 14px;
+        justify-content: center;
+    }
+
     tbody.project-card-github .gh-repo-card .gh-repo-card-link i {
         font-size: 18px;
     }
 
     tbody.project-card-github .gh-repo-card .gh-repo-card-slug {
         font-size: 13px;
-    }
-
-    tbody.project-card-github .gh-repo-card .gh-repo-card-meta {
-        font-size: 13px;
-        gap: 6px 14px;
     }
 
     /* The action-links block is also a .card-actions grid on mobile; tighten
