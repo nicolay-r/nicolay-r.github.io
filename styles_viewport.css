@@ -200,7 +200,7 @@
     }
 
     tbody.project-card-github .gh-repo-card .gh-repo-card-main {
-        gap: 8px;
+        gap: 5px;
     }
 
     tbody.project-card-github .gh-repo-card .gh-repo-card-link i {
