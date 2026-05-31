@@ -1,0 +1,162 @@
+/* ---------------------------------------------------------------------------
+   GitHub-style repo card for project entries (tbody[data-type="project"]).
+   Built by enrichProjectCardsWithGithubStats() in scripts.js — the original
+   #card-content (papertitle / "Nicolay Rusnachenko" byline / "(Framework)"
+   tag) is stripped, and the existing description + action links are moved
+   into a single bordered card with a github header at top and stars / forks
+   / language as a meta footer at the bottom. Mirrors the embedded repo card
+   pattern on wh1le.com's "Current Project" section.
+   --------------------------------------------------------------------------- */
+
+tbody.project-card-github #card-content {
+    width: 100%;
+    max-width: 100%;
+}
+
+.gh-repo-card {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    gap: 16px;
+    /* Center the card within the full-row cell and cap it so the inner
+       content area (≈ 540 - 110 logo - 16 gap - 32 padding - 2 border ≈
+       380 px) reads similar to the legacy 400 px #card-content used by
+       career / paper / presentation cards. */
+    max-width: 650px;
+    margin: 4px auto 2px;
+    padding: 14px 16px;
+    border: 1px solid #d0d7de;
+    border-radius: 8px;
+    background-color: #ffffff;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.gh-repo-card:hover {
+    border-color: #0969da;
+    box-shadow: 0 1px 6px rgba(9, 105, 218, 0.08);
+}
+
+.gh-repo-card .gh-repo-card-logo {
+    flex: 0 0 250px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.gh-repo-card .gh-repo-card-logo img {
+    max-width: 200px;
+    max-height: 110px;
+    /* Override the global `img { min-width: 270px }` rule in styles.css so
+       the logo can shrink down to fit inside the card. */
+    min-width: 0;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    display: block;
+}
+
+.gh-repo-card .gh-repo-card-main {
+    flex: 1 1 0;
+    /* Allow the main column to shrink below its intrinsic content width
+       (needed so long descriptions wrap correctly inside a flex item). */
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.gh-repo-card .gh-repo-card-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #eaeef2;
+}
+
+.gh-repo-card .gh-repo-card-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: #24292f;
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.15s ease;
+}
+
+.gh-repo-card .gh-repo-card-link:hover,
+.gh-repo-card .gh-repo-card-link:focus {
+    color: #0969da;
+    text-decoration: none;
+}
+
+.gh-repo-card .gh-repo-card-link i {
+    font-size: 20px;
+    line-height: 1;
+}
+
+.gh-repo-card .gh-repo-card-slug {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+    font-size: 14px;
+    letter-spacing: 0.2px;
+}
+
+.gh-repo-card .gh-repo-card-body {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    color: #24292f;
+    line-height: 1.5;
+}
+
+.gh-repo-card .gh-repo-card-desc {
+    font-size: 14px;
+    color: #24292f;
+}
+
+.gh-repo-card .gh-repo-card-desc :where(br):first-child {
+    display: none;
+}
+
+.gh-repo-card .gh-repo-card-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px 14px;
+    padding-top: 8px;
+    border-top: 1px solid #eaeef2;
+    font-size: 12px;
+    color: #57606a;
+}
+
+.gh-repo-card .gh-repo-card-meta:empty {
+    display: none;
+}
+
+.gh-repo-card .gh-stats-lang {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.gh-repo-card .gh-stats-lang-dot {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #959da5;
+    border: 1px solid rgba(27, 31, 36, 0.1);
+}
+
+.gh-repo-card .gh-stats-stat {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    color: #57606a;
+}
+
+.gh-repo-card .gh-stats-stat i {
+    font-size: 13px;
+}
+
+.gh-repo-card .gh-stats-stars i { color: #d4a72c; }
+.gh-repo-card .gh-stats-forks i { color: #57606a; }
