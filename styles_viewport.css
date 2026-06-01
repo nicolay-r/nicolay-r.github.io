@@ -125,6 +125,16 @@
         background-color: transparent !important;
     }
 
+    /* Representative project highlight: fill the mobile card frame (tbody). */
+    tbody[data-type="project"][data-highlight-bg] {
+        background-color: var(--project-highlight-bg) !important;
+    }
+
+    tbody[data-type="project"][data-highlight-bg] #card-content,
+    tbody.project-card-github[data-highlight-bg] .gh-repo-card {
+        background-color: transparent !important;
+    }
+
     tbody[data-type]:has(#card-logo) td {
         text-align: center;
     }

@@ -1193,8 +1193,32 @@ function renderGithubMetaInto(meta, stats) {
     meta.appendChild(forks);
 }
 
+// Move tr/tbody bgcolor onto the inner card frame (.gh-repo-card or #card-content)
+// on desktop; on mobile the framed card is the tbody itself (see styles_viewport.css).
+function applyProjectCardHighlights() {
+    document.querySelectorAll('tbody[data-type="project"]').forEach(tbody => {
+        const row = tbody.querySelector('tr');
+        if (!row) return;
+        const bg = row.getAttribute('bgcolor') || tbody.getAttribute('bgcolor');
+        if (!bg) return;
+
+        tbody.dataset.highlightBg = 'true';
+        tbody.style.setProperty('--project-highlight-bg', bg);
+
+        const inner = tbody.querySelector('.gh-repo-card') || tbody.querySelector('#card-content');
+        if (inner) {
+            inner.style.backgroundColor = bg;
+        }
+        row.removeAttribute('bgcolor');
+        tbody.removeAttribute('bgcolor');
+    });
+}
+
 function enrichProjectCardsWithGithubStats() {
-    if (!window.fetch) return;
+    if (!window.fetch) {
+        applyProjectCardHighlights();
+        return;
+    }
 
     document.querySelectorAll('tbody[data-type="project"]').forEach(tbody => {
         const repo = getProjectGithubRepo(tbody);
@@ -1228,6 +1252,8 @@ function enrichProjectCardsWithGithubStats() {
             })
             .catch(() => { /* leave any cached render in place */ });
     });
+
+    applyProjectCardHighlights();
 }
 
 initializeAiTabAvailability().finally(function() {
