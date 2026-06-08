@@ -637,108 +637,29 @@ function formatMarkdown(text) {
     return text;
 }
 
-function hexToRgb(hex) {
-    if (!hex || typeof hex !== 'string') {
-        return { r: 108, g: 117, b: 125 };
-    }
-    let h = hex.trim().replace('#', '');
-    if (h.length === 3) {
-        h = h.split('').map((c) => c + c).join('');
-    }
-    if (h.length !== 6 || !/^[0-9a-fA-F]+$/.test(h)) {
-        return { r: 108, g: 117, b: 125 };
-    }
-    return {
-        r: parseInt(h.slice(0, 2), 16),
-        g: parseInt(h.slice(2, 4), 16),
-        b: parseInt(h.slice(4, 6), 16),
-    };
-}
-
-function hexToRgba(hex, alpha) {
-    const { r, g, b } = hexToRgb(hex);
-    return `rgba(${r},${g},${b},${alpha})`;
-}
-
-function clearCardActionAccent(el) {
-    el.style.removeProperty('background');
-    el.style.removeProperty('border-color');
-    el.style.removeProperty('box-shadow');
-    el.style.removeProperty('color');
-    const iconWrap = el.querySelector('.card-action-icon');
-    if (iconWrap) {
-        iconWrap.style.removeProperty('color');
-    }
-}
-
-/** Tinted background/border from icon rule color (mobile card tiles only). */
-function applyCardActionAccent(el, accentHex, isShareButton) {
-
-    if (!window.matchMedia('(max-width: 600px)').matches) {
-        clearCardActionAccent(el);
-        return;
-    }
-
-    const { r, g, b } = hexToRgb(accentHex);
-    const clamp = (n) => Math.max(0, Math.min(255, Math.round(n)));
-    if (isShareButton) {
-        const rT = clamp(r * 1.12);
-        const gT = clamp(g * 1.12);
-        const bT = clamp(b * 1.12);
-        const rD = clamp(r * 0.82);
-        const gD = clamp(g * 0.82);
-        const bD = clamp(b * 0.82);
-        el.style.setProperty(
-            'background',
-            `linear-gradient(180deg, rgb(${rT},${gT},${bT}) 0%, rgb(${r},${g},${b}) 42%, rgb(${rD},${gD},${bD}) 100%)`,
-            'important'
-        );
-        el.style.setProperty('border-color', hexToRgba(accentHex, 0.45), 'important');
-        el.style.setProperty('box-shadow', `0 2px 10px ${hexToRgba(accentHex, 0.35)}`, 'important');
-    } else {
-        el.style.background = `radial-gradient(circle at center, ${hexToRgba(accentHex, 0.22)} 0%, ${hexToRgba(accentHex, 0.11)} 52%, ${hexToRgba(accentHex, 0.05)} 100%)`;
-        el.style.borderColor = hexToRgba(accentHex, 0.28);
-        el.style.color = accentHex;
-        const iconWrap = el.querySelector('.card-action-icon');
-        if (iconWrap) {
-            iconWrap.style.color = 'inherit';
-        }
-    }
-}
-
-function refreshAllCardActionAccents() {
-    document.querySelectorAll('.auto-card-actions[data-card-actions-ready="true"]').forEach(block => {
-        Array.from(block.querySelectorAll('a, button')).forEach(el => {
-            const accentHex = el.dataset.accent;
-            if (accentHex) {
-                applyCardActionAccent(el, accentHex, el.classList.contains('share-button'));
-            }
-        });
-    });
-}
-
-window.matchMedia('(max-width: 600px)').addEventListener('change', refreshAllCardActionAccents);
-
 function initializeCardActions() {
     const actionBlocks = document.querySelectorAll('.auto-card-actions');
 
+    /* Keyword → FontAwesome icon + brand-ish accent color. The tile
+       background/text is currently styled uniformly via styles_viewport.css
+       (hover-label look), so `color` is metadata kept here for reference
+       and potential future per-keyword theming. */
     const iconRules = [
         { keyword: 'bibtex', icon: 'fa-quote-left', color: '#8b0000' },
         { keyword: 'code', icon: 'fa-code', color: '#24292f' },           /* GitHub ink */
         { keyword: 'paper', icon: 'fa-file-text-o', color: '#1565c0' },   /* scholarly blue */
-        { keyword: 'arxiv', icon: 'fa-file-text-o', color: '#1565c0' },   /* scholarly blue */
-        { keyword: 'preprint', icon: 'fa-file-text-o', color: '#1565c0' },   /* scholarly blue */
-        { keyword: 'twitter', icon: 'fa-twitter', color: '#1d9bf0' },    /* X / Twitter */
+        { keyword: 'arxiv', icon: 'fa-file-text-o', color: '#1565c0' },
+        { keyword: 'preprint', icon: 'fa-file-text-o', color: '#1565c0' },
+        { keyword: 'twitter', icon: 'fa-twitter', color: '#1d9bf0' },     /* X / Twitter */
         { keyword: 'certificate', icon: 'fa-certificate', color: '#b8860b' },
         { keyword: 'poster', icon: 'fa-file-image-o', color: '#6b4fbb' },
-        { keyword: 'proceedings', icon: 'fa-book', color: '#5d4037' },    /* book / volume; matches FA style */
-        { keyword: 'model', icon: 'fa-cube', color: '#ff9d00' },         /* Hugging Face–style orange */
-        { keyword: 'colab', icon: 'fa-book', color: '#F9AB00' },         /* Google Colab–style amber */
+        { keyword: 'proceedings', icon: 'fa-book', color: '#5d4037' },    /* book / volume */
+        { keyword: 'model', icon: 'fa-cube', color: '#ff9d00' },          /* Hugging Face orange */
+        { keyword: 'colab', icon: 'fa-book', color: '#F9AB00' },          /* Google Colab amber */
         { keyword: 'notebook', icon: 'fa-book', color: '#F9AB00' },
-        { keyword: 'watch', icon: 'fa-play-circle', color: '#ff0000' },  /* YouTube red */
-        { keyword: 'share', icon: 'fa-share-alt', color: '#4DAAF5' },    /* matches .share-button */
+        { keyword: 'watch', icon: 'fa-play-circle', color: '#ff0000' },   /* YouTube red */
+        { keyword: 'share', icon: 'fa-share-alt', color: '#4DAAF5' },     /* matches .share-button */
     ];
-    const defaultLinkIconColor = '#6c757d';
 
     actionBlocks.forEach(block => {
         if (block.dataset.cardActionsReady === 'true') {
@@ -778,20 +699,18 @@ function initializeCardActions() {
                 const iconSpan = document.createElement('span');
                 iconSpan.className = 'card-action-icon';
 
-                const accentColor = matched ? matched.color : defaultLinkIconColor;
-
-                if (matched) {
-                    iconSpan.innerHTML = `<i class="fa ${matched.icon}" aria-hidden="true"></i>`;
-                    iconSpan.style.color = matched.color;
-                } else {
-                    iconSpan.innerHTML = '<i class="fa fa-external-link" aria-hidden="true"></i>';
-                    iconSpan.style.color = defaultLinkIconColor;
-                }
+                const iconClass = matched ? matched.icon : 'fa-external-link';
+                const accentColor = matched ? matched.color : '#6c757d';
+                iconSpan.innerHTML = `<i class="fa ${iconClass}" aria-hidden="true"></i>`;
 
                 el.appendChild(document.createTextNode(' '));
                 el.appendChild(iconSpan);
 
-                el.dataset.accent = accentColor;
+                /* Per-keyword accent color exposed to CSS. The mobile tile
+                   rule in styles_viewport.css consumes this via
+                   `background-color: color-mix(in srgb, var(--accent) ... )`
+                   so each tile gets a semi-transparent tint from the dict. */
+                el.style.setProperty('--accent', accentColor);
             }
 
             if (idx < actionElements.length - 1) {
@@ -804,8 +723,6 @@ function initializeCardActions() {
 
         block.dataset.cardActionsReady = 'true';
     });
-
-    refreshAllCardActionAccents();
 }
 
 function shareRow(event) {
