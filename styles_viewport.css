@@ -60,7 +60,8 @@
     }
 
     .card-actions .card-action-link,
-    .card-actions .card-action-button:not(.share-button) {
+    .card-actions .card-action-button,
+    .card-actions .share-button {
         display: inline-flex;
         flex-direction: column;
         align-items: center;
@@ -70,9 +71,12 @@
         width: 100%;
         min-width: 64px;
         aspect-ratio: 1.5;
+        box-sizing: border-box;
         padding: 8px 2px;
         font-size: 12px;
+        font-weight: inherit;
         color: #fff;
+        white-space: normal;
         background-color: color-mix(in srgb, var(--accent, #6c757d) 60%, transparent);
         text-decoration: none;
         border: none;
@@ -83,34 +87,11 @@
     /* Hover/focus: tile becomes fully solid in its accent color. */
     .card-actions .card-action-link:hover,
     .card-actions .card-action-link:focus-visible,
-    .card-actions .card-action-button:not(.share-button):hover,
-    .card-actions .card-action-button:not(.share-button):focus-visible {
+    .card-actions .card-action-button:hover,
+    .card-actions .card-action-button:focus-visible,
+    .card-actions .share-button:hover,
+    .card-actions .share-button:focus-visible {
         background-color: var(--accent, #6c757d);
-    }
-
-    /* Share button — restored to its original mobile tile look: a chunky
-       blue-gradient tile with stacked white icon + label, fully filling
-       the grid cell. The fixed gradient is the same one previously
-       computed at runtime from the #4DAAF5 accent. */
-    .card-actions .share-button {
-        display: inline-flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        line-height: 1.2;
-        gap: 6px;
-        width: 100%;
-        min-width: 64px;
-        aspect-ratio: 1 / 0.9;
-        padding: 8px 2px;
-        font-size: 12px;
-        font-weight: 700;
-        color: #fff;
-        background: linear-gradient(180deg, rgb(86, 190, 255) 0%, rgb(77, 170, 245) 42%, rgb(63, 139, 201) 100%);
-        border: 1px solid rgba(77, 170, 245, 0.45);
-        border-radius: 5px;
-        box-shadow: 0 2px 10px rgba(77, 170, 245, 0.35);
-        cursor: pointer;
     }
 
     .card-actions .card-action-icon {
