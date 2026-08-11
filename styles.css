@@ -406,3 +406,27 @@ img{
     font-family: 'Courier New', monospace;
     font-size: 12px;
 }
+
+/* Collapsed consecutive parkrun rows (same event) */
+tbody.running-row-collapsed {
+    display: none;
+}
+
+.running-expand-cell {
+    padding: 6px 0;
+}
+
+.running-expand-link {
+    border: none;
+    background: none;
+    padding: 0;
+    font-size: 12px;
+    color: #6c757d;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.running-expand-link:hover,
+.running-expand-link:focus-visible {
+    color: #495057;
+}

@@ -73,6 +73,19 @@ function getParkrunLocationCaption(eventName) {
     return eventName;
 }
 
+/** Series key for collapse grouping: parkrun Event, otherwise race Id. */
+function getRunningSeriesKey(data) {
+    const event = data.Event;
+    if (event != null && String(event).trim() !== '') {
+        return String(event);
+    }
+    const id = data.Id ?? data.id;
+    if (id != null && String(id).trim() !== '') {
+        return String(id);
+    }
+    return '';
+}
+
 /**
  * Converts one parsed JSON object (parkrun row or Type:"race") into a results-table tbody.
  * @param {object} data - Parsed JSON line from running results JSONL
@@ -154,8 +167,11 @@ function convertRunningJsonToHtml(data) {
         ? `<br/><small style="font-size: 0.85em; color: #6c757d;">${escapeHtml(formatRelativeTime(runDate))}</small>`
         : '';
 
+    const seriesKey = getRunningSeriesKey(data);
+    const seriesAttr = seriesKey ? ` data-event="${escapeHtml(seriesKey)}"` : '';
+
     return `
-                <tbody data-type="${escapeHtml(filterDataType)}">
+                <tbody data-type="${escapeHtml(filterDataType)}"${seriesAttr}>
                 <tr id="${escapeHtml(rowId)}" ${rowHighlight}>
                     <td valign="middle">
                         ${timeInnerHtml}
@@ -173,6 +189,48 @@ function convertRunningJsonToHtml(data) {
                     </td>
                 </tr>
                 </tbody>`;
+}
+
+function createRunningExpandRow({ groupId, hiddenCount, firstRow }) {
+    const tbody = document.createElement('tbody');
+    tbody.className = 'running-expand-row';
+    tbody.dataset.runningGroup = groupId;
+    tbody.dataset.type = firstRow.dataset.type;
+
+    const label = hiddenCount === 1
+        ? 'expand for 1 more'
+        : `expand for ${hiddenCount} more`;
+
+    tbody.innerHTML = `
+        <tr>
+            <td colspan="4" align="center" class="running-expand-cell">
+                <button type="button" class="running-expand-link" data-running-group="${escapeHtml(groupId)}">${escapeHtml(label)}</button>
+            </td>
+        </tr>`;
+    return tbody;
+}
+
+const RUNNING_RESULTS_COLLAPSE_OPTIONS = {
+    tableSelector: '.results-table',
+    rowSelector: 'tbody[data-type][data-event]',
+    collapsedClass: 'running-row-collapsed',
+    expandRowClass: 'running-expand-row',
+    expandLinkSelector: '.running-expand-link',
+    groupDataAttr: 'runningGroup',
+    groupIdPrefix: 'running-group-',
+    boundDataAttr: 'runningCollapseBound',
+    minGroupSize: 3,
+    isRowVisible: (row) => row.style.display !== 'none',
+    getSeriesKey: (row) => row.dataset.event,
+    createExpandRow: createRunningExpandRow,
+};
+
+function initRunningEventCollapse(table) {
+    initConsecutiveRowCollapse(table, RUNNING_RESULTS_COLLAPSE_OPTIONS);
+}
+
+function refreshRunningEventCollapse() {
+    refreshConsecutiveRowCollapse(RUNNING_RESULTS_COLLAPSE_OPTIONS);
 }
 
 /**

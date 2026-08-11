@@ -32,6 +32,10 @@ function applyFilterTable(checkboxStates) {
     rowsWithDataType.forEach(function(row) {
         row.style.display = checkboxStates[row.dataset.type] ? '' : 'none';
     });
+
+    if (typeof refreshRunningEventCollapse === 'function') {
+        refreshRunningEventCollapse();
+    }
 }
 
 const tabDefaultCheckbox = {

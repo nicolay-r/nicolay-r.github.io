@@ -2893,6 +2893,7 @@
   </table>
 
   <script src="scripts.js"></script>
+  <script src="scripts_row_collapse.js"></script>
   <script src="scripts_js2html.js"></script>
   <script src="scripts_sorting.js"></script>
   <script>
@@ -2908,6 +2909,8 @@
               // Sort the table by date after all batches are loaded
               console.log('All batches loaded, sorting table by date...');
               sortTableByDate(table);
+              initRunningEventCollapse(table);
+              applyFilterTable(getCheckboxCheckedStates(getFilterCheckboxes()));
           }
       }, 10);
   </script>
