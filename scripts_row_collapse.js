@@ -1,9 +1,11 @@
 /**
- * Domain-agnostic consecutive-row collapse for table tbody groups.
+ * Domain-agnostic consecutive-row collapse for table row groups.
  *
- * When N >= minGroupSize consecutive visible rows share the same series key,
- * keeps the first and last visible and hides N - 2 middle rows with an
- * expandable placeholder between them.
+ * When N >= minGroupSize consecutive visible rows share the same series key:
+ * - keepBoundaryRows true (default): keep first and last, hide N - 2 middle rows
+ * - keepBoundaryRows false: hide all rows in the group
+ *
+ * An expandable placeholder is inserted at the group boundary.
  */
 
 const collapseOptionsByTable = new WeakMap();
@@ -23,10 +25,11 @@ function collapseConsecutiveRows(table, options) {
         groupDataAttr,
         groupIdPrefix = 'collapse-group-',
         minGroupSize = 3,
+        keepBoundaryRows = true,
     } = options;
 
     table.querySelectorAll(`.${expandRowClass}`).forEach((row) => row.remove());
-    table.querySelectorAll(`tbody.${collapsedClass}`).forEach((row) => {
+    table.querySelectorAll(`.${collapsedClass}`).forEach((row) => {
         row.classList.remove(collapsedClass);
         delete row.dataset[groupDataAttr];
     });
@@ -46,26 +49,36 @@ function collapseConsecutiveRows(table, options) {
 
         const groupSize = j - i;
         if (groupSize >= minGroupSize) {
-            const hiddenCount = groupSize - 2;
             const groupId = `${groupIdPrefix}${groupIndex++}`;
             const firstRow = rows[i];
             const lastRow = rows[j - 1];
-
-            firstRow.dataset[groupDataAttr] = groupId;
-            lastRow.dataset[groupDataAttr] = groupId;
-
-            for (let k = i + 1; k < j - 1; k++) {
-                rows[k].classList.add(collapsedClass);
-                rows[k].dataset[groupDataAttr] = groupId;
-            }
-
-            firstRow.after(createExpandRow({
+            const hiddenCount = keepBoundaryRows ? groupSize - 2 : groupSize;
+            const expandRow = createExpandRow({
                 groupId,
                 hiddenCount,
-                seriesKey,
+                seriesKey: getSeriesKey(firstRow),
                 firstRow,
                 lastRow,
-            }));
+            });
+
+            if (keepBoundaryRows) {
+                firstRow.dataset[groupDataAttr] = groupId;
+                lastRow.dataset[groupDataAttr] = groupId;
+
+                for (let k = i + 1; k < j - 1; k++) {
+                    rows[k].classList.add(collapsedClass);
+                    rows[k].dataset[groupDataAttr] = groupId;
+                }
+
+                firstRow.after(expandRow);
+            } else {
+                for (let k = i; k < j; k++) {
+                    rows[k].classList.add(collapsedClass);
+                    rows[k].dataset[groupDataAttr] = groupId;
+                }
+
+                firstRow.before(expandRow);
+            }
         }
 
         i = j;
@@ -99,16 +112,16 @@ function handleConsecutiveRowExpandClick(event) {
         ? CSS.escape(groupId)
         : groupId.replace(/"/g, '\\"');
 
-    table.querySelectorAll(`tbody[${groupAttr}="${escapedGroupId}"].${collapsedClass}`)
+    table.querySelectorAll(`[${groupAttr}="${escapedGroupId}"].${collapsedClass}`)
         .forEach((row) => {
             row.classList.remove(collapsedClass);
             delete row.dataset[groupDataAttr];
         });
 
-    table.querySelectorAll(`tbody.${expandRowClass}[${groupAttr}="${escapedGroupId}"]`)
+    table.querySelectorAll(`.${expandRowClass}[${groupAttr}="${escapedGroupId}"]`)
         .forEach((row) => row.remove());
 
-    table.querySelectorAll(`tbody[${groupAttr}="${escapedGroupId}"]`)
+    table.querySelectorAll(`[${groupAttr}="${escapedGroupId}"]`)
         .forEach((row) => delete row.dataset[groupDataAttr]);
 }
 

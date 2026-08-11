@@ -258,6 +258,48 @@ div[id="card-content"] {
   text-align: left !important;
 }
 
+.career-kv-expand-row .running-expand-cell {
+  text-align: center !important;
+}
+
+.career-kv-details {
+  margin: 0;
+}
+
+.career-kv-details > summary {
+  list-style: none;
+  display: inline-block;
+}
+
+.career-kv-details > summary::-webkit-details-marker {
+  display: none;
+}
+
+.career-kv-details[open] > summary {
+  display: none;
+}
+
+.career-kv-details[open] .career-kv-table--nested {
+  margin-top: 0;
+}
+
+.card-read-more {
+  text-align: center;
+}
+
+.card-read-more-body {
+  text-align: left;
+  margin-top: 4px;
+}
+
+.career-kv-details.card-read-more[open] .card-read-more-body {
+  margin-top: 0;
+}
+
+.career-kv-table--nested {
+  margin-top: 4px;
+}
+
 /* Tab Ribbon Styles */
 .tab-ribbon {
     display: flex;
@@ -407,8 +449,8 @@ img{
     font-size: 12px;
 }
 
-/* Collapsed consecutive parkrun rows (same event) */
-tbody.running-row-collapsed {
+/* Collapsed consecutive rows (running results, career details, etc.) */
+.running-row-collapsed {
     display: none;
 }
 
