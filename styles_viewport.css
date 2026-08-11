@@ -136,7 +136,10 @@
     }
 
     tbody[data-type]:has(#card-logo) td {
+        display: block;
+        width: 100% !important;
         text-align: center;
+        box-sizing: border-box;
     }
 
     /* Center the logo in stack layout */
@@ -151,10 +154,13 @@
     
     .card-logo img, #card-logo img {
         max-width: 250px;
+        min-width: 0;
         width: auto;
         height: auto;
+        max-height: 120px;
         display: block;
         margin: 0 auto;
+        object-fit: contain;
     }
     
     /* Make content full width */

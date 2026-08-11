@@ -1,7 +1,9 @@
 
 #card-logo img {
     max-width: 200px;
+    min-width: 0;
     width: auto;
     height: auto;
+    max-height: 120px;
     object-fit: contain;
 }
