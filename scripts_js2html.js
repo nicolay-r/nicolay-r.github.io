@@ -38,9 +38,9 @@ function formatRelativeTime(dateString) {
         return `${prefix}${diffHours} hour${diffHours !== 1 ? 's' : ''}${suffix}`;
     } else if (diffDays < 7) {
         return `${prefix}${diffDays} day${diffDays !== 1 ? 's' : ''}${suffix}`;
-    } else if (diffWeeks < 4) {
+    } else if (diffDays < 30) {
         return `${prefix}${diffWeeks} week${diffWeeks !== 1 ? 's' : ''}${suffix}`;
-    } else if (diffMonths < 12) {
+    } else if (diffDays < 365) {
         return `${prefix}${diffMonths} month${diffMonths !== 1 ? 's' : ''}${suffix}`;
     } else {
         return `${prefix}${diffYears} year${diffYears !== 1 ? 's' : ''}${suffix}`;
