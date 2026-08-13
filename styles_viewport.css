@@ -38,6 +38,12 @@
         width: 100% !important;
         max-width: 100%;
     }
+
+    /* Card separation (same line as desktop) */
+    #professional-content tbody[data-type] + tbody[data-type] > tr > td {
+        border-top: 1px solid #e9ecef;
+        padding-top: 10px;
+    }
 }
 
 @media screen and (max-width: 500px) {
@@ -112,6 +118,18 @@
         border: 1px solid #cfd6de;
         background-color: #ffffff;
         overflow: hidden;
+    }
+
+    /* Separator between framed cards (not on inner logo/content cells) */
+    #professional-content tbody[data-type]:has(#card-logo) + tbody[data-type]:has(#card-logo) > tr > td {
+        border-top: none;
+        padding-top: 0;
+    }
+
+    #professional-content tbody[data-type]:has(#card-logo) + tbody[data-type]:has(#card-logo) {
+        margin-top: 10px;
+        padding-top: 10px;
+        border-top: 1px solid #e9ecef;
     }
 
     tbody[data-type]:has(#card-logo) tr {
