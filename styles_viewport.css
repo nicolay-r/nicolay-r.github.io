@@ -1,7 +1,7 @@
 /* Viewport-responsive styles for academic profile page */
 
 /* Responsive design for device viewport */
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 650px) {
     /* Make main container responsive */
     table[width="100%"] {
         width: 100% !important;
@@ -40,7 +40,7 @@
     }
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 500px) {
 
     .card-actions {
         margin-top: 8px;
