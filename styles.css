@@ -231,10 +231,12 @@ div[id="card-content"] {
   font-weight: 700;
 }
 
-.career-separator {
-    border: none;
+/* Card separation between profile entries (desktop) */
+@media screen and (min-width: 601px) {
+  #professional-content tbody[data-type] + tbody[data-type] > tr > td {
     border-top: 1px solid #e9ecef;
-    margin: 10px 0;
+    padding-top: 10px;
+  }
 }
 
 /* Career cards (nested key/value tables) */
