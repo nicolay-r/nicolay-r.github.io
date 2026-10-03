@@ -260,7 +260,7 @@ div[id="card-content"] {
   text-align: left !important;
 }
 
-.career-kv-expand-row .running-expand-cell {
+.career-kv-expand-row .expand-cell {
   text-align: center !important;
 }
 
@@ -485,15 +485,15 @@ img{
 }
 
 /* Collapsed consecutive rows (running results, career details, etc.) */
-.running-row-collapsed {
+.race-row-collapsed {
     display: none;
 }
 
-.running-expand-cell {
+.expand-cell {
     padding: 6px 0;
 }
 
-.running-expand-link {
+.expand-link {
     border: none;
     background: none;
     padding: 0;
@@ -503,7 +503,7 @@ img{
     text-decoration: underline;
 }
 
-.running-expand-link:hover,
-.running-expand-link:focus-visible {
+.expand-link:hover,
+.expand-link:focus-visible {
     color: #495057;
 }
