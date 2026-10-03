@@ -113,6 +113,28 @@ function convertRunningJsonToHtml(data) {
         filterDataType = isTri ? 'TRI' : distance.replace(/\s+/g, '');
         runDate = data['Run Date'] || data['run_date'] || data.Date || '';
         timeInnerHtml = escapeHtml(data.Time || data.time || '');
+        const rankLines = [];
+        const pos = data.Pos ?? data.pos;
+        const field = data.Field ?? data.field;
+        if (pos) {
+            const fieldHtml = field ? `/${escapeHtml(field)}` : '';
+            rankLines.push(`POS: #${escapeHtml(String(pos).replace(/\.$/, ''))}${fieldHtml}`);
+        }
+        const mfRank = data.MFRank ?? data.mfRank;
+        const mfField = data.MFField ?? data.mfField;
+        const agRank = data.AGRank ?? data.agRank;
+        const agField = data.AGField ?? data.agField;
+        if (mfRank) {
+            const field = mfField ? `/${escapeHtml(mfField)}` : '';
+            rankLines.push(`MF: #${escapeHtml(String(mfRank).replace(/\.$/, ''))}${field}`);
+        }
+        if (agRank) {
+            const field = agField ? `/${escapeHtml(agField)}` : '';
+            rankLines.push(`AG: #${escapeHtml(String(agRank).replace(/\.$/, ''))}${field}`);
+        }
+        if (rankLines.length) {
+            timeInnerHtml += rankLines.map((line) => `<br/><small class="position-age-grade">${line}</small>`).join('');
+        }
         distanceLabelEscaped = escapeHtml(distance);
 
         titleInnerEscaped = escapeHtml(data.Title || data.title || '');
@@ -199,16 +221,16 @@ function convertRunningJsonToHtml(data) {
     return `
                 <tbody data-type="${escapeHtml(filterDataType)}"${seriesAttr}${dateAttr}>
                 <tr id="${escapeHtml(rowId)}" ${rowHighlight}>
-                    <td valign="middle">
+                    <td valign="top">
                         ${timeInnerHtml}
                     </td>
-                    <td valign="middle">
+                    <td valign="top">
                         <span class="distance-param">${distanceLabelEscaped}</span>
                     </td>
-                    <td valign="middle" class="date-column">
+                    <td valign="top" class="date-column">
                         <small>${escapeHtml(runDate)}</small>${relativeHtml}
                     </td>
-                    <td valign="middle">
+                    <td valign="top">
                         <a href="${titleHrefEscaped}">
                             <runtitle>${titleInnerEscaped}</runtitle>
                         </a>${afterTitleHtml}
