@@ -59,20 +59,6 @@ function buildRaceLinksHtml(links) {
     }).join(' / ');
 }
 
-/** Parkrun event name → default location caption */
-function getParkrunLocationCaption(eventName) {
-    if (eventName === 'Bournemouth') {
-        return 'Kings Park Athletic Stadium';
-    }
-    if (eventName === 'Battersea') {
-        return 'London';
-    }
-    if (eventName === 'Poole') {
-        return 'Poole Park, Poole';
-    }
-    return eventName;
-}
-
 /** Series key for collapse grouping: parkrun Event, otherwise race Id. */
 function getRunningSeriesKey(data) {
     const event = data.Event;
@@ -205,9 +191,8 @@ function convertRunningJsonToHtml(data) {
         titleHrefEscaped = escapeHtml(resultsUrl);
         titleInnerEscaped = escapeHtml(`${event} Parkrun #${runNumber}`);
 
-        const locationCaption = getParkrunLocationCaption(event);
         afterTitleHtml = `<br/>
-                        <span class="location-caption">${escapeHtml(locationCaption)}</span>`;
+                        <span class="location-caption">${escapeHtml(event)}</span>`;
     }
 
     const relativeHtml = runDate
