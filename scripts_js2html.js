@@ -92,7 +92,9 @@ function getRunningSeriesKey(data) {
  * @returns {string} HTML tbody string
  */
 function convertRunningJsonToHtml(data) {
-    const isRace = data.Type === 'race' || data.type === 'race';
+    const recordType = String(data.Type || data.type || '').toLowerCase();
+    const isTri = recordType === 'triathlon' || recordType === 'tri';
+    const isRace = recordType === 'race' || isTri;
 
     let rowId;
     let filterDataType;
@@ -103,11 +105,12 @@ function convertRunningJsonToHtml(data) {
     let titleHrefEscaped;
     let titleInnerEscaped;
     let afterTitleHtml;
+    let splitsBlock = '';
 
     if (isRace) {
         rowId = data.Id || data.id || 'race-row';
         const distance = (data.Distance || data.distance || '5K').trim();
-        filterDataType = distance.replace(/\s+/g, '');
+        filterDataType = isTri ? 'TRI' : distance.replace(/\s+/g, '');
         runDate = data['Run Date'] || data['run_date'] || data.Date || '';
         timeInnerHtml = escapeHtml(data.Time || data.time || '');
         distanceLabelEscaped = escapeHtml(distance);
@@ -128,6 +131,28 @@ function convertRunningJsonToHtml(data) {
 
         const linksHtml = buildRaceLinksHtml(data.Links || data.links);
         const linksBlock = linksHtml ? `<br>\n                        ${linksHtml}` : '';
+
+        const splits = Array.isArray(data.Splits) ? data.Splits : (Array.isArray(data.splits) ? data.splits : []);
+        const splitHeaders = [];
+        const splitTimes = [];
+        splits.forEach((split) => {
+            const name = String(split.name || split.Name || split.Split || '').trim();
+            let splitTime = String(split.time || split.Time || '').trim();
+            if (!name || !splitTime) {
+                return;
+            }
+            if (splitTime.startsWith('00:')) {
+                splitTime = splitTime.slice(3);
+            }
+            splitHeaders.push(`<span class="tri-splits-name">${escapeHtml(name)}</span>`);
+            splitTimes.push(`<span class="tri-splits-time">${escapeHtml(splitTime)}</span>`);
+        });
+        const splitsBlockHtml = splitHeaders.length
+            ? `<div class="tri-splits">${splitHeaders.join('')}${splitTimes.join('')}</div>`
+            : '';
+        splitsBlock = splitsBlockHtml
+            ? `<tr ${rowHighlight}><td colspan="4" class="tri-splits-cell"><div class="tri-splits-fit">${splitsBlockHtml}</div></td></tr>`
+            : '';
 
         afterTitleHtml = `${locationBlock}${linksBlock}`;
     } else {
@@ -169,9 +194,10 @@ function convertRunningJsonToHtml(data) {
 
     const seriesKey = getRunningSeriesKey(data);
     const seriesAttr = seriesKey ? ` data-event="${escapeHtml(seriesKey)}"` : '';
+    const dateAttr = runDate ? ` data-run-date="${escapeHtml(runDate)}"` : '';
 
     return `
-                <tbody data-type="${escapeHtml(filterDataType)}"${seriesAttr}>
+                <tbody data-type="${escapeHtml(filterDataType)}"${seriesAttr}${dateAttr}>
                 <tr id="${escapeHtml(rowId)}" ${rowHighlight}>
                     <td valign="middle">
                         ${timeInnerHtml}
@@ -188,6 +214,7 @@ function convertRunningJsonToHtml(data) {
                         </a>${afterTitleHtml}
                     </td>
                 </tr>
+                ${splitsBlock}
                 </tbody>`;
 }
 
